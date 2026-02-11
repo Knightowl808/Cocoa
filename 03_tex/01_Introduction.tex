@@ -1,0 +1,118 @@
+\chapter{Introduction}
+\label{ch:introduction}
+
+Volatility forecasting is fundamental to financial risk management, portfolio
+allocation, and derivative pricing \parencite{poonForecastingVolatilityFinancial}.
+The literature has developed multiple approaches, including historical rolling
+averages, implied volatility from options prices, stochastic volatility models,
+and various parametric specifications. Among these, two modeling paradigms have
+become dominant. The first treats volatility as a latent process that must be
+inferred from returns. The Generalized Autoregressive Conditional Heteroskedasticity
+(GARCH) model of \textcite{bollerslev1986generalized} represents the canonical
+approach in this paradigm, modeling conditional variance as a function of past
+shocks and past variances. The second paradigm, enabled by the availability of
+high-frequency data, treats volatility as directly observable through realized
+measures computed from intraday returns \parencite{andersen2001distribution}.
+Within this paradigm, the Heterogeneous Autoregressive (HAR) model of
+\textcite{corsiSimpleApproximateLongMemory2008} has emerged as the dominant
+forecasting framework, offering a parsimonious structure that captures the
+long-memory properties of volatility while remaining simple to estimate.
+
+The majority of volatility forecasting research focuses on conditional mean
+forecasts: the expected level of future volatility given current information.
+For many applications, however, the mean provides incomplete guidance. Risk
+managers, portfolio allocators, and hedgers require information about the
+tails of the volatility distribution---specifically, bounds that volatility
+is unlikely to exceed. Value-at-Risk calculations, stress testing, and margin
+requirements all depend on quantile estimates rather than mean forecasts
+\parencite{christoffersen1998evaluating}. Quantile regression, introduced by
+\textcite{koenker1978regression}, provides a natural framework for estimating
+conditional quantiles directly, without distributional assumptions.
+
+Recent work has combined these approaches. \textcite{haugomParsimoniousQuantileRegression2016}
+introduced HAR-QREG, applying quantile regression to the HAR framework for
+direct Value-at-Risk estimation. Subsequent studies have extended this approach
+to equity markets \parencite{lyocsaImprovingStockMarket2021, huangHighfrequencyApproachVaR2022}
+and precious metals \parencite{songGoldFuturesVolatility2025}. However,
+agricultural commodities remain understudied. While HAR models have been applied
+to agricultural futures \parencite{degiannakisForecastingRealizedVolatility2022,
+alfeusForecastingVolatilityCommodity2022}, no study applies HAR-based quantile
+regression to this asset class.
+
+Cocoa futures present a particularly relevant case. The cocoa market is
+characterized by high geographic concentration of production, vulnerability
+to weather and disease shocks, and pronounced price volatility
+\parencite{rognaAnalysisCocoaMarket2025}. Between 2022 and 2024, international
+cocoa prices approximately quadrupled - an increase unprecedented in the
+commodity's modern trading history. For chocolate manufacturers, who
+commit to purchases months in advance through futures contracts,
+accurate volatility forecasts at long horizons are essential for hedging
+decisions and procurement planning. Yet the volatility forecasting literature
+provides limited guidance at such horizons: existing HAR-QR studies extend
+only to approximately one month \parencite{lyocsaImprovingStockMarket2021},
+and \textcite{poonForecastingVolatilityFinancial} conclude that forecast
+accuracy degrades substantially beyond six months.
+
+At long forecast horizons, the autoregressive signal from lagged volatility
+fades, motivating the search for additional predictors. Climate variables
+offer a potential source of information that operates on precisely these
+longer timescales. \textcite{bouriNinoForecastabilityOilprice2021} demonstrate
+that the El Ni\~no--Southern Oscillation (ENSO) index improves oil volatility
+forecasts at horizons of two to four years. \textcite{bonatoNinoNinaForecastability2023}
+extend this finding to agricultural commodities, documenting that ENSO predictive
+value strengthens at longer horizons. For cocoa, whose production is concentrated
+in West Africa and sensitive to rainfall patterns affected by ENSO phases
+\parencite{ubilavaRoleNinoSouthern2018}, climate augmentation may prove
+particularly valuable.
+
+This thesis addresses the following research question:
+\begin{quote}
+Can HAR-based quantile regression models forecast cocoa futures volatility at
+horizons relevant for procurement and hedging (1 month to 12 months), and does
+the ENSO climate index improve tail-risk forecasts at long horizons?
+\end{quote}
+
+We address this question by estimating HAR-QR models at multiple quantiles
+($\tau \in \{0.05, 0.25, 0.50, 0.75, 0.95\}$) and horizons (1 day, 1 week,
+1 month, 3 months, 6 months, 12 months). At each horizon, we compare
+out-of-sample forecast accuracy against standard benchmarks: historical
+rolling volatility, GARCH(1,1), and HAR estimated by ordinary least squares.
+For long horizons, we test whether adding ENSO improves forecasts, with
+particular focus on the upper quantile ($\tau = 0.95$) relevant for risk
+management applications.
+
+The thesis makes three contributions to the literature. First, it applies
+HAR-QR to an agricultural commodity. While HAR models have been applied to
+cocoa within broad commodity surveys \parencite{alfeusForecastingVolatilityCommodity2022,
+bonatoForecastingRealizedVolatility2024}, and HAR-QR has been applied to
+equities and precious metals, no study has combined these approaches for
+agricultural commodities.
+
+Second, the thesis extends HAR-QR to horizons beyond existing applications.
+The literature currently provides HAR-QR evidence only for horizons up to
+approximately one month \parencite{lyocsaImprovingStockMarket2021}. This
+research tests whether quantile forecasts remain useful at horizons of 6 to
+12 months, where industrial hedgers require guidance but the literature
+offers none.
+
+Third, the thesis incorporates climate variables into a quantile regression
+framework for commodity volatility. While \textcite{bouriNinoForecastabilityOilprice2021}
+demonstrate that ENSO improves mean volatility forecasts for oil, no study
+has tested whether ENSO enhances quantile forecasts for agricultural commodities.
+This extension is particularly relevant for cocoa, given the documented
+sensitivity of tropical agricultural production to ENSO phases.
+
+The remainder of the thesis is organized as follows.
+Chapter~\ref{ch:literature} reviews the literature on volatility measurement,
+HAR models, quantile regression in finance, and climate-commodity linkages,
+establishing the research gap this thesis addresses.
+Chapter~\ref{ch:methodology} specifies the HAR-QR model, the multi-horizon
+projection approach, and the evaluation framework.
+Chapter~\ref{ch:data} describes the ICE London cocoa futures data and validates
+the daily volatility proxy against realized volatility from intraday data.
+Chapter~\ref{ch:results} presents empirical results organized by forecast
+horizon.
+Chapter~\ref{ch:discussion} interprets findings in the context of risk
+management and procurement applications.
+Chapter~\ref{ch:conclusion} summarizes key results and directions for future
+research.

@@ -5,7 +5,7 @@ from scipy import stats
 import warnings
 warnings.filterwarnings('ignore')
 
-# Academic style settings
+# Plot style settings
 plt.rcParams.update({
     'font.family': 'serif',
     'font.size': 11,

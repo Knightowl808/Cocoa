@@ -1,0 +1,215 @@
+% =============================================================================
+% MASTER THESIS: Time Series Approaches to Cocoa Price Risk
+% Main LaTeX Document
+% =============================================================================
+
+\documentclass[12pt, a4paper, oneside]{book}
+
+% -----------------------------------------------------------------------------
+% PACKAGES
+% -----------------------------------------------------------------------------
+
+% Encoding and fonts
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+
+% Language
+\usepackage[english]{babel}
+
+% Mathematics
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+
+% Graphics and figures
+\usepackage{graphicx}
+\graphicspath{{./figures/}}  % Set path for figures
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{threeparttable}  % For table notes
+
+% Tables
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+
+% Bibliography (biblatex with biber backend)
+\usepackage[
+    backend=biber,
+    style=authoryear,
+    sorting=nyt,
+    maxcitenames=2,
+    maxbibnames=99,
+    uniquelist=false,
+    url=false,
+    doi=true,
+    isbn=false
+]{biblatex}
+\addbibresource{references.bib}
+
+% Cross-referencing
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue
+}
+\usepackage[capitalise, noabbrev]{cleveref}
+
+% Page layout
+\usepackage[
+    top=2.5cm,
+    bottom=2.5cm,
+    left=3cm,
+    right=2.5cm
+]{geometry}
+
+% Line spacing
+\usepackage{setspace}
+\onehalfspacing
+
+% Headers and footers
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\leftmark}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% Code listings (if needed)
+\usepackage{listings}
+\lstset{
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    frame=single
+}
+
+% Appendix
+\usepackage[toc,page]{appendix}
+
+% -----------------------------------------------------------------------------
+% CUSTOM COMMANDS
+% -----------------------------------------------------------------------------
+
+% Commonly used symbols
+\newcommand{\E}{\mathbb{E}}           % Expectation
+\newcommand{\Var}{\text{Var}}         % Variance
+\newcommand{\Cov}{\text{Cov}}         % Covariance
+\newcommand{\VaR}{\text{VaR}}         % Value at Risk
+\newcommand{\RV}{\text{RV}}           % Realized Volatility
+\newcommand{\HAR}{\text{HAR}}         % HAR model
+\newcommand{\ENSO}{\text{ENSO}}       % ENSO index
+
+% Operators
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+% Quantile notation
+\newcommand{\Qtau}{Q_{\tau}}          % Conditional quantile
+
+% -----------------------------------------------------------------------------
+% DOCUMENT INFO
+% -----------------------------------------------------------------------------
+
+\title{Time Series Approaches to Cocoa Price Risk:\\
+       Forecasting and Hedging Applications}
+\author{Felix Köhler}
+\date{\today}
+
+% =============================================================================
+% DOCUMENT
+% =============================================================================
+
+\begin{document}
+
+% -----------------------------------------------------------------------------
+% FRONT MATTER
+% -----------------------------------------------------------------------------
+
+\frontmatter
+
+% Title page
+\begin{titlepage}
+    \centering
+    \vspace*{2cm}
+
+    {\Large\bfseries University of Hohenheim}\\[0.5cm]
+
+    {\LARGE\bfseries Time Series Approaches to Cocoa Price Risk}\\[0.5cm]
+    {\Large Forecasting and Hedging Applications}\\[3cm]
+
+    {\large Master Thesis}\\[0.5cm]
+    {\large submitted in partial fulfillment of the requirements for the degree of}\\[0.5cm]
+    {\large Master of Agricultural Sciences - Advisory and Innovation Services in agri-food systems}\\[2cm]
+
+    \begin{tabular}{ll}
+        \textbf{Author:} & Felix Köhler \\[0.3cm]
+        \textbf{First Supervisor:} & Prof. Dr. Thomas Dimpfl \\[0.3cm]
+        \textbf{Second Supervisor:} & Prof. Johannes Bleher \\[0.3cm]
+    \end{tabular}
+
+    \vfill
+\end{titlepage}
+
+% Abstract (placeholder)
+% \chapter*{Abstract}
+% \addcontentsline{toc}{chapter}{Abstract}
+
+% [Abstract will be written after empirical results are complete.]
+
+% Table of contents
+\tableofcontents
+
+% List of figures (optional)
+% \listoffigures
+% \addcontentsline{toc}{chapter}{List of Figures}
+
+% List of tables (optional)
+% \listoftables
+% \addcontentsline{toc}{chapter}{List of Tables}
+
+% -----------------------------------------------------------------------------
+% MAIN MATTER
+% -----------------------------------------------------------------------------
+
+\mainmatter
+
+% Chapter 1: Introduction
+\include{01_Introduction}
+
+% Chapter 2: Literature Review
+\include{02_LiteratureReview}
+
+% Chapter 3: Methodology
+% \include{03_Methodology}
+
+% Chapter 4: Data (placeholder)
+% \include{04_Data}
+
+% Chapter 5: Results (placeholder)
+% \include{05_Results}
+
+% Chapter 6: Discussion (placeholder)
+% \include{06_Discussion}
+
+% Chapter 7: Conclusion (placeholder)
+% \include{07_Conclusion}
+
+% -----------------------------------------------------------------------------
+% BACK MATTER
+% -----------------------------------------------------------------------------
+
+\backmatter
+
+% Bibliography
+\printbibliography[heading=bibintoc, title={References}]
+
+% Appendix (if needed)
+% \begin{appendices}
+% \include{Appendix_A}
+% \end{appendices}
+
+\end{document}
