@@ -1,4 +1,4 @@
-# Die aktuelle Version der ersten beiden Kapitel lässt sich in Datei main.pdf einsehen
+# Die aktuelle Version lässt sich in Datei main.pdf einsehen
 
 ## Repository Structure
 

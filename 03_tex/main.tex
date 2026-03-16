@@ -3,7 +3,7 @@
 % Main LaTeX Document
 % =============================================================================
 
-\documentclass[12pt, a4paper, oneside]{book}
+\documentclass[12pt, a4paper]{article}
 
 % -----------------------------------------------------------------------------
 % PACKAGES
@@ -34,6 +34,7 @@
 \usepackage{booktabs}
 \usepackage{tabularx}
 \usepackage{longtable}
+% \usepackage{multirow}  % not installed in MiKTeX
 
 % Bibliography (biblatex with biber backend)
 \usepackage[
@@ -114,8 +115,7 @@
 % DOCUMENT INFO
 % -----------------------------------------------------------------------------
 
-\title{Time Series Approaches to Cocoa Price Risk:\\
-       Forecasting and Hedging Applications}
+\title{Time Series Approaches to Cocoa Price Risk}
 \author{Felix Köhler}
 \date{\today}
 
@@ -129,7 +129,7 @@
 % FRONT MATTER
 % -----------------------------------------------------------------------------
 
-\frontmatter
+\pagenumbering{roman}
 
 % Title page
 \begin{titlepage}
@@ -138,78 +138,76 @@
 
     {\Large\bfseries University of Hohenheim}\\[0.5cm]
 
-    {\LARGE\bfseries Time Series Approaches to Cocoa Price Risk}\\[0.5cm]
-    {\Large Forecasting and Hedging Applications}\\[3cm]
+    {\LARGE\bfseries Time Series Approaches to Cocoa Price Risk}\\[3cm]
 
     {\large Master Thesis}\\[0.5cm]
     {\large submitted in partial fulfillment of the requirements for the degree of}\\[0.5cm]
-    {\large Master of Agricultural Sciences - Advisory and Innovation Services in agri-food systems}\\[2cm]
+    {\large Master of Agricultural Sciences -- Advisory and Innovation Services in Agri-Food Systems}\\[2cm]
 
     \begin{tabular}{ll}
         \textbf{Author:} & Felix Köhler \\[0.3cm]
         \textbf{First Supervisor:} & Prof. Dr. Thomas Dimpfl \\[0.3cm]
-        \textbf{Second Supervisor:} & Prof. Johannes Bleher \\[0.3cm]
+        \textbf{Second Supervisor:} & Dr. Johannes Bleher \\[0.3cm]
     \end{tabular}
 
     \vfill
 \end{titlepage}
 
 % Abstract (placeholder)
-% \chapter*{Abstract}
-% \addcontentsline{toc}{chapter}{Abstract}
+% \section*{Abstract}
+% \addcontentsline{toc}{section}{Abstract}
 
 % [Abstract will be written after empirical results are complete.]
 
 % Table of contents
+\newpage
 \tableofcontents
 
 % List of figures (optional)
 % \listoffigures
-% \addcontentsline{toc}{chapter}{List of Figures}
+% \addcontentsline{toc}{section}{List of Figures}
 
 % List of tables (optional)
 % \listoftables
-% \addcontentsline{toc}{chapter}{List of Tables}
+% \addcontentsline{toc}{section}{List of Tables}
 
 % -----------------------------------------------------------------------------
 % MAIN MATTER
 % -----------------------------------------------------------------------------
 
-\mainmatter
+\newpage
+\pagenumbering{arabic}
 
-% Chapter 1: Introduction
-\include{01_Introduction}
+% Section 1: Introduction
+\input{01_Introduction}
 
-% Chapter 2: Literature Review
-\include{02_LiteratureReview}
+% Section 2: Literature Review
+\input{02_LiteratureReview}
 
-% Chapter 3: Methodology
-% \include{03_Methodology}
+% Section 3: Methodology
+\input{03_Methodology}
 
-% Chapter 4: Data (placeholder)
-% \include{04_Data}
+% Section 4: Data (placeholder — requires figures)
+\input{04_Data}
 
-% Chapter 5: Results (placeholder)
-% \include{05_Results}
+% Section 5: Results
+\input{05_Results}
 
-% Chapter 6: Discussion (placeholder)
-% \include{06_Discussion}
-
-% Chapter 7: Conclusion (placeholder)
-% \include{07_Conclusion}
+% Section 6: Discussion (placeholder)
+% \input{06_Discussion}
 
 % -----------------------------------------------------------------------------
 % BACK MATTER
 % -----------------------------------------------------------------------------
 
-\backmatter
+\newpage
 
 % Bibliography
 \printbibliography[heading=bibintoc, title={References}]
 
 % Appendix (if needed)
 % \begin{appendices}
-% \include{Appendix_A}
+% \input{Appendix_A}
 % \end{appendices}
 
 \end{document}

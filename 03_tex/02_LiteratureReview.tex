@@ -1,414 +1,350 @@
-\chapter{Literature Review}
-\label{ch:literature}
+\section{Literature Review}
+\label{sec:literature}
 
-This chapter reviews the theoretical foundations underlying volatility
-forecasting for commodity markets. We begin with background on the cocoa market
-and the risk management context that motivates our focus on tail-risk
-forecasting. We then trace three strands of literature: volatility measurement,
-the Heterogeneous Autoregressive (HAR) model, and quantile regression methods.
-The intersection of these strands—HAR-based quantile regression for
-commodities—represents the gap this thesis addresses.
+This section reviews the literature underlying volatility forecasting for
+cocoa futures. We begin with the cocoa market itself, then trace how
+volatility measurement evolved from simple estimators to the HAR framework.
+We then review quantile regression for volatility and ENSO as a climate
+predictor at long horizons, followed by the evaluation methods used to
+compare forecasts. The intersection of these strands identifies the gap
+this thesis addresses: no study applies HAR-based quantile regression to
+any agricultural commodity, and no HAR-QR study extends beyond
+approximately one month.
 
 %------------------------------------------------------------------------------
-\section{The Cocoa Market and Procurement Risk}
+\subsection{The Cocoa Market}
 \label{sec:lit-cocoa}
 %------------------------------------------------------------------------------
 
-Cocoa is produced almost exclusively in tropical regions. West Africa dominates
-global supply: Côte d'Ivoire and Ghana together account for over half of world
-production \parencite{rognaAnalysisCocoaMarket2025}. Production is
-geographically concentrated, dependent on rainfall patterns, and vulnerable to
-plant diseases - most recently the Cocoa Swollen Shoot Virus Disease (CSSVD),
-which contributed to the 2022–2024 price surge. This concentration creates
-structural volatility: disruptions in a single region can move global prices
-substantially.
+Cocoa occupies an unusual position among agricultural commodities. Its
+production is geographically concentrated, biologically slow to adjust, and
+structurally exposed to climate variability in ways that set it apart from
+grains or oilseeds. These features interact to produce a market where supply
+disruptions are both frequent and slow to resolve---precisely the conditions
+under which distributional, rather than mean, volatility forecasts become
+most valuable.
 
-Chocolate manufacturers hedge their exposure by buying futures contracts on
-exchanges such as ICE London. A futures contract specifies delivery of a
-standardized quantity (10 metric tonnes for London contracts) at a future date
-for a price agreed today. The futures price reflects spot prices, storage costs,
-interest rates, and the \emph{convenience yield}—the benefit from holding
-physical inventory \parencite{hull2012options}. When convenience yield is high
-(typically during supply uncertainty), futures trade below spot (backwardation);
-when storage costs dominate, futures trade above spot (contango).
+The West African cocoa belt accounts for approximately 70\% of world
+production, with Côte d'Ivoire and Ghana alone responsible for more than
+half of global output
+\parencite{schrothVulnerabilityClimateChange2016,
+laderachPredictingFutureClimatic2013}. Unlike grains or oilseeds, whose
+production is spread across multiple continents, cocoa's concentration
+means that disruptions in a single region can move global prices
+substantially. Production is overwhelmingly smallholder-based, with
+approximately 90\% grown on farms smaller than five hectares
+\parencite{benschFinalReportFederal}.
+\textcite{rognaAnalysisCocoaMarket2025} identify the stock-to-grind ratio
+as the primary long-run price determinant, finding a significant
+cointegrating relationship between prices and inventory levels. Since the
+mid-2000s, growing financial participation has added a further source of
+volatility
+\parencite{benschFinalReportFederal, gilbertFoodPriceVolatility2010}.
 
-For a manufacturer hedging with futures, three distinct risks arise.
-First, \emph{spot price volatility}: the risk that the price of physical
-cocoa moves adversely before purchase. Second, \emph{futures price volatility}:
-the risk that the value of the hedging instrument itself fluctuates, triggering
-margin calls and complicating cash-flow planning. Third, \emph{basis risk}:
-the risk that spot and futures prices diverge, causing the hedge to
-under- or overcompensate for spot price movements.
+A critical structural feature is the cocoa tree's biological rigidity. New
+trees require five to seven years before reaching full productive capacity,
+with an economic lifespan of 30 to 40 years
+\parencite{asanteClimateChangeImpacts2025}. Unlike annual crops, cocoa
+supply responds to market signals slowly, and the resulting low short-run
+supply elasticity amplifies price volatility whenever demand or supply
+shocks occur.
 
-This thesis focuses on the second - futures price volatility - for three
-reasons. Manufacturers who hedge months ahead hold futures positions
-throughout the procurement window; volatility in the futures price directly
-determines margin requirements, option premiums (if options are used for
-additional protection), and budgeting uncertainty. Spot price risk is
-largely transferred to the exchange through the futures position itself.
-Basis risk, while relevant at delivery, is a secondary concern during the
-hedging window, and its analysis requires simultaneous modeling of spot
-and futures prices, which lies outside the scope of a single-instrument
-volatility study.
+Cocoa is also among the most climate-sensitive perennial crops. West Africa
+is characterized by ``some of the most variable climates on the planet''
+\parencite{laderachPredictingFutureClimatic2013}, and drought during the
+critical September--December pod development period reduces yields
+substantially. The El Niño--Southern Oscillation (ENSO) is the primary
+near-term mechanism through which climate variability affects cocoa supply;
+Section~\ref{sec:lit-enso} discusses this channel and its implications for
+long-horizon volatility forecasting.
 
-The procurement question is therefore: ``how volatile could the futures
-price become over the hedging horizon?'' This is a tail-risk question- the
-95th percentile of the volatility distribution, not the mean. A mean
-forecast that says ``volatility will likely be moderate'' provides little
-comfort if the upper tail includes a repeat of 2022--2024 conditions.
-This tail-risk framing motivates quantile regression as the appropriate
-estimation method.
+The most striking recent illustration of these compounding dynamics is the
+2022--2024 price crisis, during which international cocoa prices
+approximately tripled \parencite{rognaAnalysisCocoaMarket2025}. The crisis
+was driven by the convergence of the Cocoa Swollen Shoot Virus Disease
+(CSSVD) in Ghana and adverse El Niño--related drought across Côte d'Ivoire.
+
+Despite the salience of cocoa in global commodity markets, the volatility
+forecasting literature has paid it limited attention.
+\textcite{benschFinalReportFederal} provide the most comprehensive study
+of cocoa price determinants, finding that fundamentals are quickly
+integrated into prices, but do not extend to multi-horizon forecasting or
+tail-risk quantification. \textcite{berganderDeepLearningCocoa2025} apply
+LSTM neural networks with weather data but find no improvement in point
+forecasts, plausibly because markets anticipate weather shocks before
+physical effects materialize. Within broader commodity surveys,
+\textcite{alfeusForecastingVolatilityCommodity2022} include cocoa among
+22 markets and find that monthly volatility is the most informative
+component---evidence of slow-moving, structural dynamics---but offer no
+focused analysis. No study applies HAR-based models specifically to cocoa
+volatility, and none has examined quantile-based tail-risk forecasting
+for this market.
 
 %------------------------------------------------------------------------------
-\section{Volatility Measurement}
+\subsection{The Evolution of Volatility Measurement}
 \label{sec:lit-volatility}
 %------------------------------------------------------------------------------
 
-A foundational challenge in volatility research is that volatility is latent:
-unlike prices, which are directly observable, volatility must be estimated
-from price movements \parencite{poonForecastingVolatilityFinancial}. The
-literature has developed progressively sophisticated estimators, each offering
-different trade-offs between data requirements, statistical efficiency, and
-practical applicability.
+A foundational challenge in volatility research is that volatility is
+latent: unlike prices, which are directly observable, it must be
+estimated from price movements
+\parencite{poonForecastingVolatilityFinancial}. Every volatility measure
+is an approximation, and the choice of estimator shapes both forecast
+quality and evaluation validity
+\parencite{pattonVolatilityForecastComparison}. The measurement
+literature has evolved through three successive approaches, each
+reducing the statistical noise of the volatility proxy.
 
-\subsection{OHLC-Based Volatility Estimators}
-\label{subsec:lit-estimators}
+The earliest volatility estimates used only closing prices. The random
+walk model, exponential smoothing, and rolling-window standard deviations
+all extrapolate past variation into the future
+\parencite{poonForecastingVolatilityFinancial}. These methods are simple
+and require minimal data, but the squared close-to-close return is a
+highly imprecise estimator of daily variance. Nonetheless,
+\textcite{poonForecastingVolatilityFinancial} review 93 studies and find
+that ``for forecast horizons that are longer than 6 months, a simple
+historical method using low frequency data over a period at least as long
+as the forecast horizon works best''---a finding that motivates the
+inclusion of rolling historical volatility as a benchmark in this thesis.
 
-Daily Open-High-Low-Close (OHLC) data provide a practical foundation for
-volatility estimation, offering broad historical coverage and standardized
-availability across markets. This thesis employs OHLC-based volatility measures,
-and this subsection reviews the relevant estimators.
+A significant efficiency improvement came from exploiting the full daily
+price range. \textcite{parkinson1980extreme} demonstrated that the
+high-low range achieves efficiency gains of approximately five times
+over close-to-close methods. \textcite{rogers1991estimating} extended
+this to allow for non-zero drift. However, both estimators assume
+continuous trading---an assumption violated by commodity futures
+markets, which experience regular overnight closures.
 
-The simplest approach uses closing prices only. The close-to-close variance
-estimator is
-\begin{equation}
-\label{eq:cc-variance}
-\hat{\sigma}^2_{\text{CC}} = \frac{1}{n-1} \sum_{i=1}^{n} (r_i - \bar{r})^2,
-\end{equation}
-where $r_i = \ln(C_i / C_{i-1})$ denotes the log return on day $i$, $C_i$
-is the closing price, $\bar{r}$ is the sample mean of returns, and $n$ is
-the number of observations. While unbiased, this estimator discards
-valuable information contained in intraday price movements.
-\textcite{poonForecastingVolatilityFinancial} note that close-to-close
-estimators remain widely used despite their inefficiency, partly due to
-data availability constraints.
+\textcite{yangDriftIndependentVolatility2000} synthesized these
+approaches into an estimator that is unbiased, drift-independent, and
+robust to opening jumps. By estimating overnight and trading-session
+variance separately and combining them optimally, the Yang-Zhang
+estimator achieves efficiency gains of 7--8 times over close-to-close
+methods. For commodity markets, where overnight information frequently
+causes opening gaps, this robustness is particularly valuable.
 
-\textcite{parkinson1980extreme} demonstrated that the daily high-low range
-contains substantial information about volatility, proposing an estimator
-with theoretical efficiency gains of approximately five times over close-to-close
-methods. \textcite{rogers1991estimating} extended this work to allow for
-non-zero drift, addressing a key limitation of Parkinson's original formulation.
-However, both estimators assume continuous trading- an assumption violated
-by commodity futures markets, which experience regular overnight closures
-and can gap significantly at the open.
+The availability of intraday transaction data in the late 1990s enabled
+a fundamentally different approach.
+\textcite{andersen1998answering, andersen2001distribution} demonstrated
+that realized volatility---the sum of squared intraday returns---provides
+a far more precise measure of daily variance, resolving much of the
+apparent poor performance of earlier models. However, high-frequency
+data are plagued by microstructure noise and are often unavailable for
+commodity markets over long samples.
+\textcite{clementsHarvestingHARXVolatility2024} provide evidence that
+HAR models applied to daily OHLC-based volatility achieve comparable
+forecasting performance at medium and long horizons, validating the use
+of daily data when intraday records are limited---as is the case for
+cocoa futures over multi-decade samples.
 
-\textcite{yangDriftIndependentVolatility2000} synthesized these approaches
-into an estimator that is unbiased, drift-independent, and robust to opening
-jumps. Their key insight was to estimate overnight and trading-session
-variance separately, combining them optimally. The Yang-Zhang estimator is
-\begin{equation}
-\label{eq:yang-zhang}
-\hat{\sigma}^2_{\text{YZ}} = \hat{\sigma}^2_o + k \, \hat{\sigma}^2_c + (1-k) \, \hat{\sigma}^2_{\text{RS}},
-\end{equation}
-where $\hat{\sigma}^2_o$ is the overnight variance (open-to-previous-close),
-$\hat{\sigma}^2_c$ is the close-to-open variance, and $\hat{\sigma}^2_{\text{RS}}$
-is the Rogers-Satchell intraday variance component:
-\begin{equation}
-\label{eq:rogers-satchell}
-\hat{\sigma}^2_{\text{RS}} = \frac{1}{n} \sum_{i=1}^{n} \bigl[ u_i(u_i - c_i) + d_i(d_i - c_i) \bigr],
-\end{equation}
-with $u_i = \ln(H_i / O_i)$, $d_i = \ln(L_i / O_i)$, and $c_i = \ln(C_i / O_i)$
-denoting the normalized high, low, and close relative to the opening price.
-The weighting factor $k = 0.34 / (1.34 + (n+1)/(n-1))$ minimizes variance
-under the assumption of zero drift. The Yang-Zhang estimator
-achieves efficiency gains of 7--8 times over close-to-close methods,
-making it particularly valuable for commodity markets where overnight
-information (weather reports, inventory data, policy announcements)
-frequently causes opening gaps.
-
-While high-frequency intraday data enable ``realized volatility'' estimators
-with superior statistical properties \parencite{andersen2001distribution},
-such data are often unavailable for commodity markets over extended sample
-periods. \textcite{clementsHarvestingHARXVolatility2024}
-provide evidence that HAR models applied to daily OHLC-based volatility
-achieve forecasting performance comparable to realized volatility at medium
-and long horizons, validating the use of daily data for volatility modeling.
-
-\subsection{Conditional Volatility: The GARCH Framework}
-\label{subsec:lit-garch}
-
-The OHLC estimators reviewed above treat volatility as an ex-post measure
-computed from observed prices. An alternative paradigm models volatility
-as a latent process that evolves over time. The Generalized Autoregressive
-Conditional Heteroskedasticity (GARCH) model of
-\textcite{bollerslev1986generalized} is the canonical specification in
-this paradigm. The GARCH(1,1) model defines the conditional variance as
-\begin{equation}
-\label{eq:garch}
-\sigma_t^2 = \omega + \alpha \, \varepsilon_{t-1}^2 + \beta \, \sigma_{t-1}^2,
-\end{equation}
-where $\sigma_t^2$ is the conditional variance at time $t$, $\omega > 0$ is
-a constant, $\varepsilon_{t-1} = r_{t-1} - \mu$ is the mean-adjusted return
-innovation, $\alpha \geq 0$ governs the response to new shocks, and
-$\beta \geq 0$ captures persistence from past variance. The condition
-$\alpha + \beta < 1$ ensures stationarity, with the unconditional variance
-given by $\sigma^2 = \omega / (1 - \alpha - \beta)$.
-
-The model captures two key stylized facts of financial returns: volatility
-clustering (large shocks are followed by large shocks) and mean reversion
-(variance returns to its long-run level after a shock). The sum
-$\alpha + \beta$ measures persistence: values close to one imply slow
-decay of volatility shocks, a pattern commonly observed in commodity
-markets.
-
-Despite its simplicity, the GARCH(1,1) has proven remarkably difficult to
-beat in forecasting comparisons. \textcite{hansen2005forecast} evaluate
-330 volatility models on exchange rate data and conclude that ``nothing
-beats a GARCH(1,1).'' While subsequent work has identified settings where
-more complex specifications add value, this finding establishes GARCH(1,1)
-as the natural benchmark against which more elaborate models must
-demonstrate improvement. This thesis uses GARCH(1,1) in precisely this
-role: as a well-understood, parsimonious benchmark for evaluating the
-forecast accuracy of HAR-QR models.
+These developments establish the Yang-Zhang estimator applied to daily
+OHLC data as the volatility proxy for this thesis. The following section
+turns from the question of what to measure to the question of how to
+model and forecast its temporal dynamics.
 
 %------------------------------------------------------------------------------
-\section{The Heterogeneous Autoregressive Model}
+\subsection{The Heterogeneous Autoregressive Model}
 \label{sec:lit-har}
 %------------------------------------------------------------------------------
 
-The HAR model has become the dominant framework for volatility forecasting
-since its introduction by \textcite{corsiSimpleApproximateLongMemory2008}.
-Its success stems from a parsimonious structure that captures the long-memory
-properties of volatility without the estimation difficulties of fractionally
-integrated models.
+Two modeling frameworks are central to this thesis: GARCH, which serves
+as the main benchmark, and the Heterogeneous Autoregressive (HAR) model,
+which is the primary forecasting framework. Both capture a defining
+feature of volatility that range-based estimators ignore: its tendency
+to cluster over time.
 
-\subsection{Theoretical Foundations}
-\label{subsec:lit-hmh}
+Volatility clustering was first formalized by
+\textcite{engle1982autoregressive}, and
+\textcite{bollerslev1986generalized} generalized this into the GARCH
+framework, capturing both clustering and mean reversion. The GARCH(1,1)
+has proven remarkably difficult to beat:
+\textcite{hansen2005forecast} evaluate 330 volatility models and conclude
+that ``nothing beats a GARCH(1,1),'' establishing it as the natural
+benchmark. However, GARCH cannot replicate the slow, hyperbolic decay
+of volatility autocorrelations observed empirically---a property known
+as long memory. As \textcite{corsiSimpleApproximateLongMemory2008}
+observes, ``standard GARCH and stochastic volatility short-memory models
+appear like white noise once aggregated over longer time periods.''
 
-The HAR model builds on the \emph{Heterogeneous Market Hypothesis} of
-\textcite{mullerVolatilitiesDifferentTime1997}. Müller et al. documented
-a striking empirical asymmetry: coarse-grained volatility (e.g., weekly)
-predicts fine-grained volatility (e.g., daily) more strongly than the
-reverse. This pattern cannot be explained by standard GARCH models, which
-treat volatility symmetrically across horizons.
+The HAR model, introduced by
+\textcite{corsiSimpleApproximateLongMemory2008}, addresses this
+limitation through a parsimonious structure that captures long memory
+without the estimation difficulties of fractionally integrated models.
+It builds on the \emph{Heterogeneous Market Hypothesis} of
+\textcite{mullerVolatilitiesDifferentTime1997}, who documented that
+coarse-grained volatility (e.g., weekly) predicts fine-grained
+volatility (e.g., daily) more strongly than the reverse. This asymmetry
+reflects the presence of traders with different investment
+horizons---intraday speculators, swing traders, and long-term
+institutional investors---whose actions generate volatility that
+cascades across frequencies. Corsi formalized this insight into an
+additive model with daily, weekly, and monthly volatility components:
+a restricted AR(22) estimable by OLS that reproduces the autocorrelation
+patterns of long-memory processes.
 
-The heterogeneous market hypothesis attributes this asymmetry to the
-presence of traders with different investment horizons. Intraday speculators,
-swing traders, and long-term institutional investors each respond to
-volatility at their characteristic frequency. When long-horizon traders
-adjust positions, they generate volatility that cascades down to shorter
-horizons. Müller et al. proposed the HARCH model to capture this cascade:
-\begin{equation}
-\label{eq:harch}
-\sigma_t^2 = c_0 + \sum_{j=1}^{n} c_j \left( \sum_{i=1}^{j} r_{t-i} \right)^2,
-\end{equation}
-where $\sigma_t^2$ is the conditional variance at time $t$, $c_0$ is a
-constant, $c_j$ are coefficients for each aggregation horizon $j$, and
-$r_{t-i}$ denotes the return $i$ periods ago. The model conditions current
-variance on aggregated returns over multiple horizons, with longer aggregation
-windows capturing the influence of longer-horizon traders.
+Since its introduction, the HAR framework has been extended with jump
+components, realized semivariance, and time-varying coefficients
+\parencite{andersen2007roughing, patton2015good,
+tianRealizedVolatilityForecasting2017}. However, for agricultural
+commodities, \textcite{degiannakisForecastingRealizedVolatility2022}
+find that ``sophisticated HAR-type models are not capable of
+outperforming the simple HAR in an out-of-sample exercise,'' suggesting
+that parsimony is valuable and additional complexity must be justified
+by clear forecast improvements.
 
-For agricultural commodities, \textcite{alfeusForecastingVolatilityCommodity2022}
-find that ``in silver, palladium, rice, and cocoa markets, monthly volatility
-matters the most.'' This suggests that longer-term participants- including
-producers hedging crop cycles and manufacturers managing procurement- exert
-particular influence on commodity volatility dynamics.
-\textcite{haugomParsimoniousQuantileRegression2016} provide further evidence
-using quantile regression, finding that ``the effect from the monthly volatility
-component is strongest for all assets when predicting conditional tails''- precisely
-the quantiles relevant for risk management.
+For cocoa specifically,
+\textcite{alfeusForecastingVolatilityCommodity2022} include it among
+22 commodities in a broad HAR study, finding that ``monthly volatility
+matters the most'' for cocoa---evidence that longer-term participants
+exert particular influence on commodity volatility dynamics.
+\textcite{haugomParsimoniousQuantileRegression2016} provide
+complementary evidence that ``the effect from the monthly volatility
+component is strongest for all assets when predicting conditional
+tails.'' Despite this, no study focuses specifically on cocoa
+volatility dynamics or applies HAR to horizons beyond one month.
 
-\subsection{The HAR-RV Specification}
-\label{subsec:lit-har-rv}
-
-\textcite{corsiSimpleApproximateLongMemory2008} simplified the HARCH framework
-into an additive model with three volatility components:
-\begin{equation}
-\label{eq:har-rv}
-\sigma_{t+1} = \beta_0 + \beta_d \sigma_t^{(d)} + \beta_w \sigma_t^{(w)} + \beta_m \sigma_t^{(m)} + \varepsilon_{t+1},
-\end{equation}
-where $\sigma_{t+1}$ is the volatility to be forecast, $\beta_0$ is a constant
-intercept, and $\varepsilon_{t+1}$ is the error term. The three volatility
-components are: daily volatility $\sigma_t^{(d)} = \sigma_t$; weekly volatility
-$\sigma_t^{(w)} = \frac{1}{5}\sum_{i=0}^{4}\sigma_{t-i}$, the average over
-the past 5 trading days; and monthly volatility
-$\sigma_t^{(m)} = \frac{1}{22}\sum_{i=0}^{21}\sigma_{t-i}$, the average over
-the past 22 trading days. The coefficients $\beta_d$, $\beta_w$, and $\beta_m$
-measure each horizon's contribution to future volatility.
-
-Despite its simplicity- the model is a restricted AR(22) estimable by OLS- the
-HAR reproduces the hyperbolic decay of volatility autocorrelations that
-characterizes long-memory processes. Corsi demonstrated both theoretically
-and via simulation that an additive cascade of AR(1) processes with different
-persistence generates autocorrelation patterns indistinguishable from
-fractional integration over typical sample lengths.
-
-The HAR model offers several practical advantages documented in the literature.
-First, estimation requires only OLS regression, avoiding the numerical
-optimization of GARCH or the specialized methods of fractional integration.
-Second, coefficients are interpretable: each measures the contribution of
-a specific trading horizon to future volatility. Third, the framework is
-extensible- additional predictors can be incorporated as regressors.
-
-\subsection{Extensions and Empirical Performance}
-\label{subsec:lit-har-extensions}
-
-Since Corsi's seminal contribution, the HAR framework has been extended
-in multiple directions. \textcite{andersen2007roughing} decomposed realized
-volatility into continuous and jump components, finding that jumps add
-little to out-of-sample forecast accuracy. \textcite{patton2015good}
-separated positive and negative realized semivariance to capture
-asymmetric volatility responses to gains and losses.
-
-For agricultural commodities specifically, \textcite{degiannakisForecastingRealizedVolatility2022}
-conducted a comprehensive comparison of HAR variants on five commodities
-(corn, rice, soybeans, sugar, and wheat). Their key finding is cautionary:
-``sophisticated HAR-type models are not capable of outperforming the simple
-HAR in an out-of-sample exercise.'' This suggests that parsimony is valuable and that additional
-complexity must be justified by clear forecast improvements.
-\textcite{tianRealizedVolatilityForecasting2017} develop a time-varying HAR
-model for Chinese agricultural futures, finding that ``the jump component is
-important for forecasting the RV in Chinese agricultural commodity futures
-markets.'' Their model allows coefficients to change over time, addressing
-potential structural instability in commodity markets.
-
-HAR models have been applied to cocoa as part of broader commodity surveys.
-\textcite{alfeusForecastingVolatilityCommodity2022} include cocoa among
-22 commodities, finding that HAR outperforms GARCH at short horizons. However, no study focuses specifically on
-cocoa volatility dynamics or applies the HAR framework to the long horizons
-relevant for procurement risk management.
-
-%---------------------------------------------------------------------------
-\section{Quantile Regression for Volatility}
+%------------------------------------------------------------------------------
+\subsection{Quantile Regression for Volatility}
 \label{sec:lit-qr}
 %------------------------------------------------------------------------------
 
-Standard volatility models- whether GARCH or HAR- estimate the conditional
-mean of volatility. For risk management applications, however, the mean
-is often insufficient. Procurement managers, portfolio risk officers, and
-regulatory capital calculations require statements about extreme outcomes:
-how bad could volatility get?
+Standard volatility models---whether GARCH or HAR---estimate the
+conditional mean of volatility. Yet when the underlying process exhibits
+fat tails and regime shifts, the conditional quantiles can diverge
+substantially from the mean. Quantile regression, introduced by
+\textcite{koenker1978regression}, estimates conditional quantiles
+directly, with each quantile having its own parameter vector. This
+allows the relationship between predictors and the dependent variable
+to differ across the distribution without imposing parametric
+assumptions on the error distribution.
 
-\subsection{Foundations of Quantile Regression}
-\label{subsec:lit-qr-foundations}
-
-Quantile regression, introduced by \textcite{koenker1978regression}, estimates
-conditional quantiles rather than conditional means. Koenker and Bassett
-developed quantile regression specifically to address the sensitivity of
-least squares to non-Gaussian errors, showing that their estimators ``have
-comparable efficiency to least squares for Gaussian linear models while
-substantially out-performing the least-squares estimator over a wide class
-of non-Gaussian error distributions.'' For any probability
-level $\tau \in (0,1)$, quantile regression estimates the $\tau$-th
-conditional quantile $Q_{\tau}(Y|X) = X'\beta(\tau)$, where $Y$ is the
-dependent variable (here, volatility), $X$ is a vector of predictors,
-and $\beta(\tau)$ is a coefficient vector that varies with the quantile
-of interest. The parameters are obtained by minimizing the asymmetric
-``check'' loss function:
-\begin{equation}
-\label{eq:qr-loss}
-\hat{\beta}(\tau) = \argmin_{\beta} \sum_{t=1}^{T} \rho_{\tau}(Y_t - X_t'\beta),
-\end{equation}
-where $T$ is the sample size and $\rho_{\tau}(u) = u(\tau - \mathbf{1}_{u<0})$
-is the check function. Here $\mathbf{1}_{u<0}$ is an indicator that equals
-1 when $u < 0$ and 0 otherwise. This function penalizes positive residuals
-(underpredictions) with weight $\tau$ and negative residuals (overpredictions)
-with weight $1-\tau$. For $\tau = 0.95$, underpredictions are penalized
-19 times more heavily than overpredictions, pushing the fitted quantile
-toward the upper tail.
-
-The key innovation is that each quantile has its own parameter vector,
-allowing the relationship between $Y$ and $X$ to differ across the
-distribution. At $\tau = 0.95$, quantile regression estimates the conditional
-95th percentile- the level exceeded only 5\% of the time. This maps
-directly to Value-at-Risk (VaR), making quantile regression natural for
-risk management applications.
-
-\subsection{Quantile Regression in Finance}
-\label{subsec:lit-qr-finance}
-
-The application of quantile regression to volatility forecasting has
-grown substantially. \textcite{taylor2008using} pioneered its use for
-VaR estimation, demonstrating that quantile regression provides robust
-forecasts even when the volatility distribution deviates from normality.
+\textcite{baurQuantileRegressionApproach2019} demonstrate that quantile
+autoregression encompasses both the conditional mean and conditional
+variance of the return distribution through the inter-quantile range.
+Their approach is robust to jumps and produces variance forecasts
+comparable to, and in some cases more accurate than, GARCH and HAR
+alternatives.
 \textcite{haugomParsimoniousQuantileRegression2016} introduced HAR-QREG,
-combining the multi-horizon HAR structure with quantile regression for
-direct VaR estimation.
+combining the multi-horizon HAR structure with quantile regression, and
+show that the model passes conditional coverage tests at substantially
+higher rates than historical simulation.
 
-For equity markets, \textcite{lyocsaImprovingStockMarket2021} developed
-the HAR-CSQR (complete subset quantile regression) model, finding significant
-improvements over benchmark HAR models at horizons up to 22 trading days.
-\textcite{huangHighfrequencyApproachVaR2022} applied HAR-QREG to Chinese
-stock indices, confirming that ``the model has better results for out-of-sample
-VaR forecasting'' compared to GARCH alternatives. More recently,
-\textcite{songGoldFuturesVolatility2025} combined HAR-QR with machine learning
-models for gold futures, finding that HAR-QR parameters significantly improve
-volatility forecasts across multiple evaluation criteria.
+HAR-QR has since been applied in equity and precious-metals markets.
+\textcite{lyocsaImprovingStockMarket2021} develop a complete subset
+quantile regression variant achieving significant improvements at
+horizons up to 22 trading days;
+\textcite{huangHighfrequencyApproachVaR2022} confirm the model's
+superiority using high-frequency data for Chinese indices; and
+\textcite{songGoldFuturesVolatility2025} show that HAR-QR parameters
+improve machine learning forecasts for gold.
 
-\subsection{Literature Gap: HAR-QR for Commodities}
-\label{subsec:lit-gap}
-
-Despite the success of HAR-QR in equity markets, its application to
-commodities remains limited. \textcite{degiannakisForecastingRealizedVolatility2022}
-test HAR models for agricultural commodities but focus exclusively on
-mean forecasts. No study applies HAR-QR to any agricultural commodity.
-
-Furthermore, existing HAR-QR studies are confined to short horizons.
-\textcite{lyocsaImprovingStockMarket2021} extend to 22 trading days
-(approximately one month)- the longest horizon in the literature.
-\textcite{poonForecastingVolatilityFinancial} review 93 forecasting
-studies and conclude that ``for forecast horizons that are longer than
-6 months, a simple historical method using low frequency data over a
-period at least as long as the forecast horizon works best.'' Whether
-quantile forecasts retain predictive value at procurement-relevant horizons
-(6--12 months) remains untested.
+Despite this growing body of work, two gaps remain. First, no study
+applies HAR-QR to any agricultural commodity
+\parencite{degiannakisForecastingRealizedVolatility2022,
+bonatoNinoNinaForecastability2023}. Second, existing studies are
+confined to short horizons---\textcite{lyocsaImprovingStockMarket2021}
+extend to 22 trading days, the longest in the literature. Whether
+quantile forecasts retain predictive value at horizons of 6--12 months
+remains untested.
 
 %------------------------------------------------------------------------------
-\section{Climate Variables and Commodity Volatility}
+\subsection{Climate Variables and Commodity Volatility}
 \label{sec:lit-enso}
 %------------------------------------------------------------------------------
 
-At long forecast horizons, the autoregressive signal from lagged volatility
-fades. Climate variables offer a potential source of predictive information
-that operates on precisely these longer timescales.
+At long forecast horizons, the autoregressive signal from lagged
+volatility fades. Climate variables offer a potential source of
+predictive information that operates on precisely these longer
+timescales.
 
-\subsection{ENSO and Agricultural Commodities}
-\label{subsec:lit-enso-commodities}
+The El Niño--Southern Oscillation (ENSO) is an irregularly periodic
+fluctuation in Pacific sea surface temperatures that affects weather
+patterns globally, cycling between warming (El Niño) and cooling
+(La Niña) phases every two to seven years. For cocoa, the transmission
+mechanism is direct: during El Niño phases, West Africa typically
+receives below-normal rainfall during the growing season, reducing
+yields in subsequent harvests.
+\textcite{schrothVulnerabilityClimateChange2016} document that ``drought
+years regularly affect cocoa yields in West Africa and have particularly
+done so during severe El Niño years.'' With the main crop harvested from
+October through March and the mid-crop from May through August,
+ENSO-driven rainfall anomalies translate into production changes six to
+twelve months after the climate signal---a transmission lag that aligns
+with the long forecast horizons this thesis examines. Importantly,
+markets respond not only to realized weather but to climate
+expectations: \textcite{berganderDeepLearningCocoa2025} observe that
+roughly 85\% of the eventual price impact of a drought shock is
+reflected in futures prices before the actual crop loss occurs.
 
-The El Niño--Southern Oscillation (ENSO) is a periodic fluctuation in
-Pacific sea surface temperatures that affects weather patterns globally.
-\textcite{ubilavaRoleNinoSouthern2018} examines the relationship between
-ENSO and 43 commodity prices, finding that ``the prices of tropically-grown
-beverages, including coffee varieties and cocoa, are also affected by
-SST anomalies.'' Importantly, Ubilava documents ``more amplified price
-responses during El Niño events, and at the onset of the ENSO cycle''- suggesting
-that ENSO may be particularly relevant for volatility rather than just
-price levels.
-
-For cocoa specifically, the transmission mechanism operates through
-West African rainfall patterns. ENSO phases affect precipitation during
-the growing season, influencing yields in subsequent harvests. With main
-crop (October--March) and mid-crop (May--August) seasons, ENSO effects
-materialize 6--12 months after the climate signal- aligning with
-procurement planning horizons.
-
-\subsection{ENSO and Volatility Forecasting}
-\label{subsec:lit-enso-volatility}
-
-Recent research has extended ENSO analysis from price levels to volatility.
+At the commodity price level,
+\textcite{ubilavaRoleNinoSouthern2018} examines ENSO--price
+relationships across 43 commodities, finding significant effects for
+tropically grown agricultural products including cocoa, with ``more
+amplified price responses during El Niño events.'' Recent work has
+extended this analysis from price levels to volatility.
 \textcite{bouriNinoForecastabilityOilprice2021} find that ENSO improves
-oil volatility forecasts at horizons of 2--4 years- far beyond where
-lagged volatility alone provides value. Their methodology uses current
-ENSO values to predict future volatility, with the forecast horizon
-providing the transmission lag.
+oil volatility forecasts at horizons of 2--4 years---far beyond where
+lagged volatility alone provides value.
+\textcite{bonatoNinoNinaForecastability2023} extend this to 16
+agricultural commodities, finding that ``the evidence of predictive
+value of El Niño and La Niña events strengthens at the longer term
+forecast horizons''---precisely where standard autoregressive models
+lose power. More broadly,
+\textcite{guoForecastingVolatilityCommodity2025} demonstrate that
+climate risk indices significantly improve commodity volatility
+forecasts, with models incorporating climate risk ``outperforming
+traditional ones in economic value.''
 
-\textcite{bonatoNinoNinaForecastability2023} extend this approach to
-16 agricultural commodities, documenting that ``there is a general
-tendency that the evidence of predictive value of El Niño and La Niña
-events strengthens at the longer term forecast horizons.'' This finding
-is crucial: ENSO adds value precisely where standard autoregressive
-models lose power. Beyond ENSO specifically, \textcite{guoForecastingVolatilityCommodity2025}
-demonstrate that a broader climate change concern index significantly improves
-commodity futures volatility forecasts across energy, metal, and agricultural
-markets, with models incorporating climate risk ``outperforming traditional
-ones in economic value.''
+These findings establish ENSO as a physically motivated, exogenous
+predictor with demonstrated value for commodity volatility at long
+horizons---but this combination has not been tested for cocoa, nor has
+it been combined with quantile regression.
+
+%------------------------------------------------------------------------------
+\subsection{Evaluating Volatility Forecasts}
+\label{sec:lit-evaluation}
+%------------------------------------------------------------------------------
+
+A distinctive challenge in evaluating volatility forecasts is that the
+variable of interest is unobservable, even ex post
+\parencite{pattonVolatilityForecastComparison}. Every volatility
+measure is an imperfect proxy, and noise in the proxy can produce
+misleading model rankings depending on the loss function used.
+
+\textcite{pattonVolatilityForecastComparison} derives conditions for
+loss functions that yield rankings invariant to the choice of volatility
+proxy. Among common loss functions, only mean squared error (MSE) and
+QLIKE satisfy these conditions. Non-robust loss functions can produce
+rankings that deviate by factors of one quarter to three, explaining
+widespread conflicting findings across studies. Between the two robust
+measures, QLIKE penalizes under-prediction proportionally more heavily,
+making it suitable when the forecasting goal involves risk assessment
+\parencite{lyocsaImprovingStockMarket2021,
+clementsHarvestingHARXVolatility2024,
+ghyselsDirectIteratedMultiperiod2019}.
+
+For pairwise model comparison, the Diebold-Mariano-West test
+\parencite{diebold1995comparing} tests for equal predictive accuracy
+and is robust to serial correlation in forecast errors. When multiple
+models are compared simultaneously, \textcite{hansen2011model} propose
+the Model Confidence Set (MCS), which identifies the set of models
+$\mathcal{M}^*$ containing the best model at a given confidence level.
+The MCS ``acknowledges the limitations of the data'': informative
+samples yield small confidence sets, while uninformative samples include
+many models---particularly relevant when evaluation noise from an
+unobservable target reduces the power to discriminate
+\parencite{clementsHarvestingHARXVolatility2024,
+degiannakisForecastingRealizedVolatility2022}.
+
+For quantile forecasts, \textcite{christoffersen1998evaluating}
+establishes conditional coverage testing: a well-specified quantile
+forecast at level $\tau$ should produce violations at rate $\tau$, and
+these violations should be serially independent. The quantile loss
+function---the check function used in estimation---also serves as a
+natural evaluation metric, penalizing over- and under-prediction
+asymmetrically according to $\tau$
+\parencite{lyocsaImprovingStockMarket2021}.
+\textcite{pukeCoherentForecastingRealized2026} show that aligning the
+estimation and evaluation loss function produces significant forecast
+gains; since HAR-QR uses the check function for both estimation and
+evaluation, it is inherently coherent by construction.

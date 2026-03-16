@@ -1,0 +1,340 @@
+\section{Methodology}
+\label{sec:methodology}
+
+This section specifies the econometric framework for forecasting cocoa futures
+volatility at horizons from one day to twelve months. We first define the
+volatility measure, then specify the HAR-QR model and its ENSO-augmented
+extension, describe the benchmark models, and finally lay out the evaluation
+framework. Table~\ref{tab:model-overview} provides an at-a-glance summary of
+the five models before the detailed specifications follow.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Overview of models compared in this study, ordered from simplest to
+most complex.}
+\label{tab:model-overview}
+\begin{tabular}{lccccc}
+\toprule
+ & \multicolumn{3}{c}{Benchmarks} & \multicolumn{2}{c}{Main models} \\
+\cmidrule(lr){2-4}\cmidrule(lr){5-6}
+Feature & Hist.\ Vol. & GARCH(1,1) & HAR-OLS & HAR-QR & HAR-X-QR \\
+\midrule
+Model class         & Non-param.     & ARCH-type    & Linear reg.    & Quantile reg.  & Quantile reg.  \\
+HAR lags ($d/w/m$)  & No             & No           & Yes            & Yes            & Yes            \\
+ENSO regressor      & No             & No           & No             & No             & Yes            \\
+Quantile output     & Empirical      & Simulation   & None           & Direct         & Direct         \\
+Estimation          & ---            & MLE          & OLS            & Check fn.      & Check fn.      \\
+Multi-period design & Rolling window & Recursive    & Direct         & Direct         & Direct         \\
+Thesis role         & Naive BM       & Param.\ BM   & HAR benchmark  & Main (RQ1)     & Main (RQ2)     \\
+\bottomrule
+\end{tabular}
+\par\smallskip
+{\footnotesize\textit{Note:} Direct = horizon-specific model estimated by
+direct projection; Recursive = closed-form GARCH mean recursion, quantiles via
+Monte Carlo simulation; Check fn.\ = check-function (quantile) loss;
+BM = benchmark; Hist.\ Vol.\ = rolling 252-day window with empirical quantiles.}
+\end{table}
+
+%------------------------------------------------------------------------------
+\subsection{Volatility Measure}
+\label{sec:meth-vol-measure}
+%------------------------------------------------------------------------------
+
+We measure daily volatility using the Yang-Zhang estimator, which combines
+overnight and trading-session variance components:
+\begin{equation}
+\label{eq:yang-zhang}
+\hat{\sigma}^2_{\text{YZ}} = \hat{\sigma}^2_O + k \hat{\sigma}^2_C + (1-k) \hat{\sigma}^2_{\text{RS}},
+\end{equation}
+where $\hat{\sigma}^2_O$ captures overnight variance, $\hat{\sigma}^2_C$
+captures open-to-close variance, and $\hat{\sigma}^2_{\text{RS}}$ is the
+Rogers-Satchell component that exploits the daily range. The weighting
+factor $k = 0.34/(1.34 + (n+1)/(n-1))$ minimizes estimator variance.
+
+This choice is motivated by two considerations. First, Yang-Zhang achieves
+efficiency gains of 7--8 times over close-to-close estimators, making it
+well-suited to commodity futures where overnight gaps are common. Second,
+it can be computed over our full 40-year sample, unlike realized volatility
+which requires high-frequency data available only since 2019. We validate
+the Yang-Zhang proxy against five-minute realized volatility in
+Section~\ref{sec:data}, comparing rolling-window aggregates (22-day
+averages) of both measures via a Mincer-Zarnowitz regression. This
+comparison at the multi-day level aligns with the HAR model's use of
+averaged volatility as both predictors and targets.
+
+%------------------------------------------------------------------------------
+\subsection{The HAR-QR Model}
+\label{sec:meth-har-qr}
+%------------------------------------------------------------------------------
+
+Combining the HAR framework with quantile regression yields the HAR-QR
+model. The HAR-QR model for horizon $h$ and quantile $\tau$ is
+\begin{equation}
+\label{eq:har-qr}
+Q_{\tau}(\bar{\sigma}_{t:t+h} \mid \mathcal{F}_t) = \beta_0(\tau) + \beta_d(\tau) \sigma_t^{(d)} + \beta_w(\tau) \sigma_t^{(w)} + \beta_m(\tau) \sigma_t^{(m)},
+\end{equation}
+where $\mathcal{F}_t$ denotes the information set at time $t$. The
+volatility components capture variation at three frequencies:
+\begin{align}
+\sigma_t^{(d)} &= \sigma_t, \label{eq:har-daily} \\
+\sigma_t^{(w)} &= \frac{1}{5} \sum_{i=0}^{4} \sigma_{t-i}, \label{eq:har-weekly} \\
+\sigma_t^{(m)} &= \frac{1}{22} \sum_{i=0}^{21} \sigma_{t-i}. \label{eq:har-monthly}
+\end{align}
+
+The key feature of quantile regression is that each quantile $\tau$ has its
+own coefficient vector, allowing the relationship between predictors and
+future volatility to differ across the distribution. For the median
+($\tau = 0.50$), the coefficients may resemble those from OLS estimation.
+For the upper quantile ($\tau = 0.95$), the coefficients capture how the
+predictors relate to volatility during high-volatility episodes. We estimate
+five quantiles: $\tau \in \{0.05, 0.25, 0.50, 0.75, 0.95\}$. The extreme
+quantiles ($\tau = 0.05$ and $\tau = 0.95$) characterize the tails of the
+conditional distribution, while the intermediate quantiles provide a fuller
+picture of how the distribution shifts with predictor values. The upper
+quantile $\tau = 0.95$ is of particular interest, as it captures the
+conditional upper bound of volatility---the regime where mean forecasts
+are most likely to understate actual outcomes.
+
+The dependent variable is the average daily volatility over the forecast
+horizon, following the HAR literature convention
+\parencite{ghyselsDirectIteratedMultiperiod2019,
+clementsHarvestingHARXVolatility2024}:
+\begin{equation}
+\label{eq:horizon-vol}
+\bar{\sigma}_{t:t+h} = \frac{1}{h} \sum_{i=1}^{h} \sigma_{t+i}.
+\end{equation}
+This averaging ensures comparability across horizons and aligns with the
+HAR model's construction, where weekly and monthly components are themselves
+averages of daily volatility.
+
+We adopt the \emph{direct} forecasting approach: a separate model is
+estimated for each horizon $h$, using $\bar{\sigma}_{t:t+h}$ as the
+dependent variable. This contrasts with \emph{iterated} forecasting, which
+estimates a one-step model and iterates forward.
+\textcite{ghyselsDirectIteratedMultiperiod2019} find that direct forecasting
+is preferred for realized volatility models. For quantile regression,
+direct estimation is particularly natural, as it produces the conditional
+quantile at horizon $h$ without the distributional assumptions required to
+iterate quantile forecasts. Our longest horizons (6--12 months) would
+require iterating hundreds of daily steps, amplifying any model
+misspecification.
+
+We estimate HAR-QR at six horizons: $h \in \{1, 5, 22, 66, 132, 264\}$
+trading days, corresponding to 1~day, 1~week, 1~month, 3~months, 6~months,
+and 12~months. The short horizons (1~day to 1~month) serve to validate the
+methodology against existing literature: HAR-QR has been tested at horizons
+up to 22 trading days \parencite{lyocsaImprovingStockMarket2021}. The long
+horizons (6 and 12 months) constitute the core contribution, testing
+whether HAR-QR can produce useful forecasts at horizons where no prior study
+has ventured.
+
+At long horizons, the autoregressive signal from lagged volatility fades.
+We therefore augment the HAR-QR model with the ENSO climate index:
+\begin{equation}
+\label{eq:har-x-qr}
+Q_{\tau}(\bar{\sigma}_{t:t+h} \mid \mathcal{F}_t) = \beta_0(\tau) + \beta_d(\tau) \sigma_t^{(d)} + \beta_w(\tau) \sigma_t^{(w)} + \beta_m(\tau) \sigma_t^{(m)} + \gamma(\tau) \text{ENSO}_t,
+\end{equation}
+where $\text{ENSO}_t$ is the Ni\~no~3.4 sea surface temperature anomaly
+index from NOAA, measured monthly. The coefficient $\gamma(\tau)$ captures
+the marginal effect of ENSO conditions on future volatility at quantile
+$\tau$.
+
+We use \emph{contemporary} ENSO---that is, $\text{ENSO}_t$ predicts
+$\bar{\sigma}_{t:t+h}$---rather than explicitly lagged ENSO values. This
+specification is standard in the climate-commodity literature
+\parencite{bouriNinoForecastabilityOilprice2021,
+bonatoNinoNinaForecastability2023}. The key insight is that the forecast
+horizon itself provides the transmission lag: when $\text{ENSO}_t$ predicts
+$\bar{\sigma}_{t:t+264}$ (12 months ahead), there are 12 months for the
+climate-to-production-to-price transmission to unfold.
+
+The transmission mechanism for cocoa operates through West African rainfall.
+El Niño phases typically bring drought conditions during the critical pod
+development period (September--December), reducing yields in the subsequent
+harvest \parencite{ubilavaRoleNinoSouthern2018}. With two harvest seasons
+per year (main crop October--March, mid-crop May--August), ENSO effects
+materialize 6--12 months after the climate signal, aligning with our
+forecast horizons. ENSO is exogenous to the cocoa market---Pacific Ocean
+temperatures cannot be caused by cocoa prices---and is publicly available
+with minimal delay.
+
+We obtain monthly Ni\~no~3.4 sea surface temperatures from NOAA's Extended
+Reconstructed SST (ERSSTv5) dataset and convert them to anomalies by
+subtracting the 1991--2020 climatological monthly mean, following standard
+practice \parencite{bouriNinoForecastabilityOilprice2021,
+bonatoNinoNinaForecastability2023}. Positive anomalies indicate
+El~Ni\~no conditions; negative anomalies indicate La~Ni\~na. Since the
+index is monthly, each trading day inherits the Ni\~no~3.4 anomaly of its
+calendar month.
+
+The HAR-QR model is estimated by minimizing the check function loss:
+\begin{equation}
+\label{eq:har-qr-estimation}
+\hat{\beta}(\tau) = \argmin_{\beta} \sum_{t=1}^{T-h} \rho_{\tau}(\bar{\sigma}_{t:t+h} - X_t' \beta),
+\end{equation}
+where $X_t = (1, \sigma_t^{(d)}, \sigma_t^{(w)}, \sigma_t^{(m)})'$ for the
+basic model, or
+$X_t = (1, \sigma_t^{(d)}, \sigma_t^{(w)}, \sigma_t^{(m)}, \text{ENSO}_t)'$
+for the extended model. The check function is defined as:
+\begin{equation}
+\label{eq:check-function}
+\rho_{\tau}(u) = u \cdot (\tau - \mathbf{1}_{u < 0}) =
+\begin{cases}
+\tau \cdot u & \text{if } u \geq 0, \\
+(\tau - 1) \cdot u & \text{if } u < 0.
+\end{cases}
+\end{equation}
+This asymmetric loss function penalizes under-prediction more heavily when
+$\tau$ is large and over-prediction more heavily when $\tau$ is small,
+ensuring that the estimated quantile achieves the target coverage rate. The
+minimization is a linear programming problem solved efficiently using the
+simplex algorithm \parencite{koenker1987algorithm}. Standard errors are
+computed using the bootstrap.
+
+%------------------------------------------------------------------------------
+\subsection{Benchmark Models}
+\label{sec:meth-benchmarks}
+%------------------------------------------------------------------------------
+
+We compare HAR-QR against three benchmarks that span the major modeling
+paradigms discussed in the literature review.
+
+The first benchmark is \emph{rolling historical volatility} with a one-year
+window ($w = 252$):
+\begin{equation}
+\label{eq:hist-vol}
+\hat{\sigma}_{t+h}^{\text{hist}} = \sqrt{\frac{1}{w} \sum_{i=1}^{w} (r_{t-i+1} - \bar{r})^2}.
+\end{equation}
+For quantile forecasts, we compute empirical quantiles of the historical
+volatility distribution: sort the $w$ past volatilities and select the
+value at position $\lceil \tau \cdot w \rceil$. This model captures only
+unconditional variation and serves as a naive baseline.
+
+The second benchmark is the \emph{GARCH(1,1)} model
+\parencite{bollerslev1986generalized}:
+\begin{equation}
+\label{eq:garch}
+\sigma_t^2 = \omega + \alpha \varepsilon_{t-1}^2 + \beta \sigma_{t-1}^2.
+\end{equation}
+For mean forecasts at horizon $h$, the GARCH(1,1) produces closed-form
+predictions:
+\begin{equation}
+\label{eq:garch-forecast}
+\E_t[\sigma_{t+h}^2] = \bar{\sigma}^2 + (\alpha + \beta)^{h-1}(\sigma_{t+1}^2 - \bar{\sigma}^2),
+\end{equation}
+where $\bar{\sigma}^2 = \omega / (1 - \alpha - \beta)$ is the unconditional
+variance. For quantile forecasts, we simulate 10,000 paths assuming normal
+innovations and compute the $\tau$-quantile of simulated average
+volatilities.
+
+The third benchmark is \emph{HAR-OLS}---the standard HAR model estimated
+by ordinary least squares, which provides forecasts of the conditional mean.
+Comparing HAR-OLS with HAR-QR at $\tau = 0.50$ tests whether the
+conditional distribution is symmetric; comparing HAR-QR at $\tau = 0.95$
+with HAR-OLS tests whether tail forecasts add value beyond mean forecasts.
+
+%------------------------------------------------------------------------------
+\subsection{Evaluation Framework}
+\label{sec:meth-evaluation}
+%------------------------------------------------------------------------------
+
+Evaluating volatility forecasts is complicated by the fact that volatility
+is unobserved---every evaluation compares forecasts against an imperfect
+proxy \parencite{pattonVolatilityForecastComparison}. We evaluate forecasts
+against Yang-Zhang volatility computed from realized prices, using loss
+functions that \textcite{pattonVolatilityForecastComparison} has shown to
+be robust to noise in the volatility proxy.
+
+For mean and median forecasts, we use QLIKE as the primary metric:
+\begin{equation}
+\label{eq:qlike}
+\text{QLIKE} = \frac{1}{T} \sum_{t=1}^{T} \left( \log \hat{\sigma}_t^2 + \frac{\sigma_t^2}{\hat{\sigma}_t^2} \right).
+\end{equation}
+\textcite{pattonVolatilityForecastComparison} derives necessary and
+sufficient conditions for the loss function to yield forecast rankings that
+are robust to proxy noise, showing that among nine commonly used loss
+functions, only MSE and QLIKE satisfy these conditions. We prefer QLIKE
+because it penalizes under-prediction of volatility proportionally more than
+MSE, which is appropriate when under-prediction is costlier than
+over-prediction---a property particularly relevant for upper-quantile
+forecasts. As \textcite{pukeCoherentForecastingRealized2026} demonstrate,
+aligning estimation and evaluation loss functions---what they term
+\emph{coherent forecasting}---yields significant accuracy gains. Our HAR-QR
+models are coherent by construction: the check function
+(Equation~\ref{eq:check-function}) serves as both the estimation objective
+and the evaluation metric.
+
+For quantile forecasts, we use quantile loss:
+\begin{equation}
+\label{eq:quantile-loss}
+\text{QL}_{\tau} = \frac{1}{T} \sum_{t=1}^{T} \rho_{\tau}(\sigma_t - \hat{Q}_{\tau,t}).
+\end{equation}
+
+As a complementary diagnostic, we assess the calibration of quantile
+forecasts through their \emph{empirical violation rate}. For a given
+quantile level~$\tau$, the violation rate measures the fraction of
+out-of-sample observations that exceed the quantile forecast:
+\begin{equation}
+\label{eq:violation-rate}
+\widehat{VR}_{\tau} = \frac{1}{T}\sum_{t=1}^{T} \mathbf{1}\!\left\{\sigma_t > \hat{Q}_{\tau,t}\right\},
+\end{equation}
+where $\mathbf{1}\{\cdot\}$ is the indicator function. A well-calibrated
+$\tau$-quantile forecast should satisfy $\widehat{VR}_{\tau} \approx 1 - \tau$.
+For example, the $\tau = 0.95$ quantile should be exceeded approximately
+$5\%$ of the time; systematic departures indicate miscalibration. Violation
+rates above $1 - \tau$ signal that the model underestimates the quantile
+(too narrow), while rates below $1 - \tau$ indicate overestimation
+(too conservative). This diagnostic complements quantile loss, which
+measures average forecast accuracy but does not directly reveal whether
+the nominal coverage level is achieved.
+
+To determine whether differences in forecast accuracy are statistically
+significant, we use the Model Confidence Set (MCS) of
+\textcite{hansen2011model}. The MCS identifies the set of models
+$\mathcal{M}^*$ that contains the best model with a given confidence level,
+avoiding the need to specify a single benchmark. Starting from the full
+collection of competing models, the procedure iteratively tests for equal
+predictive ability and eliminates the worst-performing model until
+non-rejection occurs. We implement MCS with 10,000 bootstrap replications;
+models in $\mathcal{M}^*$ at the 90\% level are considered statistically
+equivalent.
+
+The forecast evaluation is conducted out-of-sample using a rolling estimation
+window of 2,520 trading
+days (approximately 10 years). At each forecast origin $t$, we estimate
+parameters using observations from $t - 2519$ to $t$, generate forecasts,
+and roll forward by one day. The window rolls \emph{daily} to maximize
+out-of-sample forecasts for statistical evaluation. In practice, weekly or
+monthly re-estimation would be more efficient; the thesis uses daily rolling
+for evaluation purposes. With approximately 30 years of out-of-sample data,
+this yields thousands of forecast-realization pairs for statistical testing.
+
+As a supplementary exercise, we freeze the estimation window at December
+2021---before the 2022--2024 price crisis---and generate forecasts without
+updating parameters. This exercise does \emph{not} test whether the model
+``predicted'' the crisis. The 2022--2024 episode involved supply shocks
+(CSSVD virus, adverse weather) not directly observable in price data.
+Rather, the test asks whether the model's structural relationships remain
+stable under stress. If pre-crisis parameters produce upper-quantile
+forecasts that cover realized volatility during the crisis, this
+demonstrates useful bounds even during extreme conditions.
+
+Several assumptions underpin the methodology. First, we assume \emph{local
+stationarity}: volatility dynamics are stable within each estimation window,
+though they may shift across windows. The rolling-window design
+accommodates gradual parameter changes. Second, we assume that the
+Yang-Zhang estimator provides a reasonable proxy for latent volatility,
+which we validate empirically in Section~\ref{sec:data}. Third, we maintain
+\emph{linear conditional quantiles} for parsimony, acknowledging that
+non-linear extensions could potentially improve forecasts. Fourth, we
+assume ENSO is exogenous to the cocoa market, which is physically
+reasonable since Pacific Ocean temperatures cannot be caused by cocoa
+prices.
+
+Based on the literature, we expect that at short horizons (1~day to
+1~month), HAR-QR will match or outperform benchmarks. At long horizons
+(6--12~months), standard HAR-QR will lose predictive power, but HAR-X-QR
+augmented with ENSO will recover predictive value---demonstrating that
+climate information provides incremental value precisely where the
+autoregressive signal fades.
