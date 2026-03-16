@@ -1,0 +1,4 @@
+Nino 3.4 Mean using ersstv5 from CPC
+ https://psl.noaa.gov/data/climateindices/list/for info
+
+taken from https://psl.noaa.gov/data/correlation/nina34.data
