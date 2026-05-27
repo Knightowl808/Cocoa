@@ -74,6 +74,7 @@ def load_horizon(h: str) -> dict:
     return {
         "har_x_qr": _load(DATA / f"har_x_qr_forecasts_{h}.csv"),
         "har_qr":   _load(DATA / f"har_qr_forecasts_{h}.csv"),
+        "har_ols":  _load(DATA / f"har_ols_forecasts_{h}.csv"),
         "garch":    _load(DATA / f"garch_forecasts_{h}.csv"),
         "hist_vol": _load(DATA / f"hist_vol_forecasts_{h}.csv"),
     }
@@ -108,6 +109,13 @@ def make_figure(h: str) -> plt.Figure:
         data["har_qr"]["Date"], data["har_qr"]["q95"] * 100,
         color=C["mid_gray"], linestyle=":", linewidth=1.0,
         label=r"HAR-QR $\tau\!=\!0.95$",
+    )
+
+    # HAR-OLS pseudo-quantile tau=0.95 -- mid gray solid thin
+    ax.plot(
+        data["har_ols"]["Date"], data["har_ols"]["q95"] * 100,
+        color=C["mid_gray"], linestyle="-", linewidth=0.8,
+        label=r"HAR-OLS $\tau\!=\!0.95$",
     )
 
     # GARCH tau=0.95 -- light gray dashdot

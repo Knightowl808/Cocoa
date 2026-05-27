@@ -5,9 +5,9 @@ This section describes the data used to estimate and evaluate the volatility
 forecasting models developed in Section~\ref{sec:methodology}. Two primary
 datasets are required: daily futures prices for ICE London cocoa contracts
 and the Niño 3.4 climate index measuring El Niño--Southern Oscillation
-(ENSO) activity. After describing the cocoa futures data---including
+(ENSO) activity. After describing the cocoa futures data, including
 contract specifications, the construction of a continuous price series,
-and the variables derived from it---we turn to the ENSO index used as an
+and the variables derived from it, we turn to the ENSO index used as an
 exogenous predictor at long horizons. The section concludes with descriptive
 statistics documenting the stylized facts of cocoa returns and volatility.
 
@@ -60,46 +60,16 @@ high-frequency data (February 3, 2025, through January 12, 2026, comprising
 Yang-Zhang volatility estimator against realized volatility computed from
 intraday returns.
 
-Table~\ref{tab:data-summary} summarizes the coverage and key characteristics
-of the cocoa futures data.
-
-\begin{table}[htbp]
-\centering
-\caption{Summary of Cocoa Futures Data}
-\label{tab:data-summary}
-\begin{tabular}{ll}
-\toprule
-\textbf{Characteristic} & \textbf{Value} \\
-\midrule
-Exchange & ICE Futures Europe \\
-Contract & LCC (Cocoa Futures) \\
-Contract size & 10 metric tonnes \\
-Price quotation & GBP per metric tonne \\
-Continuous series & LCCc1 (front-month rolling) \\
-Data source & Refinitiv Workspace \\
-Sample period (daily) & April 1, 1974 -- December 15, 2025 \\
-Number of observations (daily) & 13,090 trading days \\
-Sample period (5-minute) & February 3, 2025 -- January 12, 2026 \\
-Number of observations (5-minute) & 20,791 intraday observations \\
-Variables (daily) & Open, High, Low, Close, Volume \\
-Variables (5-minute) & Open, High, Low, Close, Volume, Bid, Ask \\
-\bottomrule
-\end{tabular}
-\end{table}
+Table~\ref{tab:data-summary} in Appendix~\ref{app:supplementary} summarizes
+the coverage and key characteristics of the cocoa futures data.
 
 \paragraph{Variables and transformations.}
 For each trading day $t$, the dataset provides five price observations:
 the opening price $O_t$, the highest price during the trading session $H_t$,
 the lowest price $L_t$, the closing price $C_t$, and total trading volume
-$V_t$. From these raw prices, we compute log returns:
-\begin{equation}
-\label{eq:log-return}
-r_t = \ln\left(\frac{C_t}{C_{t-1}}\right),
-\end{equation}
-where $C_t$ and $C_{t-1}$ denote the closing prices on days $t$ and $t-1$,
-respectively. Log returns are standard in financial econometrics due to
-their time-additivity and approximate normality over short horizons
-\parencite{tsay2010analysis}.
+$V_t$. Trading volume is collected but not used in the volatility models.
+Log returns $r_t = \ln(C_t / C_{t-1})$ are computed for descriptive
+statistics and as inputs to the GARCH benchmark.
 
 From the daily OHLC prices, we construct volatility estimates using the
 Yang-Zhang estimator detailed in Equation~\eqref{eq:yang-zhang}. The
@@ -123,26 +93,20 @@ volatility measure provides a benchmark for validating the Yang-Zhang
 estimator over the recent subsample.
 
 \paragraph{Data quality.}
-The daily cocoa futures data from Refinitiv Workspace contain no missing
-values for trading days. Non-trading days (weekends, exchange holidays)
-are excluded from the dataset, so the overnight return $o_t = \log(O_t / C_{t-1})$
-entering the Yang-Zhang estimator spans the full gap between consecutive
-trading days---three calendar days over weekends, more over holidays.
-We do not rescale overnight returns by the number of intervening calendar
-days: the larger return after a weekend or holiday reflects genuine price
-risk that accumulated during the market closure, and including it without
-normalisation avoids additional distributional assumptions. The continuous
-front-month series (LCCc1) maintains coverage throughout the sample period,
-with automatic rolling between contracts ensuring no gaps.
+The daily data contain no missing values for trading days; non-trading
+days are excluded. Overnight returns spanning weekends or holidays are
+not rescaled by calendar days elapsed, as the larger return reflects
+genuine accumulated risk rather than a measurement artefact.
 
 %------------------------------------------------------------------------------
 \subsection{ENSO Climate Data}
 \label{sec:data-enso}
 %------------------------------------------------------------------------------
 
-As discussed in Section~\ref{sec:lit-enso}, ENSO provides a physically
-motivated predictor for cocoa volatility at long horizons. We measure
-ENSO activity using the Niño 3.4 index---sea surface temperature
+As discussed in Section~\ref{sec:lit-enso}, ENSO is hypothesised to
+provide a physically motivated predictor for cocoa volatility at long
+horizons. We measure
+ENSO activity using the Niño 3.4 index, a measure of sea surface temperature
 anomalies in the central equatorial Pacific (5°N--5°S, 170°W--120°W),
 computed as a three-month running mean relative to a climatological base
 period. Monthly values are obtained from the NOAA Climate Prediction
@@ -150,26 +114,12 @@ Center, calculated using the ERSSTv5 dataset and publicly available at
 \url{https://psl.noaa.gov/data/correlation/nina34.data}.
 
 Our sample covers January 1960 through July 2025, providing 786 monthly
-observations. NOAA classifies ENSO phases based on a threshold rule
-applied to the Ni\~no~3.4 index. Formally, a month is assigned to one of
-three regimes:
-\begin{equation}
-\label{eq:enso-regime}
-\text{ENSO regime}_t =
-\begin{cases}
-\text{El Ni\~no}  & \text{if } \text{Ni\~no\,3.4}_t > +0.5\text{\,°C}, \\[4pt]
-\text{La Ni\~na}  & \text{if } \text{Ni\~no\,3.4}_t < -0.5\text{\,°C}, \\[4pt]
-\text{Neutral}    & \text{otherwise},
-\end{cases}
-\end{equation}
-where $\text{Ni\~no\,3.4}_t$ is the three-month running mean of sea surface
-temperature anomalies in month~$t$. An official ENSO \emph{episode}
-requires five consecutive months in the same phase, but for the purposes
-of Figure~\ref{fig:enso-vs-vol} we shade individual months by their
-contemporaneous anomaly sign. In the regression models
+observations. NOAA classifies an El~Ni\~no (La~Ni\~na) episode when the
+three-month running mean exceeds $+0.5$°C (falls below $-0.5$°C) for
+at least five consecutive months. In the regression models
 (Equation~\ref{eq:har-x-qr}), $\text{ENSO}_t$ enters as the continuous
-Ni\~no~3.4 value, not a categorical regime indicator, preserving the full
-variation in anomaly magnitude.
+Ni\~no~3.4 value rather than a categorical regime indicator, preserving
+the full variation in anomaly magnitude.
 
 The sample contains 15 El Ni\~no and 13 La Ni\~na episodes. Since the
 index is monthly while cocoa futures trade daily, each trading day
@@ -221,8 +171,8 @@ price spike, with cocoa reaching approximately 3,400 GBP per tonne in
 Following this episode, prices stabilized at lower levels through the 1990s
 and 2000s, with moderate fluctuations around a mean of approximately 1,300
 GBP per tonne. The 2010s showed gradual price increases, followed by the
-recent 2022--2024 surge reaching over 10,000 GBP per tonne---unprecedented
-in the modern trading history of cocoa---driven by the CSSVD outbreak in
+recent 2022--2024 surge reaching over 10,000 GBP per tonne, unprecedented
+in the modern trading history of cocoa, driven by the CSSVD outbreak in
 key producing regions.
 
 \begin{figure}[htbp]
@@ -292,15 +242,14 @@ underestimate the risk of extreme outcomes.
 \paragraph{Stationarity.}
 The regression models in Section~\ref{sec:methodology} require stationary
 inputs. Table~\ref{tab:stationarity} reports Augmented Dickey--Fuller (ADF)
-and Phillips--Perron (PP) unit root tests for the three key series. Both
+and Phillips--Perron (PP) unit root tests for the three key series (reported
+in Table~\ref{tab:stationarity}, Appendix~\ref{app:supplementary}). Both
 tests include a constant; ADF lag length is selected by AIC.
-
-\input{tables/stationarity_tests}
 
 All three series decisively reject the unit root null at the 1\% level.
 Log returns are stationary by construction, with ADF and PP statistics
 both below $-112$. The Yang-Zhang volatility series exhibits high
-persistence---the ADF test requires 39 lags to whiten the residuals---but
+persistence (the ADF test requires 39 lags to whiten the residuals) but
 remains stationary (ADF $= -8.42$, $p < 0.001$). The large discrepancy
 between the ADF and PP statistics ($-8.42$ vs.\ $-90.99$) reflects the
 difference in how each test handles serial correlation: ADF augments the
@@ -317,5 +266,9 @@ The data described in this section provide the foundation for the empirical
 analysis. The extended daily sample (1974--2025) ensures sufficient variation
 in both volatility regimes and ENSO phases, while the availability of
 intraday data for the recent period enables validation of the Yang-Zhang
-volatility proxy. The next section presents the empirical results from the
+volatility proxy. That validation, reported in
+Table~\ref{tab:proxy-validation} of Appendix~\ref{app:supplementary}, confirms
+that the Yang-Zhang estimator tracks intraday realized volatility closely,
+with the correlation rising to 0.92 at the monthly frequency relevant to the
+forecasting exercise. The next section presents the empirical results from the
 HAR-based quantile regression models estimated using these data.

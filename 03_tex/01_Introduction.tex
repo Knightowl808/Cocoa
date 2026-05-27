@@ -15,8 +15,8 @@ long-memory properties of volatility in a parsimonious, OLS-estimable structure.
 The majority of volatility forecasting research focuses on conditional mean
 forecasts: the expected level of future volatility given current information.
 Yet the conditional mean provides an incomplete characterization of future
-volatility. When the volatility distribution is skewed or fat-tailed---as
-is typical for commodity markets---the conditional quantiles can diverge
+volatility. When the volatility distribution is skewed or fat-tailed, as
+is typical for commodity markets, the conditional quantiles can diverge
 substantially from the mean, and understanding how the entire distribution
 shifts with predictor values becomes important. Quantile regression,
 introduced by \textcite{koenker1978regression}, provides a natural framework
@@ -26,18 +26,19 @@ assumptions.
 Cocoa futures present a particularly relevant case for distributional volatility
 forecasting. Production is geographically concentrated in West Africa, biologically
 slow to adjust, and exposed to both disease and climate shocks. Between 2022 and
-2024, international cocoa prices approximately tripled---an increase unprecedented
+2024, international cocoa prices approximately tripled, an increase unprecedented
 in the commodity's modern trading history. Despite this salience, dedicated cocoa
 volatility research remains limited, and the application of HAR-based quantile
-regression to cocoa---or to any agricultural commodity---is an open gap in the
+regression to cocoa, or to any agricultural commodity, is an open gap in the
 literature. At long forecast horizons, where the autoregressive signal from
 lagged volatility fades, climate variables offer an additional source of
 predictive information. The El Ni\~no--Southern Oscillation (ENSO) influences
-West African rainfall patterns with effects on cocoa yields materializing
-6--12 months after the climate signal, and recent evidence shows that ENSO
-improves agricultural commodity volatility forecasts at precisely these
+West African rainfall patterns with effects on cocoa yields hypothesised to materialise
+6--12 months after the climate signal. Evidence from oil and broad agricultural
+commodity surveys suggests that ENSO can improve volatility forecasts at these
 longer horizons \parencite{bouriNinoForecastabilityOilprice2021,
-bonatoNinoNinaForecastability2023}.
+bonatoNinoNinaForecastability2023}, motivating a test of whether this channel
+extends to cocoa.
 
 This thesis addresses two research questions:
 \begin{description}
@@ -49,7 +50,7 @@ This thesis addresses two research questions:
 \end{description}
 
 We address these questions by estimating HAR-QR models at multiple quantiles
-($\tau \in \{0.05, 0.25, 0.50, 0.75, 0.95\}$) and horizons (1 day, 1 week,
+($\tau \in \{0.50, 0.75, 0.95\}$) and horizons (1 day, 1 week,
 1 month, 3 months, 6 months, 12 months). At each horizon, we compare
 out-of-sample forecast accuracy against standard benchmarks: historical
 rolling volatility, GARCH(1,1), and HAR estimated by ordinary least squares.
@@ -59,7 +60,7 @@ particular focus on the upper quantile ($\tau = 0.95$).
 The thesis makes three contributions. First, it provides the first application
 of HAR-QR to an agricultural commodity, extending a framework previously confined
 to equity and precious-metals markets. Second, it tests HAR-QR at horizons of
-6--12 months---far beyond the current literature limit of approximately one
+6--12 months, far beyond the current literature limit of approximately one
 month \parencite{lyocsaImprovingStockMarket2021}. Third, it tests whether ENSO
 enhances quantile volatility forecasts for cocoa, a combination untested in the
 literature.

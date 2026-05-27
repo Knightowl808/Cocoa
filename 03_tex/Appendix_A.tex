@@ -1,0 +1,47 @@
+% =============================================================================
+% APPENDIX A: Supplementary Tables
+% =============================================================================
+
+\section{Supplementary Tables}
+\label{app:supplementary}
+
+This appendix collects reference material and detailed estimates that support
+the main text but are not essential to the line of argument: the data
+description (Table~\ref{tab:data-summary}), the unit root tests
+(Table~\ref{tab:stationarity}), the sup-Wald structural break test
+(Table~\ref{tab:break-test}), the validation of the volatility proxy against
+intraday realized volatility (Table~\ref{tab:proxy-validation}), and the full
+coefficient estimates of the HAR-QR and HAR-X-QR models
+(Table~\ref{tab:har-qr-coefficients}).
+
+\begin{table}[htbp]
+\centering
+\caption{Summary of Cocoa Futures Data}
+\label{tab:data-summary}
+\begin{tabular}{ll}
+\toprule
+\textbf{Characteristic} & \textbf{Value} \\
+\midrule
+Exchange & ICE Futures Europe \\
+Contract & LCC (Cocoa Futures) \\
+Contract size & 10 metric tonnes \\
+Price quotation & GBP per metric tonne \\
+Continuous series & LCCc1 (front-month rolling) \\
+Data source & Refinitiv Workspace \\
+Sample period (daily) & April 1, 1974 -- December 15, 2025 \\
+Number of observations (daily) & 13,090 trading days \\
+Sample period (5-minute) & February 3, 2025 -- January 12, 2026 \\
+Number of observations (5-minute) & 20,791 intraday observations \\
+Variables (daily) & Open, High, Low, Close, Volume \\
+Variables (5-minute) & Open, High, Low, Close, Volume, Bid, Ask \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\input{tables/stationarity_tests}
+
+\input{tables/break_test}
+
+\input{tables/proxy_validation}
+
+\input{tables/har_qr_coefficients}

@@ -1,0 +1,2 @@
+break_date,sup_wald_stat,cv_10pct,cv_05pct,cv_01pct,n_pre,n_post,mu_pre,mu_post,cand_window_lo,cand_window_hi,rolling_window,T_oos
+2024-02-08,1809.0522,5.74,7.17,10.17,10098,470,0.013393,0.031349,2022-01-01,2025-01-01,2520,10568

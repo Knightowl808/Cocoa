@@ -1,0 +1,5 @@
+Estimator,1-day (raw),5-day (weekly),22-day (monthly)
+Yang-Zhang,0.6809,0.7734,0.9206
+Garman-Klass,0.6968,0.7955,0.9267
+Parkinson,0.6748,0.7962,0.9328
+Close-to-Close,0.3829,0.6345,0.8799

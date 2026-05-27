@@ -287,6 +287,44 @@ def merge_nino34(df):
     return df
 
 
+# ===================================================================
+# 8. Build ENSO Volatility Columns (rolling stdev of monthly Nino 3.4)
+# ===================================================================
+def build_enso_vol(df):
+    """
+    Add rolling stdev of Nino 3.4 as enso_vol_12m and enso_vol_36m.
+
+    Computed on the MONTHLY series before broadcasting to daily.
+    Computing on the daily-broadcast column would inflate N artificially
+    (22 identical daily values per month), so we work at source.
+
+    enso_vol_12m: 12-month rolling stdev — captures annual cycle variation
+    enso_vol_36m: 36-month rolling stdev — captures cross-cycle amplitude
+    """
+    nino_path = os.path.join(PROC_DIR, "nino34_clean.csv")
+    nino = pd.read_csv(nino_path)
+    nino["Date"] = pd.to_datetime(nino["Date"])
+    nino["ym"] = nino["Date"].dt.to_period("M")
+    nino = nino.sort_values("ym").reset_index(drop=True)
+
+    nino["enso_vol_12m"] = nino["nino34"].rolling(window=12, min_periods=12).std()
+    nino["enso_vol_36m"] = nino["nino34"].rolling(window=36, min_periods=36).std()
+
+    df = df.copy()
+    if "ym" in df.columns:
+        df = df.drop(columns=["ym"])
+    df["ym"] = df["Date"].dt.to_period("M")
+    df = df.merge(nino[["ym", "enso_vol_12m", "enso_vol_36m"]], on="ym", how="left")
+    df = df.drop(columns=["ym"])
+
+    n12 = df["enso_vol_12m"].notna().sum()
+    n36 = df["enso_vol_36m"].notna().sum()
+    print(f"  enso_vol_12m: {n12} daily obs matched ({df['enso_vol_12m'].isna().sum()} missing)")
+    print(f"  enso_vol_36m: {n36} daily obs matched ({df['enso_vol_36m'].isna().sum()} missing)")
+
+    return df
+
+
 def plot_enso_vs_volatility(df):
     """Dual-axis plot: Nino 3.4 index and cocoa volatility over time."""
     fig, ax1 = plt.subplots(figsize=(14, 6))
@@ -341,6 +379,9 @@ if __name__ == "__main__":
 
     print("Merging Nino 3.4 ENSO data...")
     df = merge_nino34(df)
+
+    print("Building ENSO volatility columns...")
+    df = build_enso_vol(df)
 
     # Save the full dataset for modeling
     out_path = os.path.join(PROC_DIR, "har_dataset.csv")

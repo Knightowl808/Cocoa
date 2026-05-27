@@ -1,0 +1,29 @@
+\begin{table}[htbp]
+\centering
+\caption{Descriptive Statistics for Daily Log-Returns}
+\label{tab:return-stats}
+\begin{tabular}{lr}
+\toprule
+\textbf{Statistic} & \textbf{Value} \\
+\midrule
+Observations & 13,087 \\
+Mean (\%) & 0.012 \\
+Median (\%) & 0.000 \\
+Std. Deviation (\%) & 1.929 \\
+Minimum (\%) & $-26.212$ \\
+Maximum (\%) & 12.988 \\
+25th Percentile (\%) & $-0.917$ \\
+75th Percentile (\%) & 0.945 \\
+\addlinespace
+Skewness & $-0.997$ \\
+Excess Kurtosis & 12.963 \\
+\addlinespace
+Jarque-Bera & 141,013 \\
+\quad $p$-value & $<0.001$ \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}
+\small
+\item \textit{Notes}: Daily log-returns computed as $r_t = \ln(C_t / C_{t-1})$ for ICE London cocoa front-month continuous contract (LCCc1), April 1974--December 2025. Returns expressed in percentage points. Excess kurtosis reported (normal distribution: 0). Jarque-Bera test strongly rejects normality ($p < 0.001$), consistent with fat tails and negative skewness typical of commodity returns.
+\end{tablenotes}
+\end{table}

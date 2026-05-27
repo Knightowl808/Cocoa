@@ -1,0 +1,23 @@
+\begin{table}[htbp]
+\centering
+\small
+\caption{Unit root tests for stationarity}
+\label{tab:stationarity}
+\begin{tabular}{lrccrcc}
+\toprule
+ & & \multicolumn{2}{c}{ADF} & & \multicolumn{2}{c}{PP} \\
+\cmidrule(lr){3-4}\cmidrule(lr){6-7}
+Series & $N$ & Statistic & $p$-value & & Statistic & $p$-value \\
+\midrule
+Log returns & 13,087 & $-112.08$ & $<0.001$ & & $-112.09$ & $<0.001$ \\
+Yang-Zhang volatility & 13,087 & $-8.42$ & $<0.001$ & & $-90.99$ & $<0.001$ \\
+Ni\~no 3.4 anomaly & 787 & $-6.85$ & $<0.001$ & & $-6.46$ & $<0.001$ \\
+\bottomrule
+\end{tabular}
+\par\smallskip
+{\footnotesize\textit{Note:} ADF = Augmented Dickey--Fuller test
+\parencite{dickey1979distribution}; PP = Phillips--Perron test
+\parencite{phillips1988testing}. Both tests include a constant.
+ADF lag length selected by AIC. The null hypothesis is a unit root;
+rejection indicates stationarity.}
+\end{table}

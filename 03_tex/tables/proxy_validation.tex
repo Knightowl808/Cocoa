@@ -1,0 +1,28 @@
+\begin{table}[htbp]
+\centering
+\small
+\caption{Validation of OHLC volatility estimators against intraday realized
+volatility}
+\label{tab:proxy-validation}
+\begin{tabular}{lccc}
+\toprule
+ & \multicolumn{3}{c}{Pearson correlation with RV} \\
+\cmidrule(lr){2-4}
+Estimator & Daily & Weekly & Monthly \\
+\midrule
+Yang-Zhang     & 0.681 & 0.773 & 0.921 \\
+Garman-Klass   & 0.697 & 0.796 & 0.927 \\
+Parkinson      & 0.675 & 0.796 & 0.933 \\
+Close-to-close & 0.383 & 0.635 & 0.880 \\
+\bottomrule
+\end{tabular}
+\par\smallskip
+{\footnotesize\textit{Note:} Pearson correlation between each daily
+OHLC-based volatility estimator and realized volatility (RV) computed from
+five-minute intraday returns, over the period 3 February 2025 --
+12 January 2026 (196 trading days). The weekly and monthly columns aggregate
+both series to 5- and 22-day averages before computing the correlation. The
+rising correlation with aggregation reflects the averaging-out of daily
+estimation noise; the Yang-Zhang estimator tracks RV closely at the monthly
+frequency relevant to the forecasting exercise.}
+\end{table}
