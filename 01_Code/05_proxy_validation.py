@@ -301,6 +301,57 @@ def plot_rolling_scatter(m, window=22):
 
 
 # ===================================================================
+# 8. Write LaTeX table to tex/tables/proxy_validation.tex
+# ===================================================================
+def write_latex_table(results_daily, results_roll):
+    tex_path = os.path.join(
+        BASE_DIR, os.pardir, "tex", "tables", "proxy_validation.tex"
+    )
+
+    def fmt_coef(val, se, pval):
+        stars = "^{***}" if pval < 0.001 else ("^{**}" if pval < 0.01 else ("^{*}" if pval < 0.05 else ""))
+        return f"${val:.4f}{stars}$", f"$({se:.4f})$"
+
+    a_d, a_d_se = fmt_coef(results_daily["alpha"], results_daily["alpha_se"], results_daily["alpha_pval"])
+    b_d, b_d_se = fmt_coef(results_daily["beta"],  results_daily["beta_se"],  results_daily["beta_pval"])
+    a_r, a_r_se = fmt_coef(results_roll["alpha"],  results_roll["alpha_se"],  results_roll["alpha_pval"])
+    b_r, b_r_se = fmt_coef(results_roll["beta"],   results_roll["beta_se"],   results_roll["beta_pval"])
+
+    lines = [
+        r"\begin{table}[htbp]",
+        r"\centering",
+        r"\small",
+        r"\caption{Mincer-Zarnowitz regression: Yang-Zhang against intraday realized volatility}",
+        r"\label{tab:proxy-validation}",
+        r"\begin{tabular}{lcccccc}",
+        r"\toprule",
+        r" & $\hat{\alpha}$ & $\hat{\beta}$ & $R^2$ & $N$ & $F_{\alpha=0,\,\beta=1}$ & $p$-value \\",
+        r"\midrule",
+        f"Daily         & {a_d} & {b_d} & ${results_daily['R_squared']:.3f}$ & {int(results_daily['N'])} & ${results_daily['F_stat_joint']:.1f}$ & $<0.001$ \\\\",
+        f"              & {a_d_se} & {b_d_se} &  &  &  & \\\\[4pt]",
+        f"22-day rolling & {a_r} & {b_r} & ${results_roll['R_squared']:.3f}$ & {int(results_roll['N'])} & ${results_roll['F_stat_joint']:.1f}$ & $<0.001$ \\\\",
+        f"              & {a_r_se} & {b_r_se} &  &  &  & \\\\",
+        r"\bottomrule",
+        r"\end{tabular}",
+        r"\par\smallskip",
+        r"{\footnotesize\textit{Note:} Mincer-Zarnowitz regression $\text{RV}_t = \alpha + \beta\,\hat{\sigma}^{\text{YZ}}_t + \varepsilon_t$",
+        r"estimated with HC1 standard errors (in parentheses). The $F$-statistic tests the joint",
+        r"hypothesis $\alpha = 0$, $\beta = 1$ (unbiased proxy). RV is computed from five-minute",
+        r"log returns; $\hat{\sigma}^{\text{YZ}}$ is the Yang-Zhang estimator from daily OHLC prices.",
+        r"The 22-day row uses rolling 22-day averages of both series, aligning with the HAR monthly",
+        r"component. The lower $\hat{\beta}$ at the daily frequency reflects the different treatment of",
+        r"the overnight component: Yang-Zhang captures the close-to-open gap while intraday RV does not.",
+        r"Sample: 3 February 2025 -- 12 January 2026.",
+        r"$^{***}$ $p < 0.001$.}",
+        r"\end{table}",
+    ]
+
+    with open(tex_path, "w", encoding="utf-8") as f:
+        f.write("\n".join(lines) + "\n")
+    print(f"Saved LaTeX table: tex/tables/proxy_validation.tex")
+
+
+# ===================================================================
 # MAIN
 # ===================================================================
 if __name__ == "__main__":
@@ -345,6 +396,9 @@ if __name__ == "__main__":
             pd.Series(results_roll).to_csv(
                 os.path.join(TBL_DIR, "mincer_zarnowitz_rolling22.csv")
             )
+
+        if results_roll is not None:
+            write_latex_table(results_daily, results_roll)
 
         print("\n--- Generating Plots ---")
         plot_scatter(merged, model_daily)

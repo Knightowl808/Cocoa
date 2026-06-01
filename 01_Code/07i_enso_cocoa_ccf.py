@@ -14,8 +14,8 @@ state), the CCF should peak near lag 0.
 
 The figure is purely descriptive (no model, no look-ahead) and can be
 placed in the Data section. Two panels: full sample and pre-crisis
-subsample (Date < 2024-02-08, Bai-Perron sup-Wald break), allowing direct
-comparison with the pre-crisis QL results from 07e.
+subsample (Date < 2024-02-08, excluding the extreme-volatility phase of
+the supply crisis), allowing direct comparison with pre-crisis QL results.
 
 Outputs:
   02_Output/figures/35_enso_cocoa_ccf.png

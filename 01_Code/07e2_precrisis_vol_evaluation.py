@@ -28,7 +28,7 @@ os.makedirs(TBL_DIR, exist_ok=True)
 
 HORIZONS    = ["1d", "1w", "1m", "3m", "6m", "12m"]
 QUANTILES   = [0.05, 0.25, 0.50, 0.75, 0.95]
-CRISIS_DATE = pd.Timestamp("2024-02-08")  # Bai-Perron sup-Wald break (Andrews 1993)
+CRISIS_DATE = pd.Timestamp("2024-02-08")  # onset of extreme-volatility phase, supply crisis
 
 HORIZON_ORDER = pd.CategoricalDtype(
     categories=["1d", "1w", "1m", "3m", "6m", "12m"], ordered=True

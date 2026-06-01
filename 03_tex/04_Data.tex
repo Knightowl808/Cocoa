@@ -18,16 +18,14 @@ statistics documenting the stylized facts of cocoa returns and volatility.
 
 The primary data consist of daily Open-High-Low-Close (OHLC) prices and
 trading volume for ICE Futures Europe cocoa futures contracts. ICE London
-cocoa futures (contract code LCC) are standardized contracts for the delivery
+cocoa futures are standardized contracts for the delivery
 of 10 metric tonnes of cocoa beans. Each contract specifies delivery in one
 of five months: March, May, July, September, or December. Prices are quoted
 in British pounds sterling (GBP) per metric tonne, and trading occurs on
 the IntercontinentalExchange (ICE) electronic platform during European
 market hours. The data were obtained from Refinitiv Workspace via the
-corporate license held by Ritter Sport GmbH \& Co. KG, ensuring
-institutional-grade data quality sourced directly from exchange feeds.
+corporate license held by Ritter Sport GmbH \& Co. KG.
 
-\paragraph{Continuous series construction.}
 Futures contracts have finite maturity, requiring the construction of a
 continuous price series for volatility analysis. We use the generic
 front-month continuous contract, denoted LCCc1 in the Refinitiv system.
@@ -45,16 +43,15 @@ not require explicit adjustment. The Yang-Zhang estimator
 (Section~\ref{sec:meth-vol-measure}) is specifically designed to be robust
 to opening jumps, which include both overnight news and contract roll effects.
 
-\paragraph{Sample period.}
-The daily dataset spans 13,090 trading days from April 1, 1974, to
+The daily dataset spans 10,376 trading days from January 2, 1985, to
 December 15, 2025. This extended sample offers several advantages. It
 encompasses multiple El Niño and La Niña cycles, providing sufficient
 variation in the ENSO predictor for long-horizon models. It includes
-diverse market regimes: the 1977--1979 cocoa price spike driven by supply
-disruptions in West Africa, the long period of relative stability from
+diverse market regimes: the long period of relative stability from
 1990--2010, the financialization era beginning around 2008, and the recent
 2022--2024 price surge attributed to the Cocoa Swollen Shoot Virus Disease
-(CSSVD) outbreak. The sample also includes approximately one year of
+(CSSVD) outbreak and other supply-side disruptions in West Africa 
+\parencite{ifpriSoaringCocoaPrices2024, iccoCocoaMarketReportMarch2024}. The sample also includes approximately one year of
 high-frequency data (February 3, 2025, through January 12, 2026, comprising
 20,791 five-minute price observations), which enables validation of the
 Yang-Zhang volatility estimator against realized volatility computed from
@@ -63,22 +60,16 @@ intraday returns.
 Table~\ref{tab:data-summary} in Appendix~\ref{app:supplementary} summarizes
 the coverage and key characteristics of the cocoa futures data.
 
-\paragraph{Variables and transformations.}
 For each trading day $t$, the dataset provides five price observations:
 the opening price $O_t$, the highest price during the trading session $H_t$,
-the lowest price $L_t$, the closing price $C_t$, and total trading volume
-$V_t$. Trading volume is collected but not used in the volatility models.
+the lowest price $L_t$ and the closing price $C_t$.
 Log returns $r_t = \ln(C_t / C_{t-1})$ are computed for descriptive
 statistics and as inputs to the GARCH benchmark.
 
-From the daily OHLC prices, we construct volatility estimates using the
-Yang-Zhang estimator detailed in Equation~\eqref{eq:yang-zhang}. The
-estimator combines overnight variance (close-to-open), intraday range-based
-variance (Rogers-Satchell), and close-to-close variance into a minimum-variance
-unbiased estimator that is drift-independent and robust to opening gaps
-\parencite{yangDriftIndependentVolatility2000}. The Yang-Zhang estimator
-serves as the dependent variable in all volatility forecasting models and
-as the realized measure against which forecasts are evaluated.
+From the daily OHLC prices, we construct the Yang-Zhang volatility series
+(Equation~\eqref{eq:yang-zhang}), which serves as the dependent variable
+in all forecasting models and as the realized measure against which forecasts
+are evaluated.
 
 For the one-year period with available intraday data, we compute realized
 volatility as the sum of squared five-minute log returns:
@@ -89,12 +80,10 @@ volatility as the sum of squared five-minute log returns:
 where $r_{t,i}$ is the log return for the $i$-th five-minute interval on
 day $t$, and $M$ is the number of five-minute intervals in the trading day
 (approximately 78 intervals for a 6.5-hour trading session). This realized
-volatility measure provides a benchmark for validating the Yang-Zhang
-estimator over the recent subsample.
+volatility measure serves as the benchmark in a Mincer-Zarnowitz
+validation of the Yang-Zhang estimator over the recent subsample.
 
-\paragraph{Data quality.}
-The daily data contain no missing values for trading days; non-trading
-days are excluded. Overnight returns spanning weekends or holidays are
+On data quality, the daily series contain no missing values for trading days; non-trading days are excluded. Overnight returns spanning weekends or holidays are
 not rescaled by calendar days elapsed, as the larger return reflects
 genuine accumulated risk rather than a measurement artefact.
 
@@ -110,48 +99,41 @@ ENSO activity using the Niño 3.4 index, a measure of sea surface temperature
 anomalies in the central equatorial Pacific (5°N--5°S, 170°W--120°W),
 computed as a three-month running mean relative to a climatological base
 period. Monthly values are obtained from the NOAA Climate Prediction
-Center, calculated using the ERSSTv5 dataset and publicly available at
+Center, calculated using the ERSSTv6 dataset and publicly available at
 \url{https://psl.noaa.gov/data/correlation/nina34.data}.
 
-Our sample covers January 1960 through July 2025, providing 786 monthly
+Our sample covers January 1985 through December 2025, providing 492 monthly
 observations. NOAA classifies an El~Ni\~no (La~Ni\~na) episode when the
-three-month running mean exceeds $+0.5$°C (falls below $-0.5$°C) for
-at least five consecutive months. In the regression models
-(Equation~\ref{eq:har-x-qr}), $\text{ENSO}_t$ enters as the continuous
-Ni\~no~3.4 value rather than a categorical regime indicator, preserving
-the full variation in anomaly magnitude.
+three-month running mean of Ni\~no~3.4 anomalies exceeds $+0.5$\,°C
+(falls below $-0.5$\,°C) for at least five consecutive overlapping
+three-month periods \parencite{linsdeyOceanicNinoIndex2009}.
+In the regression models (Equation~\ref{eq:har-x-qr}), $\text{ENSO}_t$
+enters as the continuous Ni\~no~3.4 value rather than a categorical regime
+indicator, preserving the full variation in anomaly magnitude.
 
-The sample contains 15 El Ni\~no and 13 La Ni\~na episodes. Since the
-index is monthly while cocoa futures trade daily, each trading day
-inherits the Ni\~no~3.4 value of its calendar month, as described in
-Section~\ref{sec:meth-har-qr}. The data contain no missing values through
-June 2025; placeholder entries (--99.99) for August 2025 onward do not
-affect the analysis because the out-of-sample period ends before these
-values are needed.
+The sample contains 11 El Ni\~no and 12 La Ni\~na episodes over the
+1985--2025 period. Figure~\ref{fig:enso-regimes} plots the Ni\~no~3.4
+index over the cocoa sample period; red shading marks El Ni\~no episodes
+(index $> +0.5$\,°C) and blue shading marks La Ni\~na episodes (index
+$< -0.5$\,°C), with the horizontal dashed lines indicating the NOAA
+classification thresholds.
 
-Table~\ref{tab:enso-summary} summarizes the Niño 3.4 data.
-
-\begin{table}[htbp]
+\begin{figure}[htbp]
 \centering
-\caption{Summary of Niño 3.4 Climate Data}
-\label{tab:enso-summary}
-\begin{tabular}{ll}
-\toprule
-\textbf{Characteristic} & \textbf{Value} \\
-\midrule
-Measures & Sea surface temperature anomaly \\
-Region & Central equatorial Pacific (5°N--5°S, 170°W--120°W) \\
-Data source & NOAA Climate Prediction Center \\
-Dataset & ERSSTv5 \\
-URL & \url{https://psl.noaa.gov/data/correlation/nina34.data} \\
-Sample period & January 1960 -- July 2025 \\
-Observations & 786 months \\
-Frequency & Monthly \\
-El Niño threshold & $>$ +0.5°C (5 consecutive months) \\
-La Niña threshold & $<$ --0.5°C (5 consecutive months) \\
-\bottomrule
-\end{tabular}
-\end{table}
+\includegraphics[width=\textwidth]{figures/enso_regimes.pdf}
+\caption{Niño 3.4 Sea Surface Temperature Anomaly (1985--2025)}
+\label{fig:enso-regimes}
+\par\smallskip
+{\footnotesize Monthly Ni\~no~3.4 index (three-month running mean, ERSSTv6 base period).
+Red: El~Ni\~no episodes (anomaly $> +0.5$\,°C for at least five consecutive months);
+blue: La~Ni\~na (anomaly $< -0.5$\,°C). Dashed lines: $\pm 0.5$\,°C thresholds.
+Source: NOAA Climate Prediction Center.}
+\end{figure}
+
+Since the index is monthly while cocoa futures trade daily, each trading
+day inherits the Ni\~no~3.4 value of its calendar month, as described in
+Section~\ref{sec:meth-har-qr}. The data contain no missing values through December 2025, covering the
+full cocoa futures sample period.
 
 %------------------------------------------------------------------------------
 \subsection{Descriptive Statistics and Stylized Facts}
@@ -162,73 +144,61 @@ This subsection presents the empirical characteristics of cocoa returns and
 volatility, establishing the stylized facts that motivate the modeling
 choices in Section~\ref{sec:methodology}.
 
-\paragraph{Price and return characteristics.}
 Figure~\ref{fig:price-series} displays the daily closing price of the
 front-month cocoa futures contract over the full sample period. The series
-exhibits several distinct episodes. The late 1970s witnessed a pronounced
-price spike, with cocoa reaching approximately 3,400 GBP per tonne in
-1977--1979, driven by adverse weather and supply disruptions in West Africa.
-Following this episode, prices stabilized at lower levels through the 1990s
-and 2000s, with moderate fluctuations around a mean of approximately 1,300
-GBP per tonne. The 2010s showed gradual price increases, followed by the
+exhibits several distinct episodes. From the mid-1980s through the early
+2000s, prices declined from their earlier highs and stabilized, fluctuating
+around a mean of approximately 1,300 GBP per tonne through the 1990s and
+2000s. The 2010s showed gradual price increases, followed by the
 recent 2022--2024 surge reaching over 10,000 GBP per tonne, unprecedented
 in the modern trading history of cocoa, driven by the CSSVD outbreak in
 key producing regions.
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=\textwidth]{figures/price_series.png}
-\caption{ICE London Cocoa Futures Daily Closing Price (1974--2025)}
+\includegraphics[width=\textwidth]{figures/price_series.pdf}
+\caption{ICE London Cocoa Futures Daily Closing Price (1985--2025)}
 \label{fig:price-series}
-\begin{tablenotes}
-\small
-\item \textit{Notes}: Front-month continuous contract (LCCc1) daily closing
-prices in GBP per metric tonne. Data source: Refinitiv Workspace.
-Sample period: April 1, 1974 -- December 15, 2025 (13,090 trading days).
-\end{tablenotes}
+\par\smallskip
+{\footnotesize Front-month continuous contract (LCCc1), daily closing prices in GBP per metric tonne.
+Source: Refinitiv Workspace. Sample: 2~January 1985 -- 15~December 2025 (10,376 trading days).}
 \end{figure}
 
 Table~\ref{tab:return-stats} presents descriptive statistics for daily
-log-returns. The mean daily return is slightly positive (0.012\%), corresponding
-to an approximate annualized mean return of 3\% over the full sample. However,
-returns exhibit substantial volatility: the standard deviation of 1.93\%
-implies an annualized volatility of approximately 30\%, consistent with cocoa's
+log-returns. The mean daily return is slightly positive (0.008\%), corresponding
+to an approximate annualized mean return of 2\% over the full sample. However,
+returns exhibit substantial volatility: the standard deviation of 1.82\%
+implies an annualized volatility of approximately 29\%, consistent with cocoa's
 classification as a high-volatility commodity. The distribution of returns
-deviates sharply from normality. Negative skewness ($-0.997$) indicates a
+deviates sharply from normality. Negative skewness ($-0.37$) indicates a
 left tail longer than the right, reflecting the tendency for large negative
 price movements to occur more frequently than large positive ones. Excess
-kurtosis of 12.96 documents fat tails: extreme returns occur far more often
-than a Gaussian distribution would predict. The Jarque-Bera test decisively
-rejects normality ($p < 0.001$), confirming that standard volatility models
-assuming Gaussian innovations may be misspecified for cocoa returns.
+kurtosis of 9.06, formally confirmed by the Jarque-Bera statistic of
+35{,}652 ($p < 0.001$), documents fat tails: extreme returns occur far more often
+than a Gaussian distribution predicts, implying that volatility models
+assuming Gaussian innovations may understate tail risk.
 
 \input{tables/return_statistics}
 
-\paragraph{Volatility time series.}
-Figure~\ref{fig:volatility-series} displays the Yang-Zhang volatility
+Turning to the volatility series, Figure~\ref{fig:volatility-series} displays the Yang-Zhang volatility
 estimator (annualized, in percent) computed from daily OHLC data. The
 figure reveals pronounced volatility clustering:
 periods of high volatility persist for extended intervals before reverting
-to lower levels. The late-1970s episode and the 2022--2024 crisis stand out
-as the two dominant volatility regimes in the sample. Between these episodes,
-volatility fluctuates around a lower baseline with occasional spikes
-corresponding to supply shocks, weather events, and financial market
-turbulence (e.g., the 2008 financial crisis).
+to lower levels. The 2022--2024 supply crisis stands out as the dominant
+volatility regime in the sample, with annualized volatility exceeding 100\%
+at its peak. Between this episode and the mid-1980s, volatility fluctuates
+around a lower baseline with occasional spikes corresponding to supply
+shocks, weather events, and financial market turbulence (e.g., the 2008
+financial crisis).
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=\textwidth]{figures/volatility_timeseries.png}
-\caption{Yang-Zhang Annualized Volatility Time Series (1974--2025)}
+\includegraphics[width=\textwidth]{figures/volatility_timeseries.pdf}
+\caption{Yang-Zhang Annualized Volatility Time Series (1985--2025)}
 \label{fig:volatility-series}
-\begin{tablenotes}
-\small
-\item \textit{Notes}: Yang-Zhang volatility estimator computed from daily
-OHLC prices and annualized (percent). The estimator combines overnight,
-intraday, and close-to-close variance components following
-\textcite{yangDriftIndependentVolatility2000}. Pronounced volatility clustering
-and regime-switching are evident, motivating the use of HAR models that
-capture persistence across multiple horizons.
-\end{tablenotes}
+\par\smallskip
+{\footnotesize Yang-Zhang volatility \parencite{yangDriftIndependentVolatility2000} computed from daily OHLC prices, annualized (percent).
+Combines overnight, intraday, and close-to-close variance components.}
 \end{figure}
 
 The persistence of volatility justifies the HAR model's multi-horizon
@@ -239,36 +209,23 @@ quantile regression: during high-volatility regimes, the tails of the
 volatility distribution shift outward, and point forecasts of the mean may
 underestimate the risk of extreme outcomes.
 
-\paragraph{Stationarity.}
 The regression models in Section~\ref{sec:methodology} require stationary
-inputs. Table~\ref{tab:stationarity} reports Augmented Dickey--Fuller (ADF)
-and Phillips--Perron (PP) unit root tests for the three key series (reported
-in Table~\ref{tab:stationarity}, Appendix~\ref{app:supplementary}). Both
-tests include a constant; ADF lag length is selected by AIC.
-
-All three series decisively reject the unit root null at the 1\% level.
-Log returns are stationary by construction, with ADF and PP statistics
-both below $-112$. The Yang-Zhang volatility series exhibits high
-persistence (the ADF test requires 39 lags to whiten the residuals) but
-remains stationary (ADF $= -8.42$, $p < 0.001$). The large discrepancy
-between the ADF and PP statistics ($-8.42$ vs.\ $-90.99$) reflects the
-difference in how each test handles serial correlation: ADF augments the
-regression with lagged differences, while PP applies a non-parametric
-correction to the test statistic. Both agree on rejection. The Ni\~no~3.4
-anomaly is stationary by design, as it measures deviations from a
-climatological mean, confirmed by both tests (ADF $= -6.85$, PP $= -6.46$,
-$p < 0.001$). These results justify the use of standard OLS and quantile
-regression methods without differencing or cointegration corrections.
+inputs. Augmented Dickey--Fuller and Phillips--Perron tests reject the unit
+root null at the 1\% level for all three series
+(Table~\ref{tab:stationarity}, Appendix~\ref{app:supplementary}), justifying
+the use of standard OLS and quantile regression without differencing or
+cointegration corrections.
 
 %------------------------------------------------------------------------------
 
 The data described in this section provide the foundation for the empirical
-analysis. The extended daily sample (1974--2025) ensures sufficient variation
-in both volatility regimes and ENSO phases, while the availability of
-intraday data for the recent period enables validation of the Yang-Zhang
-volatility proxy. That validation, reported in
-Table~\ref{tab:proxy-validation} of Appendix~\ref{app:supplementary}, confirms
-that the Yang-Zhang estimator tracks intraday realized volatility closely,
-with the correlation rising to 0.92 at the monthly frequency relevant to the
-forecasting exercise. The next section presents the empirical results from the
-HAR-based quantile regression models estimated using these data.
+analysis. The extended daily sample (1985--2025) ensures sufficient variation
+in both volatility regimes and ENSO phases, while the intraday subsample
+enables proxy validation. A Mincer-Zarnowitz regression of intraday realized
+volatility on the Yang-Zhang estimator
+(Table~\ref{tab:proxy-validation}, Appendix~\ref{app:supplementary}) yields
+$R^2 = 0.847$ and $\hat{\beta} = 0.836$ at the 22-day frequency relevant to
+the HAR monthly component, confirming strong co-movement; the lower
+$\hat{\beta}$ at the daily frequency reflects the overnight variance component
+that intraday RV does not capture. The next section presents the empirical
+results.

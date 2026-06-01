@@ -13,8 +13,7 @@ Key diagnostic: does the ENSO gain at 12m, tau=0.95 survive when the
   Delta_full ≈ Delta_pre < 0        → ENSO gain is genuine, pre-dates crisis
 
 Filter: forecast Date < 2024-02-08
-  (Bai-Perron sup-Wald estimated break date; Andrews 1993.
-   The date the rolling model was estimated and forecast was issued;
+  (onset of the extreme-volatility phase of the 2022--2024 supply crisis;
    a fully real-time criterion — no crisis information was visible at t)
 
 Output:
@@ -36,7 +35,7 @@ os.makedirs(TBL_DIR, exist_ok=True)
 
 HORIZONS  = ["1d", "1w", "1m", "3m", "6m", "12m"]
 QUANTILES = [0.05, 0.25, 0.50, 0.75, 0.95]
-CRISIS_DATE = pd.Timestamp("2024-02-08")  # Bai-Perron sup-Wald break (Andrews 1993)
+CRISIS_DATE = pd.Timestamp("2024-02-08")  # onset of extreme-volatility phase, supply crisis
 
 MODELS = {
     "HAR-QR":   "har_qr_forecasts_{h}.csv",

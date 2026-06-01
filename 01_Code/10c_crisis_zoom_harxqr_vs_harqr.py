@@ -87,7 +87,7 @@ def plot_panel(ax, h: str, h_label: str, panel_label: str, show_legend: bool) ->
 
     # Realized volatility (from HAR-X-QR file, same actual series)
     ax.plot(harxqr["Date"], harxqr["actual"] * 100,
-            color=C["black"], ls="-", lw=0.9, label="Realized", zorder=3)
+            color=C["black"], ls="-", lw=0.9, label="YZ volatility", zorder=3)
 
     # HAR-X-QR τ=0.95
     ax.plot(harxqr["Date"], harxqr["q95"] * 100,

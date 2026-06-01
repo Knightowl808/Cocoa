@@ -29,9 +29,9 @@ Thesis role         & Naive BM       & Param.\ BM   & HAR benchmark  & Main (RQ1
 \bottomrule
 \end{tabular}
 \par\smallskip
-{\footnotesize\textit{Note:} Direct = horizon-specific model estimated by
-direct projection; Recursive = closed-form GARCH mean recursion, quantiles via
-Gaussian closed-form (Eq.~\ref{eq:garch-quantile}); Check fn.\ = check-function (quantile) loss;
+{\footnotesize Direct = horizon-specific model estimated by direct projection;
+Recursive = closed-form GARCH mean recursion, quantiles via Gaussian closed-form
+(Eq.~\ref{eq:garch-quantile}); Check fn.\ = check-function (quantile) loss;
 BM = benchmark; Hist.\ Vol.\ = rolling 252-day window with empirical quantiles.}
 \end{table}
 
@@ -133,7 +133,9 @@ We therefore augment the HAR-QR model with the ENSO climate index:
 \label{eq:har-x-qr}
 Q_{\tau}(\bar{\sigma}_{t:t+h} \mid \mathcal{F}_t) = \beta_0(\tau) + \beta_d(\tau) \sigma_t^{(d)} + \beta_w(\tau) \sigma_t^{(w)} + \beta_m(\tau) \sigma_t^{(m)} + \gamma(\tau) \text{ENSO}_t,
 \end{equation}
-where $\text{ENSO}_t$ is the Ni\~no~3.4 sea surface temperature anomaly
+We refer to this augmented specification as the \emph{HAR-X-QR} model,
+where the ``-X'' suffix denotes the inclusion of the exogenous ENSO regressor.
+Here $\text{ENSO}_t$ is the Ni\~no~3.4 sea surface temperature anomaly
 index from NOAA, measured monthly. The coefficient $\gamma(\tau)$ captures
 the marginal effect of ENSO conditions on future volatility at quantile
 $\tau$.
@@ -142,20 +144,16 @@ We use \emph{contemporary} ENSO, meaning $\text{ENSO}_t$ predicts
 $\bar{\sigma}_{t:t+h}$, rather than explicitly lagged ENSO values. This
 specification is standard in the climate-commodity literature
 \parencite{bouriNinoForecastabilityOilprice2021,
-bonatoNinoNinaForecastability2023} and is fully causal: the Ni\~no~3.4
+bonatoNinoNinaForecastability2023} and is causal: the Ni\~no~3.4
 anomaly for month $t$ is publicly observable before any forecast is issued,
 so no forward-looking information enters the model. The sensitivity of this
 specification to alternative ENSO lags is examined in
 Section~\ref{sec:res-robustness}.
 
-We obtain monthly Ni\~no~3.4 sea surface temperatures from NOAA's Extended
-Reconstructed SST (ERSSTv5) dataset and convert them to anomalies by
-subtracting the 1991--2020 climatological monthly mean, following standard
-practice \parencite{bouriNinoForecastabilityOilprice2021,
-bonatoNinoNinaForecastability2023}. Positive anomalies indicate
-El~Ni\~no conditions; negative anomalies indicate La~Ni\~na. Since the
-index is monthly, each trading day inherits the Ni\~no~3.4 anomaly of its
-calendar month.
+Positive Ni\~no~3.4 anomalies indicate El~Ni\~no conditions; negative
+anomalies indicate La~Ni\~na. Full details of the index construction,
+sample coverage, and monthly-to-daily alignment are provided in
+Section~\ref{sec:data-enso}.
 
 The HAR-QR model is estimated by minimizing the check function loss:
 \begin{equation}
@@ -186,7 +184,7 @@ computed using the bootstrap.
 \label{sec:meth-benchmarks}
 %------------------------------------------------------------------------------
 
-We compare HAR-QR against three benchmarks that span the major modeling
+We compare HAR-QR and HAR-X-QR against three benchmarks that span the major modeling
 paradigms discussed in the literature review.
 
 The first benchmark is \emph{rolling historical volatility} with a one-year
@@ -358,30 +356,36 @@ HAR-X-QR augmented with ENSO recovers predictive value, examining whether
 climate information provides incremental value precisely where the
 autoregressive signal fades.
 
-\paragraph{Robustness diagnostics for the ENSO signal.}
 Should HAR-X-QR outperform HAR-QR at long horizons, a single full-sample
 comparison cannot by itself establish whether the gain reflects a structural
 climate channel or a sample-specific coincidence. We therefore subject any
 ENSO improvement to three diagnostics, reported in
 Section~\ref{sec:res-robustness}. First, a \emph{temporal-stability} check
-re-evaluates the gain on a pre-crisis subsample ending 8~February~2024,
-estimated via a sup-Wald structural break test \parencite{andrews1993tests},
-which excludes the extreme-price phase of the 2022--2024 supply crisis:
-a structural relationship should survive the exclusion of any single episode. Second, a \emph{lag-structure}
+traces the cumulative ENSO gain as the evaluation horizon advances through
+time using an expanding-window diagnostic. For each calendar month~$T$ in
+the out-of-sample period, the quantile loss difference
+$\Delta\text{QL}(T) = \text{QL}_{\text{HAR-X-QR}}(\{t \leq T\}) -
+\text{QL}_{\text{HAR-QR}}(\{t \leq T\})$ is computed over all
+forecast--realisation pairs up to and including~$T$. A structural ENSO--volatility channel should produce a
+steadily accumulating gain throughout the evaluation period, not a gain
+concentrated in a single episode. Second, a \emph{lag-structure}
 check re-estimates HAR-X-QR with the Ni\~no~3.4 index lagged 0, 1, 3, and~6
 months and inspects the cross-correlogram between ENSO and cocoa volatility.
 Under the agronomic-transmission hypothesis the predictive content should
 strengthen at lags of 6--12 months, matching the window over which
-ENSO-driven rainfall anomalies are hypothesised to affect harvests; this is
-the lag horizon at which ENSO is found to improve commodity volatility
-forecasts in the oil and agricultural literature
-\parencite{bouriNinoForecastabilityOilprice2021,
-bonatoNinoNinaForecastability2023}. The cross-correlogram follows standard
+ENSO-driven rainfall anomalies are hypothesised to affect harvests. This
+is consistent with the broader finding in the literature that ENSO's
+predictive value for commodity volatility concentrates at longer horizons:
+\textcite{bouriNinoForecastabilityOilprice2021} document gains at 2--4 year
+horizons for oil-price realized volatility, while
+\textcite{bonatoNinoNinaForecastability2023} find a general tendency for
+ENSO predictability to strengthen at longer forecast horizons across 16
+agricultural commodities. The cross-correlogram follows standard
 cross-correlation diagnostics for lead--lag relationships between time series
 \parencite{tsay2010analysis}. Third, a \emph{cross-commodity} check applies
-the identical HAR-X-QR specification to Arabica coffee and raw sugar---two
+the identical HAR-X-QR specification to Arabica coffee and raw sugar, two
 tropical soft commodities that share weather exposure and downstream markets
-with cocoa \parencite{geVolatilityMugCup2025}---since a genuine climate
+with cocoa \parencite{geVolatilityMugCup2025}, since a genuine climate
 channel should produce comparable gains across commodities grown in the same
 equatorial belt
 \parencite{ubilavaRoleNinoSouthern2018, bonatoNinoNinaForecastability2023}.
