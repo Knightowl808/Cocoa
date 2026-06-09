@@ -1,0 +1,31 @@
+\begin{table}[htbp]
+\centering
+\small
+\caption{Sup-Wald structural break test for the volatility series}
+\label{tab:break-test}
+\begin{tabular}{lr}
+\toprule
+\textbf{Quantity} & \textbf{Value} \\
+\midrule
+Series tested & Yang-Zhang volatility (out-of-sample) \\
+Candidate window & 1 Jan 2022 -- 1 Jan 2025 \\
+Estimated break date & 8 February 2024 \\
+Sup-Wald $F$-statistic & 1{,}809.05 \\
+Critical value (10\%) & 5.74 \\
+Critical value (5\%) & 7.17 \\
+Critical value (1\%) & 10.17 \\
+Pre-break observations & 10{,}098 \\
+Post-break observations & 470 \\
+Mean volatility, pre-break & 0.0134 \\
+Mean volatility, post-break & 0.0313 \\
+Post/pre ratio & $2.34\times$ \\
+\bottomrule
+\end{tabular}
+\par\smallskip
+{\footnotesize\textit{Note:} Single-break sup-Wald test
+\parencite{andrews1993tests} applied to the out-of-sample Yang-Zhang
+volatility series. The test fits a mean-shift regression at each candidate
+date and reports the maximum $F$-statistic; the null hypothesis of no break
+is rejected at the 1\% level. Critical values from \textcite{andrews1993tests},
+Table~1 ($k = 1$, mean shift).}
+\end{table}

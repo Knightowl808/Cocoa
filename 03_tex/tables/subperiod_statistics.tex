@@ -1,0 +1,23 @@
+\begin{table}[htbp]
+\centering
+\caption{Subperiod Statistics for Cocoa Returns and Volatility}
+\label{tab:subperiod-stats}
+\small
+\begin{tabular}{lrrrrrrr}
+\toprule
+\textbf{Period} & \textbf{Obs.} & \textbf{Mean} & \textbf{Std Dev} & \textbf{Skew.} & \textbf{Kurt.} & \textbf{Mean Vol.} & \textbf{Max Vol.} \\
+ & & \textbf{(\%)} & \textbf{(\%)} & & & \textbf{(\%)} & \textbf{(\%)} \\
+\midrule
+Full Sample & 13,087 & 0.012 & 1.929 & $-1.00$ & 15.96 & 28.01 & 127.33 \\
+\addlinespace
+1974--1990 & 4,225 & $-0.010$ & 2.099 & $-1.80$ & 23.56 & 34.03 & 127.33 \\
+1991--2005 & 3,799 & 0.011 & 1.762 & 0.28 & 2.80 & 24.14 & 49.63 \\
+2006--2021 & 4,065 & 0.015 & 1.608 & $-0.25$ & 5.88 & 23.38 & 53.94 \\
+2022--2025 & 998 & 0.093 & 2.793 & $-1.20$ & 10.42 & 36.20 & 109.76 \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}
+\small
+\item \textit{Notes}: Statistics computed for daily log-returns across distinct market regimes. Mean and Std Dev show daily return moments (annualized mean $\approx$ daily mean $\times$ 252). Mean Vol. and Max Vol. report annualized Yang-Zhang volatility (in percent). Kurt. denotes excess kurtosis. The 2022--2025 period exhibits the highest mean return (0.093\% daily $\approx$ 23\% annualized) alongside elevated volatility, reflecting the CSSVD-driven price surge. The 1974--1990 period shows the highest maximum volatility (127\%), corresponding to the late-1970s supply crisis.
+\end{tablenotes}
+\end{table}
