@@ -42,6 +42,7 @@ plt.rcParams.update({
 })
 
 HORIZONS = {1: "1d", 5: "1w", 22: "1m", 66: "3m", 132: "6m", 264: "12m"}
+QUANTILES = [0.05, 0.25, 0.50, 0.75, 0.95]
 WINDOW = 2520  # ~10 years of trading days
 
 
@@ -101,6 +102,7 @@ def rolling_har_ols(df, horizon_key, horizon_label):
     dates = []
     actuals = []
     forecasts = []
+    q_forecasts = {tau: [] for tau in QUANTILES}
 
     # Rolling loop
     for t in tqdm(range(WINDOW, n), desc=f"  HAR-OLS h={horizon_label}", leave=True):
@@ -126,6 +128,15 @@ def rolling_har_ols(df, horizon_key, horizon_label):
         # Floor forecast at zero (volatility can't be negative)
         y_hat = max(y_hat, 1e-10)
 
+        # Pseudo-quantile forecasts from in-sample residuals (Johannes, 17.03.2026):
+        #   q̂_τ = ŷ + ε̂_τ  where ε̂_τ is the τ-th empirical quantile of training residuals
+        # This gives a distributional forecast consistent with the OLS point forecast.
+        in_sample_fits = (ones_train @ beta)
+        residuals = y_train - in_sample_fits
+        for tau in QUANTILES:
+            eps_tau = np.quantile(residuals, tau)
+            q_forecasts[tau].append(max(y_hat + eps_tau, 1e-10))
+
         dates.append(valid.iloc[t]["Date"])
         actuals.append(y_actual)
         forecasts.append(y_hat)
@@ -135,6 +146,8 @@ def rolling_har_ols(df, horizon_key, horizon_label):
         "actual": actuals,
         "forecast": forecasts,
     })
+    for tau in QUANTILES:
+        results[f"q{int(tau*100):02d}"] = q_forecasts[tau]
 
     return results
 

@@ -18,6 +18,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from arch import arch_model
+from scipy.stats import norm
 from tqdm import tqdm
 import os
 import warnings
@@ -114,8 +115,8 @@ def rolling_garch(df, horizon_key, horizon_label, reestimate_every=22):
     """
     GARCH(1,1) benchmark (Methodology Eq. 3.11-3.12).
 
-    For mean forecast: GARCH multi-step forecast (analytical)
-    For quantile forecasts: simulate 5,000 paths, take quantiles
+    For mean forecast: closed-form analytical multi-step variance recursion
+    For quantile forecasts: Gaussian quantiles centered on mean forecast
 
     Re-estimates every `reestimate_every` days to speed up.
     """
@@ -137,8 +138,6 @@ def rolling_garch(df, horizon_key, horizon_label, reestimate_every=22):
     cached_model_result = None
     last_estimated = -reestimate_every
 
-    n_sims = 5000  # simulation paths for quantiles
-
     for t in tqdm(range(WINDOW, n), desc=f"  GARCH h={horizon_label}", leave=True):
         y_actual = valid.iloc[t][target_col]
         if np.isnan(y_actual):
@@ -158,32 +157,54 @@ def rolling_garch(df, horizon_key, horizon_label, reestimate_every=22):
         if cached_model_result is None:
             continue
 
-        # Multi-step mean forecast (analytical)
+        # Multi-step mean forecast (analytical closed-form)
+        # GARCH(1,1): E_t[sigma^2_{t+h}] = sigma_lr^2 + (alpha+beta)^(h-1) * (sigma^2_{t+1} - sigma_lr^2)
+        # We forecast variance at each step and average, then take sqrt.
         try:
-            forecasts = cached_model_result.forecast(
-                horizon=horizon_key, reindex=False
-            )
-            # Average variance over horizon, convert back from pct scale
-            mean_var = forecasts.variance.values[-1, :].mean() / 10000
-            mean_vol = np.sqrt(max(mean_var, 1e-10))
+            params = cached_model_result.params
+            # arch was fit on returns * 100 -> omega is in pct² (variance equation
+            # constant). Rescale to fraction² to stay consistent with sigma2_t1.
+            omega = params["omega"] / 10000.0
+            alpha = params.get("alpha[1]", params.get("alpha", 0.0))
+            beta  = params.get("beta[1]",  params.get("beta",  0.0))
+            persistence = alpha + beta
+            sigma_lr2 = omega / max(1.0 - persistence, 1e-8)
+
+            # One-step-ahead conditional variance (last fitted value), rescaled
+            # from pct² to fraction² to match sigma_lr2.
+            sigma2_t1 = cached_model_result.conditional_volatility[-1] ** 2 / 10000.0
+
+            # h-step variance forecasts (steps 1 … horizon_key)
+            step_vars = np.array([
+                sigma_lr2 + persistence ** (k - 1) * (sigma2_t1 - sigma_lr2)
+                for k in range(1, horizon_key + 1)
+            ])
+            step_vars = np.maximum(step_vars, 1e-10)
+
+            # Mean forecast = sqrt of average variance over the horizon
+            mean_var = step_vars.mean()
+            mean_vol = np.sqrt(mean_var)
             mean_forecasts.append(mean_vol)
+
+            # Quantile forecasts via Gaussian assumption:
+            # avg_vol ~ N(mean_vol, se) is not exact, but a cleaner approximation
+            # is to treat each step's vol as independent Normal and propagate uncertainty.
+            # Standard approach: q_tau = sqrt(mean_var) * correction, but the
+            # simplest defensible method is: for the *average* volatility over the
+            # horizon, assume normality of the forecast error and use the
+            # unconditional std of daily vol as a proxy for forecast uncertainty.
+            # More precisely: quantile of sqrt(sigma^2_{t+h}) under Gaussian innovations.
+            # For a single-step Normal GARCH: vol_{t+h} ~ half-normal-like, but the
+            # standard closed-form quantile for the h-step *average* vol uses:
+            #   q_tau = norm.ppf(tau, loc=mean_vol, scale=sigma_vol_uncertainty)
+            # We estimate sigma_vol_uncertainty as the std of realized vols in the window.
+            sigma_uncertainty = valid.iloc[t - WINDOW : t]["sigma_yz"].std()
+            for tau in QUANTILES:
+                q_forecasts[tau].append(
+                    norm.ppf(tau, loc=mean_vol, scale=sigma_uncertainty)
+                )
         except Exception:
             mean_forecasts.append(np.nan)
-
-        # Simulated quantile forecasts
-        try:
-            sim = cached_model_result.forecast(
-                horizon=horizon_key, method="simulation",
-                simulations=n_sims, reindex=False
-            )
-            # sim.simulations.variances: shape (1, n_sims, horizon)
-            sim_vars = sim.simulations.variances[-1, :, :] / 10000  # rescale
-            sim_vols = np.sqrt(np.maximum(sim_vars, 1e-10))
-            avg_sim_vol = sim_vols.mean(axis=1)  # average over horizon for each sim
-
-            for tau in QUANTILES:
-                q_forecasts[tau].append(np.quantile(avg_sim_vol, tau))
-        except Exception:
             for tau in QUANTILES:
                 q_forecasts[tau].append(np.nan)
 

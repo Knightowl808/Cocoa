@@ -77,7 +77,7 @@ def plot_panel(ax, h, panel_label):
     # Realized
     ref = load("har_x_qr", h)
     ax.plot(ref["Date"], ref["actual"] * 100,
-            color=C["black"], ls="-", lw=1.0, label="Realized")
+            color=C["black"], ls="-", lw=1.0, label="YZ volatility")
 
     # Model boundaries
     for tag, name, color, ls, lw in models:

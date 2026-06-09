@@ -9,12 +9,11 @@ framework. Table~\ref{tab:model-overview} provides an at-a-glance summary of
 the five models before the detailed specifications follow.
 
 \begin{table}[htbp]
-\centering
 \small
 \caption{Overview of models compared in this study, ordered from simplest to
 most complex.}
 \label{tab:model-overview}
-\begin{tabular}{lccccc}
+\noindent\hspace*{-1.25cm}\begin{tabular}{lccccc}
 \toprule
  & \multicolumn{3}{c}{Benchmarks} & \multicolumn{2}{c}{Main models} \\
 \cmidrule(lr){2-4}\cmidrule(lr){5-6}
@@ -30,9 +29,9 @@ Thesis role         & Naive BM       & Param.\ BM   & HAR benchmark  & Main (RQ1
 \bottomrule
 \end{tabular}
 \par\smallskip
-{\footnotesize\textit{Note:} Direct = horizon-specific model estimated by
-direct projection; Recursive = closed-form GARCH mean recursion, quantiles via
-Monte Carlo simulation; Check fn.\ = check-function (quantile) loss;
+{\footnotesize Direct = horizon-specific model estimated by direct projection;
+Recursive = closed-form GARCH mean recursion, quantiles via Gaussian closed-form
+(Eq.~\ref{eq:garch-quantile}); Check fn.\ = check-function (quantile) loss;
 BM = benchmark; Hist.\ Vol.\ = rolling 252-day window with empirical quantiles.}
 \end{table}
 
@@ -53,10 +52,9 @@ Rogers-Satchell component that exploits the daily range. The weighting
 factor $k = 0.34/(1.34 + (n+1)/(n-1))$ minimizes estimator variance.
 
 This choice is motivated by two considerations. First, Yang-Zhang achieves
-efficiency gains of 7--8 times over close-to-close estimators, making it
-well-suited to commodity futures where overnight gaps are common. Second,
-it can be computed over our full 40-year sample, unlike realized volatility
-which requires high-frequency data available only since 2019. We validate
+efficiency gains over close-to-close estimators and second,
+it can be computed over our full 40-year daily sample, unlike realized volatility
+which requires high-frequency data. We validate
 the Yang-Zhang proxy against five-minute realized volatility in
 Section~\ref{sec:data}, comparing rolling-window aggregates (22-day
 averages) of both measures via a Mincer-Zarnowitz regression. This
@@ -87,14 +85,14 @@ own coefficient vector, allowing the relationship between predictors and
 future volatility to differ across the distribution. For the median
 ($\tau = 0.50$), the coefficients may resemble those from OLS estimation.
 For the upper quantile ($\tau = 0.95$), the coefficients capture how the
-predictors relate to volatility during high-volatility episodes. We estimate
-five quantiles: $\tau \in \{0.05, 0.25, 0.50, 0.75, 0.95\}$. The extreme
-quantiles ($\tau = 0.05$ and $\tau = 0.95$) characterize the tails of the
-conditional distribution, while the intermediate quantiles provide a fuller
-picture of how the distribution shifts with predictor values. The upper
-quantile $\tau = 0.95$ is of particular interest, as it captures the
-conditional upper bound of volatility---the regime where mean forecasts
-are most likely to understate actual outcomes.
+predictors relate to volatility during high-volatility episodes. We report three quantiles: $\tau \in \{0.50, 0.75, 0.95\}$. The median
+$\tau = 0.50$ serves as an anchor to OLS-based point forecasts. The
+intermediate quantile $\tau = 0.75$ traces the transition from central
+to tail behaviour. The upper quantile $\tau = 0.95$ is of primary
+interest, as it captures the conditional upper bound of volatility, the
+regime where mean forecasts are most likely to understate actual outcomes.
+Lower quantiles ($\tau = 0.05$, $0.25$) are omitted as the thesis focuses
+on upper-tail risk.
 
 The dependent variable is the average daily volatility over the forecast
 horizon, following the HAR literature convention
@@ -135,38 +133,27 @@ We therefore augment the HAR-QR model with the ENSO climate index:
 \label{eq:har-x-qr}
 Q_{\tau}(\bar{\sigma}_{t:t+h} \mid \mathcal{F}_t) = \beta_0(\tau) + \beta_d(\tau) \sigma_t^{(d)} + \beta_w(\tau) \sigma_t^{(w)} + \beta_m(\tau) \sigma_t^{(m)} + \gamma(\tau) \text{ENSO}_t,
 \end{equation}
-where $\text{ENSO}_t$ is the Ni\~no~3.4 sea surface temperature anomaly
+We refer to this augmented specification as the \emph{HAR-X-QR} model,
+where the ``-X'' suffix denotes the inclusion of the exogenous ENSO regressor.
+Here $\text{ENSO}_t$ is the Ni\~no~3.4 sea surface temperature anomaly
 index from NOAA, measured monthly. The coefficient $\gamma(\tau)$ captures
 the marginal effect of ENSO conditions on future volatility at quantile
 $\tau$.
 
-We use \emph{contemporary} ENSO---that is, $\text{ENSO}_t$ predicts
-$\bar{\sigma}_{t:t+h}$---rather than explicitly lagged ENSO values. This
+We use \emph{contemporary} ENSO, meaning $\text{ENSO}_t$ predicts
+$\bar{\sigma}_{t:t+h}$, rather than explicitly lagged ENSO values. This
 specification is standard in the climate-commodity literature
 \parencite{bouriNinoForecastabilityOilprice2021,
-bonatoNinoNinaForecastability2023}. The key insight is that the forecast
-horizon itself provides the transmission lag: when $\text{ENSO}_t$ predicts
-$\bar{\sigma}_{t:t+264}$ (12 months ahead), there are 12 months for the
-climate-to-production-to-price transmission to unfold.
+bonatoNinoNinaForecastability2023} and is causal: the Ni\~no~3.4
+anomaly for month $t$ is publicly observable before any forecast is issued,
+so no forward-looking information enters the model. The sensitivity of this
+specification to alternative ENSO lags is examined in
+Section~\ref{sec:res-robustness}.
 
-The transmission mechanism for cocoa operates through West African rainfall.
-El Niño phases typically bring drought conditions during the critical pod
-development period (September--December), reducing yields in the subsequent
-harvest \parencite{ubilavaRoleNinoSouthern2018}. With two harvest seasons
-per year (main crop October--March, mid-crop May--August), ENSO effects
-materialize 6--12 months after the climate signal, aligning with our
-forecast horizons. ENSO is exogenous to the cocoa market---Pacific Ocean
-temperatures cannot be caused by cocoa prices---and is publicly available
-with minimal delay.
-
-We obtain monthly Ni\~no~3.4 sea surface temperatures from NOAA's Extended
-Reconstructed SST (ERSSTv5) dataset and convert them to anomalies by
-subtracting the 1991--2020 climatological monthly mean, following standard
-practice \parencite{bouriNinoForecastabilityOilprice2021,
-bonatoNinoNinaForecastability2023}. Positive anomalies indicate
-El~Ni\~no conditions; negative anomalies indicate La~Ni\~na. Since the
-index is monthly, each trading day inherits the Ni\~no~3.4 anomaly of its
-calendar month.
+Positive Ni\~no~3.4 anomalies indicate El~Ni\~no conditions; negative
+anomalies indicate La~Ni\~na. Full details of the index construction,
+sample coverage, and monthly-to-daily alignment are provided in
+Section~\ref{sec:data-enso}.
 
 The HAR-QR model is estimated by minimizing the check function loss:
 \begin{equation}
@@ -197,7 +184,7 @@ computed using the bootstrap.
 \label{sec:meth-benchmarks}
 %------------------------------------------------------------------------------
 
-We compare HAR-QR against three benchmarks that span the major modeling
+We compare HAR-QR and HAR-X-QR against three benchmarks that span the major modeling
 paradigms discussed in the literature review.
 
 The first benchmark is \emph{rolling historical volatility} with a one-year
@@ -224,15 +211,42 @@ predictions:
 \E_t[\sigma_{t+h}^2] = \bar{\sigma}^2 + (\alpha + \beta)^{h-1}(\sigma_{t+1}^2 - \bar{\sigma}^2),
 \end{equation}
 where $\bar{\sigma}^2 = \omega / (1 - \alpha - \beta)$ is the unconditional
-variance. For quantile forecasts, we simulate 10,000 paths assuming normal
-innovations and compute the $\tau$-quantile of simulated average
-volatilities.
+variance and $(\alpha + \beta)^{h-1}$ governs the speed of mean reversion.
+At long horizons, all $h$-step forecasts converge to $\bar{\sigma}^2$,
+irrespective of current conditions, a structural limitation of daily
+GARCH at 6--12 month horizons.
 
-The third benchmark is \emph{HAR-OLS}---the standard HAR model estimated
-by ordinary least squares, which provides forecasts of the conditional mean.
-Comparing HAR-OLS with HAR-QR at $\tau = 0.50$ tests whether the
-conditional distribution is symmetric; comparing HAR-QR at $\tau = 0.95$
-with HAR-OLS tests whether tail forecasts add value beyond mean forecasts.
+For quantile forecasts we adopt a closed-form Gaussian approach consistent
+with the normal-innovation assumption used in estimation.
+The mean forecast $\hat{\sigma}_{t,h}$ is obtained as the square root of
+the average $h$-step variance, $\hat{\sigma}_{t,h} = \sqrt{h^{-1}\sum_{k=1}^{h}\E_t[\sigma_{t+k}^2]}$.
+Forecast uncertainty is captured by the in-sample standard deviation
+$s_t$ of daily volatility over the estimation window. The $\tau$-quantile
+forecast is then
+\begin{equation}
+\label{eq:garch-quantile}
+\hat{Q}_{\tau,t}^{\text{GARCH}} = \hat{\sigma}_{t,h} + \Phi^{-1}(\tau)\, s_t,
+\end{equation}
+where $\Phi^{-1}(\tau)$ is the standard normal quantile function.
+
+The third benchmark is \emph{HAR-OLS}, the standard HAR model estimated
+by ordinary least squares. OLS yields only a conditional mean forecast
+$\hat{\mu}_{t,h}$, but a distributional forecast can be constructed from
+the in-sample residuals. Let $\hat{\varepsilon}_i = \sigma_i - \hat{\mu}_i$
+denote the residuals from the training window. The $\tau$-quantile forecast
+is then
+\begin{equation}
+\label{eq:har-ols-quantile}
+\hat{Q}_{\tau,t}^{\text{OLS}} = \hat{\mu}_{t,h} + \hat{F}^{-1}_{\varepsilon}(\tau),
+\end{equation}
+where $\hat{F}^{-1}_{\varepsilon}(\tau)$ is the empirical $\tau$-quantile of
+the training-window residuals. This pseudo-quantile approach requires no
+distributional assumption and produces forecasts that are directly comparable
+to HAR-QR: if HAR-QR provides no improvement over HAR-OLS at quantile $\tau$,
+then conditioning on the HAR structure suffices and quantile regression adds
+no value. Comparing the two at $\tau = 0.50$ tests symmetry of the conditional
+distribution; comparing at $\tau = 0.95$ tests whether the upper tail is
+better captured by explicit quantile estimation.
 
 %------------------------------------------------------------------------------
 \subsection{Evaluation Framework}
@@ -240,13 +254,13 @@ with HAR-OLS tests whether tail forecasts add value beyond mean forecasts.
 %------------------------------------------------------------------------------
 
 Evaluating volatility forecasts is complicated by the fact that volatility
-is unobserved---every evaluation compares forecasts against an imperfect
+is unobserved, and every evaluation compares forecasts against an imperfect
 proxy \parencite{pattonVolatilityForecastComparison}. We evaluate forecasts
 against Yang-Zhang volatility computed from realized prices, using loss
 functions that \textcite{pattonVolatilityForecastComparison} has shown to
 be robust to noise in the volatility proxy.
 
-For mean and median forecasts, we use QLIKE as the primary metric:
+For mean and median forecasts, we use QLIKE as the primary metric. All five models are therefore compared on QLIKE: the three benchmarks contribute their mean forecasts, while HAR-QR and HAR-X-QR contribute their median ($\tau = 0.50$) forecasts, which provide a natural reference point for comparison with OLS-based point forecasts.
 \begin{equation}
 \label{eq:qlike}
 \text{QLIKE} = \frac{1}{T} \sum_{t=1}^{T} \left( \log \hat{\sigma}_t^2 + \frac{\sigma_t^2}{\hat{\sigma}_t^2} \right).
@@ -257,13 +271,28 @@ are robust to proxy noise, showing that among nine commonly used loss
 functions, only MSE and QLIKE satisfy these conditions. We prefer QLIKE
 because it penalizes under-prediction of volatility proportionally more than
 MSE, which is appropriate when under-prediction is costlier than
-over-prediction---a property particularly relevant for upper-quantile
+over-prediction, a property particularly relevant for upper-quantile
 forecasts. As \textcite{pukeCoherentForecastingRealized2026} demonstrate,
-aligning estimation and evaluation loss functions---what they term
-\emph{coherent forecasting}---yields significant accuracy gains. Our HAR-QR
+aligning estimation and evaluation loss functions, what they call
+\emph{coherent forecasting}, yields significant accuracy gains. Our HAR-QR
 models are coherent by construction: the check function
 (Equation~\ref{eq:check-function}) serves as both the estimation objective
 and the evaluation metric.
+
+As a robustness check, we additionally report mean squared error (MSE) and
+mean absolute error (MAE) for all point-forecast models:
+\begin{align}
+\text{MSE} &= \frac{1}{T} \sum_{t=1}^{T} \bigl(\sigma_t - \hat{\sigma}_t\bigr)^2,
+\label{eq:mse} \\
+\text{MAE} &= \frac{1}{T} \sum_{t=1}^{T} \bigl|\sigma_t - \hat{\sigma}_t\bigr|.
+\label{eq:mae}
+\end{align}
+MSE penalizes large errors quadratically and is a member of the
+proxy-robust class alongside QLIKE \parencite{pattonVolatilityForecastComparison};
+including it confirms that QLIKE rankings are not sensitive to the choice of
+loss function within that class. MAE penalizes all deviations linearly and is
+not proxy-robust, but provides an interpretable measure of average forecast
+error in the original volatility units.
 
 For quantile forecasts, we use quantile loss:
 \begin{equation}
@@ -296,29 +325,18 @@ $\mathcal{M}^*$ that contains the best model with a given confidence level,
 avoiding the need to specify a single benchmark. Starting from the full
 collection of competing models, the procedure iteratively tests for equal
 predictive ability and eliminates the worst-performing model until
-non-rejection occurs. We implement MCS with 10,000 bootstrap replications;
-models in $\mathcal{M}^*$ at the 90\% level are considered statistically
-equivalent.
+non-rejection occurs. We implement MCS with 10,000 stationary bootstrap
+replications using the max-$t$ statistic; models in $\mathcal{M}^*$ at
+the 90\% confidence level are considered statistically equivalent.
 
 The forecast evaluation is conducted out-of-sample using a rolling estimation
 window of 2,520 trading
 days (approximately 10 years). At each forecast origin $t$, we estimate
 parameters using observations from $t - 2519$ to $t$, generate forecasts,
-and roll forward by one day. The window rolls \emph{daily} to maximize
-out-of-sample forecasts for statistical evaluation. In practice, weekly or
-monthly re-estimation would be more efficient; the thesis uses daily rolling
-for evaluation purposes. With approximately 30 years of out-of-sample data,
-this yields thousands of forecast-realization pairs for statistical testing.
-
-As a supplementary exercise, we freeze the estimation window at December
-2021---before the 2022--2024 price crisis---and generate forecasts without
-updating parameters. This exercise does \emph{not} test whether the model
-``predicted'' the crisis. The 2022--2024 episode involved supply shocks
-(CSSVD virus, adverse weather) not directly observable in price data.
-Rather, the test asks whether the model's structural relationships remain
-stable under stress. If pre-crisis parameters produce upper-quantile
-forecasts that cover realized volatility during the crisis, this
-demonstrates useful bounds even during extreme conditions.
+and roll forward by one day. The window rolls \emph{daily} to maximize the number of
+forecast--realization pairs for statistical evaluation. With approximately
+30 years of out-of-sample data, this yields thousands of pairs for
+statistical testing.
 
 Several assumptions underpin the methodology. First, we assume \emph{local
 stationarity}: volatility dynamics are stable within each estimation window,
@@ -329,12 +347,47 @@ which we validate empirically in Section~\ref{sec:data}. Third, we maintain
 \emph{linear conditional quantiles} for parsimony, acknowledging that
 non-linear extensions could potentially improve forecasts. Fourth, we
 assume ENSO is exogenous to the cocoa market, which is physically
-reasonable since Pacific Ocean temperatures cannot be caused by cocoa
-prices.
+reasonable.
 
 Based on the literature, we expect that at short horizons (1~day to
 1~month), HAR-QR will match or outperform benchmarks. At long horizons
-(6--12~months), standard HAR-QR will lose predictive power, but HAR-X-QR
-augmented with ENSO will recover predictive value---demonstrating that
+(6--12~months), standard HAR-QR will lose predictive power; we test whether
+HAR-X-QR augmented with ENSO recovers predictive value, examining whether
 climate information provides incremental value precisely where the
 autoregressive signal fades.
+
+Should HAR-X-QR outperform HAR-QR at long horizons, a single full-sample
+comparison cannot by itself establish whether the gain reflects a structural
+climate channel or a sample-specific coincidence. We therefore subject any
+ENSO improvement to three diagnostics, reported in
+Section~\ref{sec:res-robustness}. First, a \emph{temporal-stability} check
+traces the cumulative ENSO gain as the evaluation horizon advances through
+time using an expanding-window diagnostic. For each calendar month~$T$ in
+the out-of-sample period, the quantile loss difference
+$\Delta\text{QL}(T) = \text{QL}_{\text{HAR-X-QR}}(\{t \leq T\}) -
+\text{QL}_{\text{HAR-QR}}(\{t \leq T\})$ is computed over all
+forecast--realisation pairs up to and including~$T$. A structural ENSO--volatility channel should produce a
+steadily accumulating gain throughout the evaluation period, not a gain
+concentrated in a single episode. Second, a \emph{lag-structure}
+check re-estimates HAR-X-QR with the Ni\~no~3.4 index lagged 0, 1, 3, and~6
+months. Under the agronomic-transmission hypothesis the predictive content should
+strengthen at lags of 6--12 months, matching the window over which
+ENSO-driven rainfall anomalies are hypothesised to affect harvests. This
+is consistent with the broader finding in the literature that ENSO's
+predictive value for commodity volatility concentrates at longer horizons:
+\textcite{bouriNinoForecastabilityOilprice2021} document gains at 2--4 year
+horizons for oil-price realized volatility, while
+\textcite{bonatoNinoNinaForecastability2023} find a general tendency for
+ENSO predictability to strengthen at longer forecast horizons across 16
+agricultural commodities. Third, a \emph{cross-commodity} check applies
+the identical HAR-X-QR specification to Arabica coffee and raw sugar, two
+tropical soft commodities that share weather exposure and downstream markets
+with cocoa \parencite{geVolatilityMugCup2025}, since a genuine climate
+channel should produce comparable gains across commodities grown in the same
+equatorial belt
+\parencite{ubilavaRoleNinoSouthern2018, bonatoNinoNinaForecastability2023}.
+Because continuous futures price series for coffee and sugar are available
+from approximately 2000 onward, the out-of-sample evaluation windows for these
+commodities span roughly 15 years --- approximately half the cocoa sample.
+The cross-commodity results should be interpreted in light of this shorter
+evaluation period.

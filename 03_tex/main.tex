@@ -24,7 +24,9 @@
 
 % Graphics and figures
 \usepackage{graphicx}
-\graphicspath{{./figures/}}  % Set path for figures
+\usepackage{xcolor}
+\definecolor{hohblue}{RGB}{0,45,114}  % University of Hohenheim blue
+\graphicspath{{./figures/}{../images/}}  % Set paths for figures and logos
 \usepackage{float}
 \usepackage{caption}
 \usepackage{subcaption}
@@ -132,26 +134,55 @@
 \pagenumbering{roman}
 
 % Title page
+\begin{NoHyper}
 \begin{titlepage}
     \centering
-    \vspace*{2cm}
+    \vspace*{0.5cm}
 
-    {\Large\bfseries University of Hohenheim}\\[0.5cm]
+    % --- Title (very top) ---
+    {\LARGE\bfseries Time Series Approaches to Cocoa Price Risk\par}
 
-    {\LARGE\bfseries Time Series Approaches to Cocoa Price Risk}\\[3cm]
+    \vspace{1.8cm}
 
-    {\large Master Thesis}\\[0.5cm]
-    {\large submitted in partial fulfillment of the requirements for the degree of}\\[0.5cm]
-    {\large Master of Agricultural Sciences -- Advisory and Innovation Services in Agri-Food Systems}\\[2cm]
+    % --- Logos: University (left) and Ritter Sport (right) ---
+    \begin{minipage}[c]{0.5\textwidth}
+        \centering
+        \includegraphics[width=0.85\textwidth]{Uni_Logo_quadr.png}
+    \end{minipage}\hfill
+    \begin{minipage}[c]{0.5\textwidth}
+        \centering
+        \includegraphics[width=0.62\textwidth]{RS_Logo.png}
+    \end{minipage}
 
-    \begin{tabular}{ll}
-        \textbf{Author:} & Felix Köhler \\[0.3cm]
-        \textbf{First Supervisor:} & Prof. Dr. Thomas Dimpfl \\[0.3cm]
-        \textbf{Second Supervisor:} & Dr. Johannes Bleher \\[0.3cm]
-    \end{tabular}
+    \vspace{2cm}
+
+    % --- Author ---
+    {\large\bfseries Felix Köhler\par}
+    \vspace{0.3cm}
+    {\normalsize Matriculation Number: 839611\par}
+
+    \vspace{1cm}
+
+    {\normalsize Department of Business Mathematics and Data Science (510G)\par}
+
+    \vspace{1cm}
+
+    {\normalsize
+        Master Thesis submitted in partial fulfilment of the requirements for the\\
+        degree of Master of Science in Agricultural Sciences --\\
+        Advisory and Innovation Services in Agri-Food Systems\par}
+
+    \vspace{1cm}
+
+    {\normalsize June 2026\par}
+
+    \vspace{1cm}
+
+    {\normalsize Supervisor: Prof.\ Dr.\ Thomas Dimpfl \\ Second Supervisor: Dr.\ Johannes Bleher\par}
 
     \vfill
 \end{titlepage}
+\end{NoHyper}
 
 % Abstract (placeholder)
 % \section*{Abstract}
@@ -161,6 +192,7 @@
 
 % Table of contents
 \newpage
+\pagestyle{empty}
 \tableofcontents
 
 % List of figures (optional)
@@ -176,26 +208,30 @@
 % -----------------------------------------------------------------------------
 
 \newpage
+\pagestyle{fancy}
 \pagenumbering{arabic}
 
+% Section 0: Abstract
+\input{00_Abstract}
+\newpage
 % Section 1: Introduction
 \input{01_Introduction}
-
+\newpage
 % Section 2: Literature Review
 \input{02_LiteratureReview}
-
+\newpage
 % Section 3: Methodology
 \input{03_Methodology}
-
+\newpage
 % Section 4: Data (placeholder — requires figures)
 \input{04_Data}
-
+\newpage
 % Section 5: Results
 \input{05_Results}
-
-% Section 6: Discussion (placeholder)
-% \input{06_Discussion}
-
+\newpage
+% Section 6: Discussion
+\input{06_Discussion}
+\newpage
 % -----------------------------------------------------------------------------
 % BACK MATTER
 % -----------------------------------------------------------------------------
@@ -204,10 +240,12 @@
 
 % Bibliography
 \printbibliography[heading=bibintoc, title={References}]
+\newpage
 
-% Appendix (if needed)
-% \begin{appendices}
-% \input{Appendix_A}
-% \end{appendices}
+% Appendix
+\newpage
+\begin{appendices}
+\input{Appendix_A}
+\end{appendices}
 
 \end{document}

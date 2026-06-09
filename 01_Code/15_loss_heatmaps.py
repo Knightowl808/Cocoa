@@ -47,10 +47,28 @@ TEX_FIG  = os.path.join(os.path.dirname(BASE_DIR), "tex", "figures")
 os.makedirs(FIG_DIR, exist_ok=True)
 
 HORIZONS  = ["1d", "1w", "1m", "3m", "6m", "12m"]
-QUANTILES = [0.05, 0.25, 0.50, 0.75, 0.95]
+QUANTILES = [0.05, 0.50, 0.95]   # lower tail, median, upper tail
 
-# Models that produce quantile forecasts
-QL_MODELS = ["Historical Vol", "GARCH(1,1)", "HAR-QR", "HAR-X-QR"]
+# Models that produce quantile forecasts (full set incl. RQ2 regime-test specs)
+QL_MODELS = [
+    "Historical Vol",
+    "GARCH(1,1)",
+    "HAR-OLS",
+    "HAR-QR",
+    "HAR-X-QR",
+    "HAR-D-QR",
+    "HAR-XD-QR",
+]
+# Map model display name to forecast-file prefix in 00_Data/processed/
+FORECAST_PREFIX = {
+    "Historical Vol": "hist_vol",
+    "GARCH(1,1)":     "garch",
+    "HAR-OLS":        "har_ols",
+    "HAR-QR":         "har_qr",
+    "HAR-X-QR":       "har_x_qr",
+    "HAR-D-QR":       "har_d_qr",
+    "HAR-XD-QR":      "har_xd_qr",
+}
 # Models that produce mean/median forecasts (QLIKE-comparable)
 QLIKE_MODELS = ["Historical Vol", "GARCH(1,1)", "HAR-OLS", "HAR-QR (med.)", "HAR-X-QR (med.)"]
 
@@ -58,25 +76,49 @@ QLIKE_MODELS = ["Historical Vol", "GARCH(1,1)", "HAR-OLS", "HAR-QR (med.)", "HAR
 # ==========================================================================
 # Load Quantile Loss data
 # ==========================================================================
+def _ql(actual, forecast, tau):
+    """Pinball / check-loss."""
+    u = np.asarray(actual) - np.asarray(forecast)
+    return float(np.mean(u * (tau - (u < 0).astype(float))))
+
+
+def _ql_from_forecasts(prefix, tau):
+    """Recompute QL at a given tau from the per-horizon forecast CSVs."""
+    PROC_DIR = os.path.join(BASE_DIR, "00_Data", "processed")
+    out = {}
+    qcol = f"q{int(round(tau*100)):02d}"
+    for h in HORIZONS:
+        path = os.path.join(PROC_DIR, f"{prefix}_forecasts_{h}.csv")
+        if not os.path.exists(path):
+            out[h] = np.nan
+            continue
+        df = pd.read_csv(path)
+        if qcol not in df.columns or "actual" not in df.columns:
+            out[h] = np.nan
+            continue
+        out[h] = _ql(df["actual"].values, df[qcol].values, tau)
+    return out
+
+
 def load_quantile_losses():
-    """Combine all QL sources into a single DataFrame: Model, Horizon, Quantile, QL."""
-    frames = []
+    """Recompute QL at QUANTILES for every model from forecast CSVs.
 
-    # Benchmarks (Historical Vol, GARCH)
-    bench = pd.read_csv(os.path.join(TBL_DIR, "benchmark_quantile_loss.csv"))
-    frames.append(bench[["Model", "Horizon", "Quantile", "QL"]])
-
-    # HAR-QR
-    har = pd.read_csv(os.path.join(TBL_DIR, "har_qr_quantile_loss.csv"))
-    har["Model"] = "HAR-QR"
-    frames.append(har[["Model", "Horizon", "Quantile", "QL"]])
-
-    # HAR-X-QR
-    harx = pd.read_csv(os.path.join(TBL_DIR, "har_x_qr_quantile_loss.csv"))
-    harx["Model"] = "HAR-X-QR"
-    frames.append(harx[["Model", "Horizon", "Quantile", "QL"]])
-
-    return pd.concat(frames, ignore_index=True)
+    Source of truth = per-horizon forecast files in 00_Data/processed/.
+    This guarantees consistency across models even when CSV summary tables
+    contain different quantile sets.
+    """
+    rows = []
+    for model_name, prefix in FORECAST_PREFIX.items():
+        for tau in QUANTILES:
+            losses = _ql_from_forecasts(prefix, tau)
+            for h, v in losses.items():
+                rows.append({
+                    "Model": model_name,
+                    "Horizon": h,
+                    "Quantile": tau,
+                    "QL": v,
+                })
+    return pd.DataFrame(rows)
 
 
 # ==========================================================================
@@ -120,13 +162,10 @@ def plot_ql_heatmap():
         ],
     )
 
-    fig, axes = plt.subplots(1, 5, figsize=(16, 3.8), constrained_layout=True)
-
-    for qi, tau in enumerate(QUANTILES):
-        ax = axes[qi]
+    # --- Build all matrices first to compute global min/max ---
+    all_mats = {}
+    for tau in QUANTILES:
         sub = df[df["Quantile"] == tau]
-
-        # Build matrix: rows = models, cols = horizons
         mat = np.full((len(QL_MODELS), len(HORIZONS)), np.nan)
         for _, row in sub.iterrows():
             model_name = row["Model"]
@@ -135,13 +174,27 @@ def plot_ql_heatmap():
             mi = QL_MODELS.index(model_name)
             hi = HORIZONS.index(row["Horizon"])
             mat[mi, hi] = row["QL"]
+        all_mats[tau] = mat
 
-        # Normalise per-column (per horizon) so colours are relative
+    global_min = min(np.nanmin(m) for m in all_mats.values())
+    global_max = max(np.nanmax(m) for m in all_mats.values())
+    global_range = global_max - global_min
+
+    fig, axes = plt.subplots(1, len(QUANTILES),
+                             figsize=(3.4 * len(QUANTILES) + 1.6, 4.4),
+                             constrained_layout=True)
+    if len(QUANTILES) == 1:
+        axes = [axes]
+
+    for qi, tau in enumerate(QUANTILES):
+        ax = axes[qi]
+        mat = all_mats[tau]
+
+        # Global normalisation: same scale across all panels and horizons
+        mat_norm = (mat - global_min) / global_range
+
+        # Best (lowest QL) per column for bold annotation
         col_min = np.nanmin(mat, axis=0)
-        col_max = np.nanmax(mat, axis=0)
-        col_range = col_max - col_min
-        col_range[col_range == 0] = 1  # avoid division by zero
-        mat_norm = (mat - col_min) / col_range
 
         im = ax.imshow(mat_norm, cmap=cmap_ql, vmin=0, vmax=1, aspect="auto")
 
@@ -152,11 +205,9 @@ def plot_ql_heatmap():
                 nval = mat_norm[i, j]
                 if np.isnan(val):
                     continue
-                # Bold the best (lowest) in each column
                 is_best = (val == col_min[j])
                 txt_col = "white" if (nval < 0.15 or nval > 0.85) else "#333333"
                 weight = "bold" if is_best else "normal"
-                # Format: scientific-ish for readability
                 ax.text(j, i, f"{val:.5f}", ha="center", va="center",
                         fontsize=6.5, color=txt_col, fontweight=weight)
 
@@ -176,7 +227,7 @@ def plot_ql_heatmap():
     # Legend note
     fig.text(0.5, -0.02,
              "Green = lower quantile loss (better).  Bold = best model per horizon.  "
-             "Colours normalised per horizon within each panel.",
+             "Colours normalised globally across all panels.",
              ha="center", fontsize=7.5, style="italic", color="#555555")
 
     for d in [FIG_DIR, TEX_FIG]:

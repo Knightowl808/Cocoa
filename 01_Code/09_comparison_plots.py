@@ -51,28 +51,56 @@ C = {
     "accent":      "#2B6CB0",
 }
 
+import pandas as pd
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FIG_DIR  = os.path.join(BASE_DIR, "02_Output", "figures")
+TBL_DIR  = os.path.join(BASE_DIR, "02_Output", "tables")
+PROC_DIR = os.path.join(BASE_DIR, "00_Data", "processed")
 TEX_FIG  = os.path.join(os.path.dirname(BASE_DIR), "tex", "figures")
 os.makedirs(FIG_DIR, exist_ok=True)
 
-# ── Data ────────────────────────────────────────────────────────────────────
-horizons      = ["1d", "1w", "1m", "3m", "6m", "12m"]
-x             = np.arange(len(horizons))
+horizons = ["1d", "1w", "1m", "3m", "6m", "12m"]
+x        = np.arange(len(horizons))
 
-# QLIKE (mean forecast, more negative = better)
-qlike = {
-    "Historical Vol": [-7.002, -7.256, -7.327, -7.334, -7.324, -7.310],
-    "GARCH(1,1)":     [-7.242, -7.388, -7.406, -7.381, -7.356, -7.345],
-    "HAR-OLS":        [-7.302, -7.482, -7.521, -7.515, -7.492, -7.485],
-}
 
-# Quantile loss at tau=0.95 (lower = better)
+def _ql(actual, forecast, tau):
+    u = np.asarray(actual) - np.asarray(forecast)
+    return float(np.mean(u * (tau - (u < 0).astype(float))))
+
+
+def _ql95_from_forecasts(prefix):
+    out = []
+    for h in horizons:
+        path = os.path.join(PROC_DIR, f"{prefix}_forecasts_{h}.csv")
+        df = pd.read_csv(path)
+        out.append(_ql(df["actual"].values, df["q95"].values, 0.95))
+    return out
+
+
+# QLIKE (mean forecasts, more negative = better) - load from canonical CSVs
+def _load_qlike():
+    bench = pd.read_csv(os.path.join(TBL_DIR, "benchmark_mean_qlike.csv"))
+    bench = bench.set_index(["Model", "Horizon"])["QLIKE"]
+    har_ols = pd.read_csv(
+        os.path.join(TBL_DIR, "har_ols_qlike_loss.csv"), index_col=0
+    )["QLIKE"]
+    return {
+        "Historical Vol": [bench.loc[("Historical Vol", h)] for h in horizons],
+        "GARCH(1,1)":     [bench.loc[("GARCH(1,1)",     h)] for h in horizons],
+        "HAR-OLS":        [har_ols.loc[h]                    for h in horizons],
+    }
+
+
+qlike = _load_qlike()
+
+# Quantile loss at tau=0.95 (lower = better) - compute from per-model forecast CSVs
 ql95 = {
-    "Historical Vol": [0.001502, 0.001023, 0.000871, 0.000889, 0.000914, 0.000930],
-    "GARCH(1,1)":     [0.001986, 0.000975, 0.000590, 0.000570, 0.000607, 0.000663],
-    "HAR-QR":         [0.001193, 0.000692, 0.000458, 0.000433, 0.000454, 0.000446],
-    "HAR-X-QR":       [0.001195, 0.000695, 0.000464, 0.000418, 0.000387, 0.000333],
+    "Historical Vol": _ql95_from_forecasts("hist_vol"),
+    "GARCH(1,1)":     _ql95_from_forecasts("garch"),
+    "HAR-OLS":        _ql95_from_forecasts("har_ols"),
+    "HAR-QR":         _ql95_from_forecasts("har_qr"),
+    "HAR-X-QR":       _ql95_from_forecasts("har_x_qr"),
 }
 
 # ── Figure 1: QLIKE comparison ─────────────────────────────────────────────
@@ -107,6 +135,7 @@ fig, ax = plt.subplots(figsize=(6.5, 2.8))
 styles = [
     ("Historical Vol", C["light_gray"], "-.",  "s",  5.0),
     ("GARCH(1,1)",     C["mid_gray"],   ":",   "D",  4.5),
+    ("HAR-OLS",        C["mid_gray"],   "-",   "v",  4.5),
     ("HAR-QR",         C["dark_gray"],  "--",  "^",  5.0),
     ("HAR-X-QR",       C["black"],      "-",   "o",  5.0),
 ]

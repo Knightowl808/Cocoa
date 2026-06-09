@@ -79,6 +79,10 @@ def load_daily():
         print(f"  Dropping {bad.sum()} rows where High < Low")
         df = df[~bad].reset_index(drop=True)
 
+    # Trim to analysis period (early data is thin and illiquid)
+    START_DATE = pd.Timestamp("1985-01-01")
+    df = df[df["Date"] >= START_DATE].reset_index(drop=True)
+
     print(f"Daily data loaded: {len(df)} rows")
     print(f"  Date range: {df['Date'].min().date()} to {df['Date'].max().date()}")
     print(f"  Missing OHLC: {df[['Open','High','Low','Close']].isna().sum().sum()}")

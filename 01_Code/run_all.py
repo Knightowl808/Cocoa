@@ -34,11 +34,14 @@ SCRIPTS_MODELS = [
     ("06_rolling_har_ols.py",      "Rolling HAR-OLS (benchmark)"),
     ("07_rolling_har_qr.py",       "Rolling HAR-QR (core model)"),
     ("07b_rolling_har_x_qr.py",    "Rolling HAR-X-QR (with ENSO)"),
+    ("07c_rolling_har_d_qr.py",    "Rolling HAR-D-QR (crisis dummy only)"),
+    ("07d_rolling_har_xd_qr.py",   "Rolling HAR-XD-QR (ENSO + crisis dummy)"),
     ("08_benchmarks.py",           "Historical Vol + GARCH benchmarks"),
-    ("09_var_backtest.py",         "VaR backtesting"),
+    ("09_comparison_plots.py",     "Comparison Plots"),
     ("10_summary_plots.py",        "Summary comparison plots"),
     ("11_har_vs_har_x_comparison.py", "HAR-QR vs HAR-X-QR comparison (ENSO effects)"),
     ("12_model_confidence_set.py",    "Model Confidence Set (Hansen et al. 2011)"),
+    ("18_enso_regime_test.py",        "ENSO regime test (4-way comparison)"),
 ]
 
 

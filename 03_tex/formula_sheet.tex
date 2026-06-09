@@ -1,0 +1,514 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[margin=1.8cm]{geometry}
+\usepackage{amsmath,amssymb,bm}
+\usepackage{booktabs}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{enumitem}
+\setlist{nosep,leftmargin=1.2em}
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.4em}
+
+\newcommand{\sectionrule}{\vspace{0.3em}\hrule\vspace{0.5em}}
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries Formula Sheet --- Cocoa Volatility Forecasting}\\[0.3em]
+{\normalsize Meeting with Dr.\ Johannes Bleher, 17 March 2026 --- updated to current thesis state}
+\end{center}
+
+\sectionrule
+
+%==============================================================================
+\textbf{1\quad Volatility Measure: Yang-Zhang (2000)}
+%==============================================================================
+
+The Yang-Zhang estimator combines three variance components into a
+minimum-variance unbiased estimator of daily variance:
+\begin{equation*}
+\hat{\sigma}^2_{\text{YZ}} \;=\; \hat{\sigma}^2_O \;+\; k\,\hat{\sigma}^2_C \;+\; (1-k)\,\hat{\sigma}^2_{\text{RS}}
+\end{equation*}
+
+The three components are:
+
+\begin{tabular}{@{}lcl@{}}
+\textbf{Overnight variance:} & $\hat{\sigma}^2_O$ &$= \;\displaystyle\frac{1}{n-1}\sum_{i=1}^{n}\Bigl(\ln\frac{O_i}{C_{i-1}} - \overline{\ln\frac{O}{C_{-1}}}\Bigr)^{\!2}$ \\[12pt]
+\textbf{Open-to-close variance:} & $\hat{\sigma}^2_C$ &$= \;\displaystyle\frac{1}{n-1}\sum_{i=1}^{n}\Bigl(\ln\frac{C_i}{O_i} - \overline{\ln\frac{C}{O}}\Bigr)^{\!2}$ \\[12pt]
+\textbf{Rogers-Satchell:} & $\hat{\sigma}^2_{\text{RS}}$ &$= \;\displaystyle\frac{1}{n}\sum_{i=1}^{n}\Bigl[\ln\frac{H_i}{O_i}\ln\frac{H_i}{C_i} + \ln\frac{L_i}{O_i}\ln\frac{L_i}{C_i}\Bigr]$
+\end{tabular}
+
+\medskip
+The weighting factor that minimises estimator variance:
+\begin{equation*}
+k = \frac{0.34}{1.34 + \dfrac{n+1}{n-1}}
+\end{equation*}
+
+where $n$ is the estimation window length. The Rogers-Satchell component
+exploits the daily range (High, Low) for efficiency gains, while the
+overnight component handles opening gaps. Yang-Zhang achieves 7--8$\times$
+the efficiency of close-to-close estimators.
+
+\textbf{Annualisation:}\quad
+$\sigma_{\text{ann}} = \sigma_{\text{daily}} \times \sqrt{252}$\qquad
+(252 trading days per year; assumes uncorrelated daily returns.)
+
+\sectionrule
+
+%==============================================================================
+\textbf{2\quad Log Returns}
+%==============================================================================
+
+\begin{equation*}
+r_t = \ln\!\left(\frac{C_t}{C_{t-1}}\right)
+\end{equation*}
+
+where $C_t$ is the closing price on day $t$. Log returns are time-additive
+($r_{t:t+h} = \sum_{i=1}^{h} r_{t+i}$) and approximately normal over short
+horizons.
+
+\sectionrule
+
+%==============================================================================
+\textbf{3\quad Realized Volatility (5-minute, validation only)}
+%==============================================================================
+
+\begin{equation*}
+\text{RV}_t = \sum_{i=1}^{M} r_{t,i}^2
+\end{equation*}
+
+where $r_{t,i}$ is the log return for the $i$-th five-minute interval on
+day $t$, and $M \approx 78$ intervals per 6.5-hour trading session. Used
+only for proxy validation (we have $\sim$1 year of intraday data).
+
+\sectionrule
+
+%==============================================================================
+\textbf{4\quad Proxy Validation: Mincer-Zarnowitz Regression}
+%==============================================================================
+
+To validate Yang-Zhang as a proxy for true (unobservable) volatility, we
+regress realized volatility on Yang-Zhang:
+\begin{equation*}
+\text{RV}_t = \alpha + \beta\,\hat{\sigma}_{\text{YZ},t} + \varepsilon_t
+\end{equation*}
+
+\textbf{Null hypothesis} (unbiased proxy): $H_0:\; \alpha = 0,\; \beta = 1$.
+
+\textbf{Interpretation:}
+\begin{itemize}
+\item $R^2$ measures how much variation in RV is explained by YZ.
+\item Our result: $R^2 = 0.46$ at the daily level. This is reasonable ---
+  even different intraday sampling frequencies yield $R^2 \approx 0.6$--$0.7$
+  among themselves.
+\item Rolling 22-day averages improve correlation substantially (smooths
+  daily noise). Comparison at the multi-day level aligns with the HAR model's
+  use of averaged volatility as both predictors and targets.
+\item Joint $F$-test for $(\alpha=0, \beta=1)$ tests formal unbiasedness.
+\end{itemize}
+
+\sectionrule
+
+%==============================================================================
+\textbf{5\quad HAR Components (Corsi, 2009)}
+%==============================================================================
+
+The Heterogeneous Autoregressive model decomposes information flow at
+three frequencies --- daily, weekly, monthly --- reflecting the behaviour
+of different market participants:
+\begin{align*}
+\sigma_t^{(d)} &= \sigma_t
+& &\text{(daily --- 1 day)} \\[4pt]
+\sigma_t^{(w)} &= \frac{1}{5}\sum_{i=0}^{4}\sigma_{t-i}
+& &\text{(weekly --- 5-day average)} \\[4pt]
+\sigma_t^{(m)} &= \frac{1}{22}\sum_{i=0}^{21}\sigma_{t-i}
+& &\text{(monthly --- 22-day average)}
+\end{align*}
+
+\textbf{Forecast target} (average volatility over horizon $h$, used as
+the dependent variable in direct projection):
+\begin{equation*}
+\bar{\sigma}_{t:t+h} = \frac{1}{h}\sum_{i=1}^{h}\sigma_{t+i}
+\end{equation*}
+
+This averaging ensures comparability across horizons. At $h=1$ it reduces
+to tomorrow's volatility; at $h=264$ it is the average daily volatility
+over the next 12 months.
+
+\sectionrule
+
+%==============================================================================
+\textbf{6\quad HAR-QR Model --- Main Model (RQ1)}
+%==============================================================================
+
+The HAR-QR model estimates \emph{conditional quantiles} of future average
+volatility, with separate coefficients for each quantile $\tau$:
+\begin{equation*}
+\boxed{\;
+Q_{\tau}\!\bigl(\bar{\sigma}_{t:t+h}\mid\mathcal{F}_t\bigr)
+= \beta_0(\tau) + \beta_d(\tau)\,\sigma_t^{(d)} + \beta_w(\tau)\,\sigma_t^{(w)} + \beta_m(\tau)\,\sigma_t^{(m)}
+\;}
+\end{equation*}
+
+where $\mathcal{F}_t$ is the information set at time $t$.
+
+\textbf{Key properties:}
+\begin{itemize}
+\item Each quantile $\tau$ has \emph{its own} coefficient vector
+  $\bm{\beta}(\tau) = (\beta_0(\tau), \beta_d(\tau), \beta_w(\tau), \beta_m(\tau))'$.
+\item At $\tau = 0.50$: the conditional median (comparable to OLS mean).
+\item At $\tau = 0.95$: the conditional upper bound --- primary interest for
+  upper-tail risk.
+\item Quantiles estimated: $\tau \in \{0.50,\; 0.75,\; 0.95\}$.
+\item Horizons: $h \in \{1,\; 5,\; 22,\; 66,\; 132,\; 264\}$ trading days
+  (1d, 1w, 1m, 3m, 6m, 12m).
+\item Separate model for each $(h, \tau)$ pair $\Rightarrow$ $6 \times 3 = 18$ models.
+\end{itemize}
+
+\sectionrule
+
+%==============================================================================
+\textbf{7\quad HAR-X-QR Model with ENSO --- Extended Model (RQ2)}
+%==============================================================================
+
+The HAR-X-QR augments HAR-QR with the ENSO climate index:
+\begin{equation*}
+\boxed{\;
+Q_{\tau}\!\bigl(\bar{\sigma}_{t:t+h}\mid\mathcal{F}_t\bigr)
+= \beta_0(\tau) + \beta_d(\tau)\,\sigma_t^{(d)} + \beta_w(\tau)\,\sigma_t^{(w)} + \beta_m(\tau)\,\sigma_t^{(m)} + \gamma(\tau)\,\text{ENSO}_t
+\;}
+\end{equation*}
+
+\textbf{ENSO variable:}
+\begin{itemize}
+\item $\text{ENSO}_t$ = Ni\~no\,3.4 sea surface temperature anomaly
+  (monthly, NOAA ERSSTv5; anomaly relative to 1991--2020 climatological mean)
+\item Positive anomalies $\Rightarrow$ El Ni\~no;
+  negative anomalies $\Rightarrow$ La Ni\~na
+\item Enters \emph{contemporaneously}: $\text{ENSO}_t$ predicts
+  $\bar{\sigma}_{t:t+h}$. Fully causal --- monthly Ni\~no\,3.4 is publicly
+  observable before any forecast is issued.
+\item Each trading day inherits the Ni\~no\,3.4 anomaly of its calendar month.
+\end{itemize}
+
+\textbf{Transmission mechanism (hypothesis):}
+El Ni\~no $\to$ drought in West Africa (Sep--Dec) $\to$ reduced cocoa yields
+$\to$ supply disruption $\to$ volatility spike 6--12 months later.
+
+\sectionrule
+
+%==============================================================================
+\textbf{8\quad Robustness Diagnostics for the ENSO Signal}
+%==============================================================================
+
+Three diagnostics test whether the long-horizon HAR-X-QR gain is a stable
+structural signal or a sample-specific artefact. Each addresses an orthogonal
+threat to validity.
+
+\medskip
+\textbf{(a) Temporal stability --- pre-crisis subsample.}
+The sup-Wald structural break test (Andrews 1993) applied to
+out-of-sample Yang-Zhang volatility identifies \textbf{8~February~2024} as
+the single most significant break (sup-Wald $F = 1{,}809$, well above the
+1\% critical value of 10.17), corresponding to a $2.3\times$ step-increase
+in mean daily volatility. HAR-QR and HAR-X-QR quantile losses are re-evaluated
+restricting to forecast origins $t$ with $t + h < \text{8 Feb 2024}$
+($N \approx 10{,}076$ pairs). If the gain vanishes in the pre-crisis period,
+it was regime-driven rather than structural.
+
+\textbf{Result:} At 12m, the pre-crisis improvement retains 79\% of the
+full-sample gain ($21.4\%$ vs.\ $25.4\%$); at 6m, 57\% is retained ($9.5\%$
+vs.\ $14.7\%$). The 3m gain vanishes entirely ($-0.4\%$). The long-horizon
+signal partially pre-dates the crisis, but the crisis amplifies it.
+
+\medskip
+\textbf{(b) Lag-decay --- physical-channel test.}
+Replace $\text{ENSO}_t$ with $\text{ENSO}_{t-k}$ for $k \in \{0,\,1,\,3,\,6\}$
+months. Under the agronomic-transmission hypothesis, predictive power should
+\emph{strengthen} at lags 6--12 months (the window over which SST anomalies
+affect harvests). Monotone decay as $k$ grows contradicts this hypothesis.
+
+\begin{equation*}
+\boxed{\;
+Q_{\tau}\!\bigl(\bar{\sigma}_{t:t+h}\mid\mathcal{F}_t\bigr)
+= \beta_0(\tau) + \beta_d \sigma_t^{(d)} + \beta_w \sigma_t^{(w)} + \beta_m \sigma_t^{(m)} + \gamma(\tau)\,\text{ENSO}_{t-k}
+\;}
+\end{equation*}
+
+\textbf{Result:} At 12m, predictive power peaks at $k=1$ and decays sharply
+at $k=3$ and $k=6$ (which nearly matches the no-ENSO baseline). This is
+inconsistent with the physical channel and is instead consistent with ENSO
+acting as a contemporaneous regime-state indicator.
+
+\medskip
+\textbf{(c) Cross-commodity replication.}
+Apply the identical HAR-X-QR specification to Arabica coffee (ICE KC=F)
+and raw sugar (ICE SB=F) --- tropical soft commodities sharing weather exposure
+and downstream markets with cocoa. A structural climate channel should produce
+comparable gains across all three.
+
+\textbf{Result:} ENSO augmentation \emph{worsens} coffee forecasts at both
+horizons and produces a gain 22$\times$ smaller for sugar than for cocoa at 12m.
+The gain is specific to cocoa's sample period, not a general tropical-commodity
+climate signal.
+
+\medskip
+\textbf{(d) ENSO volatility operationalization.}
+Replace $\text{ENSO}_t$ level with a rolling standard deviation of Ni\~no\,3.4:
+$\text{sd}_{12m}$ (12-month window) and $\text{sd}_{36m}$ (36-month window).
+Motivated by the hypothesis that switching frequency between ENSO phases
+drives disruption rather than their level.
+
+\textbf{Result:} At (12m, $\tau=0.95$), vol-12m achieves 94\% of the level
+specification's gain; vol-36m only 25\%. In the pre-crisis subsample, vol-12m
+retains 91\% of its gain (comparable to level); vol-36m nearly vanishes (18\%
+retention). Vol-36m is fragile; vol-12m mirrors the level's partial stability.
+
+\sectionrule
+
+%==============================================================================
+\textbf{9\quad Estimation: Check Function (Pinball Loss)}
+%==============================================================================
+
+Quantile regression minimises the asymmetric check function loss:
+\begin{equation*}
+\hat{\bm{\beta}}(\tau) = \arg\min_{\bm{\beta}} \sum_{t=1}^{T-h}
+\rho_{\tau}\!\bigl(\bar{\sigma}_{t:t+h} - \bm{X}_t'\bm{\beta}\bigr)
+\end{equation*}
+
+where $\bm{X}_t = (1,\; \sigma_t^{(d)},\; \sigma_t^{(w)},\; \sigma_t^{(m)})'$
+for HAR-QR, or
+$\bm{X}_t = (1,\; \sigma_t^{(d)},\; \sigma_t^{(w)},\; \sigma_t^{(m)},\; \text{ENSO}_t)'$
+for HAR-X-QR.
+
+\textbf{Check function:}
+\begin{equation*}
+\rho_{\tau}(u) = u\cdot\bigl(\tau - \mathbf{1}_{u<0}\bigr)
+=
+\begin{cases}
+\tau \cdot u        & \text{if } u \ge 0 \quad \text{(under-prediction)}, \\[4pt]
+(\tau - 1)\cdot u   & \text{if } u < 0   \quad \text{(over-prediction)}.
+\end{cases}
+\end{equation*}
+
+The minimisation is a linear programming problem (Koenker \& d'Orey 1987),
+solved by the simplex algorithm. Standard errors via bootstrap.
+
+\sectionrule
+
+%==============================================================================
+\textbf{10\quad Benchmark Models}
+%==============================================================================
+
+\textbf{(a) Historical Volatility} (rolling 252-day window, non-parametric):
+\begin{equation*}
+\hat{\sigma}_{t+h}^{\text{hist}} = \sqrt{\frac{1}{252}\sum_{i=1}^{252}(r_{t-i+1}-\bar{r})^2}
+\end{equation*}
+
+Quantile forecasts: empirical quantiles of the past 252 volatility
+observations (sort and select at position $\lceil\tau\cdot 252\rceil$).
+Captures only unconditional variation --- naive baseline.
+
+\medskip
+\textbf{(b) GARCH(1,1)} (Bollerslev, 1986).
+Conditional-variance recursion:
+\begin{equation*}
+\sigma_t^2 \;=\; \omega \;+\; \alpha\,\varepsilon_{t-1}^2 \;+\; \beta\,\sigma_{t-1}^2.
+\end{equation*}
+
+\textbf{Closed-form multi-step forecast:}
+\begin{equation*}
+\mathbb{E}_t[\sigma_{t+h}^2]
+\;=\; \bar{\sigma}^2 \;+\; (\alpha+\beta)^{h-1}\bigl(\sigma_{t+1}^2 - \bar{\sigma}^2\bigr),
+\qquad
+\bar{\sigma}^2 \;=\; \frac{\omega}{1-\alpha-\beta}.
+\end{equation*}
+
+At long horizons $(\alpha+\beta)^{h-1} \to 0$ exponentially, so all
+multi-step forecasts collapse to $\bar{\sigma}^2$ --- the
+\emph{long-horizon degeneration} of daily-GARCH. For $\alpha+\beta \approx 0.97$,
+at $h=264$: $(0.97)^{263} \approx 0.0003$.
+
+Horizon-$h$ point forecast:
+$\hat{\sigma}_{t,h} = \sqrt{h^{-1}\sum_{k=1}^{h}\mathbb{E}_t[\sigma_{t+k}^2]}$.
+
+\textbf{Quantile forecasts} (Gaussian closed-form, consistent with normal-innovation
+assumption):
+\begin{equation*}
+\hat{Q}_{\tau,t}^{\text{GARCH}} = \hat{\sigma}_{t,h} \;+\; s_t \cdot \Phi^{-1}(\tau),
+\end{equation*}
+where $s_t$ is the in-estimation-window standard deviation of $\sigma_{\text{YZ}}$
+(proxy for forecast uncertainty) and $\Phi^{-1}$ is the standard-normal inverse CDF.
+
+\textbf{Units note:} \texttt{arch} fit on $r_t \times 100$ for numerical
+stability, so $\omega$ is in $(\%)^2$. All parameters rescaled to fraction$^2$
+units ($\omega^\star = \omega/10^4$) before the recursion to ensure consistent
+units throughout.
+
+\medskip
+\textbf{(c) HAR-OLS} (conditional mean + pseudo-quantile):
+\begin{equation*}
+\mathbb{E}\!\bigl[\bar{\sigma}_{t:t+h}\mid\mathcal{F}_t\bigr]
+= \beta_0 + \beta_d\,\sigma_t^{(d)} + \beta_w\,\sigma_t^{(w)} + \beta_m\,\sigma_t^{(m)}
+\end{equation*}
+
+Estimated by OLS (minimises $\sum(y - \hat{y})^2$). For distributional
+forecasts, let $\hat{\varepsilon}_i = \sigma_i - \hat{\mu}_i$ denote the
+training-window residuals. The $\tau$-quantile forecast is:
+\begin{equation*}
+\hat{Q}_{\tau,t}^{\text{OLS}} = \hat{\mu}_{t,h} + \hat{F}^{-1}_{\varepsilon}(\tau),
+\end{equation*}
+where $\hat{F}^{-1}_{\varepsilon}(\tau)$ is the empirical $\tau$-quantile of
+the training-window residuals. Requires no distributional assumption. Tests
+whether explicit quantile regression adds value beyond conditioning on the
+HAR structure alone.
+
+\sectionrule
+
+%==============================================================================
+\textbf{11\quad Evaluation Metrics}
+%==============================================================================
+
+\textbf{(a) QLIKE} --- for mean/median forecasts (robust to proxy noise,
+Patton 2011):
+\begin{equation*}
+\text{QLIKE} = \frac{1}{T}\sum_{t=1}^{T}\!\left(
+\ln\hat{\sigma}_t^2 + \frac{\sigma_t^2}{\hat{\sigma}_t^2}\right)
+\qquad\text{(more negative = better)}
+\end{equation*}
+
+Patton (2011): among standard loss functions, only MSE and QLIKE produce
+model rankings robust to noise in the volatility proxy. QLIKE penalises
+under-prediction proportionally more than MSE.
+
+\medskip
+\textbf{(b) MSE and MAE} --- point-forecast robustness checks:
+\begin{equation*}
+\text{MSE} = \frac{1}{T}\sum_{t=1}^{T}\bigl(\sigma_t - \hat{\sigma}_t\bigr)^2,
+\qquad
+\text{MAE} = \frac{1}{T}\sum_{t=1}^{T}\bigl|\sigma_t - \hat{\sigma}_t\bigr|.
+\end{equation*}
+
+MSE is proxy-robust (same class as QLIKE); MAE is not proxy-robust but
+gives an interpretable error in original volatility units. Both confirm
+QLIKE rankings hold across loss functions.
+
+\medskip
+\textbf{(c) Quantile Loss} --- for distributional forecasts:
+\begin{equation*}
+\text{QL}_\tau = \frac{1}{T}\sum_{t=1}^{T}\rho_\tau\!\bigl(\sigma_t - \hat{Q}_{\tau,t}\bigr)
+\qquad\text{(lower = better)}
+\end{equation*}
+
+Uses the same check function $\rho_\tau$ as estimation --- HAR-QR is
+\emph{coherent}: estimation and evaluation loss functions are aligned.
+
+\medskip
+\textbf{(d) Empirical Violation Rate} --- calibration diagnostic:
+\begin{equation*}
+\widehat{VR}_{\tau} = \frac{1}{T}\sum_{t=1}^{T}\mathbf{1}\!\left\{\sigma_t > \hat{Q}_{\tau,t}\right\}
+\end{equation*}
+
+A well-calibrated $\tau$-quantile forecast should have
+$\widehat{VR}_\tau \approx 1 - \tau$.
+
+\textbf{Results (HAR-QR, $\tau = 0.95$):}
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+Horizon & $N$ & Violations & $\widehat{VR}$ (\%) \\
+\midrule
+1d  & 10,545 & 510 & 4.84 \\
+1w  & 10,541 & 543 & 5.15 \\
+1m  & 10,524 & 600 & 5.70 \\
+3m  & 10,480 & 618 & 5.90 \\
+6m  & 10,414 & 733 & 7.04 \\
+12m & 10,282 & 857 & 8.34 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+HAR-X-QR at 12m: $\widehat{VR} = 10.29\%$ --- model positions the boundary
+more aggressively in El Ni\~no periods, incurring more breaches but achieving
+lower quantile loss overall.
+
+\medskip
+\textbf{(e) Model Confidence Set (MCS)} --- Hansen, Lunde \& Nason (2011):
+
+Sequential testing for comparing multiple models simultaneously. Iteratively
+eliminates the worst-performing model until the null of equal predictive
+ability is not rejected. Surviving set $\mathcal{M}^*$ contains the best
+model at $(1-\alpha)$ confidence.
+
+\textbf{Our settings:} $\alpha = 0.10$ (90\% confidence), 10\,000
+stationary bootstrap replications, max-$t$ statistic.
+Five models evaluated: Historical Vol, GARCH(1,1), HAR-OLS, HAR-QR, HAR-X-QR.
+
+\textbf{Interpretation of $p$-values:}
+\begin{itemize}
+\item $p = 1.00$: last model eliminated $=$ best performer
+\item $p < 0.10$: excluded from $\mathcal{M}^*$ (significantly worse)
+\item $p \in [0.10,\, 1.00)$: included in $\mathcal{M}^*$ but not the single best
+\end{itemize}
+
+\textbf{Why MCS over Diebold-Mariano?} DM is pairwise. With 5 models, that
+requires 10 pairwise tests --- multiple testing problem. MCS handles the joint
+comparison and controls the familywise error rate.
+
+\sectionrule
+
+%==============================================================================
+\textbf{12\quad Stationarity Tests}
+%==============================================================================
+
+\textbf{Augmented Dickey-Fuller (ADF):}
+\begin{equation*}
+\Delta y_t = \alpha + \delta\,y_{t-1} + \sum_{j=1}^{p}\phi_j\,\Delta y_{t-j} + \varepsilon_t
+\end{equation*}
+
+$H_0$: $\delta = 0$ (unit root / non-stationary). Lag length $p$ selected
+by AIC.
+
+\textbf{Phillips-Perron (PP):} Same null, non-parametric Newey-West HAC
+correction. More robust to serial correlation and heteroskedasticity.
+
+\textbf{Our results:} All series reject $H_0$ at 1\%:
+
+\begin{center}
+\begin{tabular}{lrrrr}
+\toprule
+Series & $N$ & ADF stat & PP stat & $p$-value \\
+\midrule
+Log returns       & 13,087 & $-112.08$ & $-112.09$ & $<0.001$ \\
+Yang-Zhang vol.   & 13,087 &   $-8.42$ &  $-90.99$ & $<0.001$ \\
+Ni\~no 3.4        &    787 &   $-6.85$ &   $-6.46$ & $<0.001$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Note: The ADF/PP discrepancy for YZ volatility ($-8.42$ vs $-90.99$) is
+because ADF needs 39 lags to whiten the highly persistent residuals, while
+PP uses a non-parametric correction. Both agree on rejection.
+
+\sectionrule
+
+%==============================================================================
+\textbf{13\quad Key Setup Parameters}
+%==============================================================================
+
+\begin{tabular}{@{}ll@{}}
+\textbf{Rolling estimation window:} & 2\,520 trading days $\approx$ 10 years \\
+\textbf{Out-of-sample forecasts:}   & $\approx$ 10\,500 daily forecast origins \\
+\textbf{Re-estimation frequency:}   & daily rolling (1-day step) \\
+\textbf{Data:}                       & ICE London Cocoa (LCCc1), daily OHLC+V, 1984--2025 \\
+\textbf{Horizons:}                   & $h \in \{1,\; 5,\; 22,\; 66,\; 132,\; 264\}$ days \\
+\textbf{Quantiles:}                  & $\tau \in \{0.50,\; 0.75,\; 0.95\}$ \\
+\textbf{Direct projection:}         & Separate model per $(h, \tau)$ pair \\
+\textbf{Total models:}              & 5 model types (Hist.\ Vol., GARCH, HAR-OLS, HAR-QR, HAR-X-QR)\\
+                                     & $\times$ 6 horizons $\times$ 3 quantiles \\
+\textbf{Structural break date:}     & 8 February 2024 (sup-Wald, Andrews 1993) \\
+\textbf{Pre-crisis subsample:}       & $N \approx 10{,}076$ pairs (before 8 Feb 2024) \\
+\end{tabular}
+
+\end{document}

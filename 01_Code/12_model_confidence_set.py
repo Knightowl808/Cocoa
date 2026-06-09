@@ -168,6 +168,7 @@ def mcs_quantile_loss():
     models = {
         "Historical Vol": "hist_vol",
         "GARCH(1,1)":     "garch",
+        "HAR-OLS":        "har_ols",
         "HAR-QR":         "har_qr",
         "HAR-X-QR":       "har_x_qr",
     }
