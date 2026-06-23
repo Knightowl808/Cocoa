@@ -23,7 +23,7 @@ Lag construction: .shift(L) on the MONTHLY nino34 series before
 Reduced scope (runtime management):
   Horizons:  1m, 6m, 12m  (the three most relevant for thesis)
   Quantile:  tau=0.95 only  (the upper tail Dr. Bleher cares about)
-  Lags:      0, 1, 3, 6 months
+  Lags:      0, 1, 3, 6, 12 months
 
 Output:
   02_Output/tables/lagged_enso_summary.csv
@@ -123,10 +123,16 @@ def rolling_har_x_lagged_qr(df, horizon_key, horizon_label, enso_col):
     target_col   = f"target_{horizon_label}"
     feature_cols = ["sigma_d", "sigma_w", "sigma_m", enso_col]
 
-    valid = df[["Date"] + feature_cols + [target_col]].dropna().reset_index(drop=True)
+    # Also require the contemporaneous 'enso' column to be non-missing:
+    # lagged columns extend further into the recent past than lag 0 (shift(L)
+    # fills the last L months), which would otherwise give different lag
+    # specifications different evaluation samples.
+    extra = ["enso"] if "enso" in df.columns and enso_col != "enso" else []
+    valid = (df[["Date"] + extra + feature_cols + [target_col]]
+             .dropna().reset_index(drop=True))
     n = len(valid)
 
-    if n < WINDOW + 100:
+    if n < WINDOW + horizon_key + 100:
         print(f"  WARNING: Only {n} valid obs for h={horizon_key}")
         return None
 
@@ -136,7 +142,10 @@ def rolling_har_x_lagged_qr(df, horizon_key, horizon_label, enso_col):
     cached_params = {tau: None for tau in QUANTILES_SUBSET}
     last_estimated = -REESTIMATE_EVERY
 
-    for t in tqdm(range(WINDOW, n),
+    # Estimation window ends at t - h: rows s > t - h have forward targets
+    # not fully realized at the forecast origin t (avoids look-ahead bias).
+    h = horizon_key
+    for t in tqdm(range(WINDOW + h, n),
                   desc=f"  lag={enso_col} h={horizon_label}",
                   leave=True):
         y_actual = valid.iloc[t][target_col]
@@ -147,7 +156,7 @@ def rolling_har_x_lagged_qr(df, horizon_key, horizon_label, enso_col):
         X_test_const = np.concatenate([[1.0], X_test])
 
         if t - last_estimated >= REESTIMATE_EVERY:
-            train   = valid.iloc[t - WINDOW : t]
+            train   = valid.iloc[t - h - WINDOW : t - h]
             X_train = sm.add_constant(train[feature_cols].values)
             y_train = train[target_col].values
 

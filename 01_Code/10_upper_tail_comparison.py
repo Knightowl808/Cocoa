@@ -77,6 +77,8 @@ SPLIT = pd.Timestamp("2023-01-01")
 YLIM = {
     ("1m",  "pre"):    3.0,
     ("1m",  "crisis"): 11.0,
+    ("6m",  "pre"):    3.0,
+    ("6m",  "crisis"): 5.5,
     ("12m", "pre"):    3.0,
     ("12m", "crisis"): 5.5,
 }
@@ -112,15 +114,17 @@ def plot_panel(ax, df_sub, ylim, ymin=0, is_top_left=False, show_ylabel=True):
 
 def build_figure(split: pd.Timestamp, left_label: str, right_label: str):
     fig, axes = plt.subplots(
-        2, 2,
-        figsize=(7.2, 5.0),
-        gridspec_kw={"width_ratios": [3, 1], "wspace": 0.18, "hspace": 0.35},
+        3, 2,
+        figsize=(7.2, 7.2),
+        gridspec_kw={"width_ratios": [3, 1], "wspace": 0.18, "hspace": 0.38},
     )
 
     horizons = [("1m",  "One-month horizon"),
+                ("6m",  "Six-month horizon"),
                 ("12m", "Twelve-month horizon")]
+    row_prefixes = ["a", "b", "c"]
 
-    for row, (horizon, hlabel) in enumerate(horizons):
+    for row, ((horizon, hlabel), prefix) in enumerate(zip(horizons, row_prefixes)):
         df = pd.read_csv(DATA / f"har_x_qr_forecasts_{horizon}.csv",
                          parse_dates=["Date"]).sort_values("Date")
 
@@ -140,7 +144,6 @@ def build_figure(split: pd.Timestamp, left_label: str, right_label: str):
                    is_top_left=False,
                    show_ylabel=True)
 
-        prefix = "a" if row == 0 else "b"
         ax_left.set_title(f"({prefix}1) {hlabel}: {left_label}",
                           loc="left", fontsize=9)
         ax_right.set_title(f"({prefix}2) {right_label}",

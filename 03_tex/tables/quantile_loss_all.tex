@@ -1,0 +1,37 @@
+\begin{table}[htbp]
+\centering
+\small
+\caption{Quantile loss by model and horizon across quantile levels}
+\label{tab:quantile-loss-all}
+\begin{tabular}{lcccccc}
+\toprule
+Model & 1d & 1w & 1m & 3m & 6m & 12m \\
+\midrule
+\multicolumn{7}{l}{\textit{Panel A: $\tau = 0.50$}} \\
+\addlinespace
+Historical Vol   & $0.002731$ & $0.001906$ & $0.001530$ & $0.001499$ & $0.001531$ & $0.001674$ \\
+GARCH(1,1)       & $0.003313$ & $0.002518$ & $0.002201$ & $0.002105$ & $0.002113$ & $0.002155$ \\
+HAR-OLS          & $\mathbf{0.002467}$ & $\mathbf{0.001637}$ & $\mathbf{0.001264}$ & $0.001213$ & $\mathbf{0.001291}$ & $0.001387$ \\
+HAR-QR           & $0.002470$ & $0.001639$ & $0.001267$ & $\mathbf{0.001201}$ & $0.001304$ & $0.001381$ \\
+HAR-X-QR         & $0.002470$ & $0.001645$ & $0.001275$ & $0.001219$ & $0.001317$ & $\mathbf{0.001358}$ \\
+\midrule
+\multicolumn{7}{l}{\textit{Panel B: $\tau = 0.75$}} \\
+\addlinespace
+Historical Vol   & $0.002672$ & $0.001790$ & $0.001444$ & $0.001391$ & $0.001480$ & $0.001706$ \\
+GARCH(1,1)       & $0.003099$ & $0.002176$ & $0.001746$ & $0.001639$ & $0.001633$ & $0.001675$ \\
+HAR-OLS          & $0.002408$ & $0.001557$ & $0.001184$ & $0.001118$ & $0.001172$ & $\mathbf{0.001290}$ \\
+HAR-QR           & $\mathbf{0.002396}$ & $\mathbf{0.001523}$ & $\mathbf{0.001159}$ & $\mathbf{0.001109}$ & $\mathbf{0.001147}$ & $0.001307$ \\
+HAR-X-QR         & $0.002397$ & $0.001528$ & $0.001175$ & $0.001146$ & $0.001187$ & $0.001395$ \\
+\midrule
+\multicolumn{7}{l}{\textit{Panel C: $\tau = 0.95$}} \\
+\addlinespace
+Historical Vol   & $0.001281$ & $0.000830$ & $0.000691$ & $0.000809$ & $0.001033$ & $0.001462$ \\
+GARCH(1,1)       & $0.001283$ & $0.000828$ & $0.000609$ & $0.000629$ & $0.000668$ & $\mathbf{0.000736}$ \\
+HAR-OLS          & $0.001229$ & $0.000746$ & $0.000536$ & $0.000558$ & $\mathbf{0.000608}$ & $0.000786$ \\
+HAR-QR           & $\mathbf{0.001159}$ & $\mathbf{0.000682}$ & $\mathbf{0.000500}$ & $\mathbf{0.000557}$ & $0.000704$ & $0.001041$ \\
+HAR-X-QR         & $0.001160$ & $0.000685$ & $0.000521$ & $0.000580$ & $0.000711$ & $0.001007$ \\
+\bottomrule
+\end{tabular}
+\par\smallskip
+{\footnotesize Quantile loss (Equation~\eqref{eq:quantile-loss}); lower values indicate better forecasts. Bold: best model at each horizon within a panel. The $\tau = 0.95$ panel reproduces Table~\ref{tab:upper-qlike-comparison} from the main text so the three panels can be read together. HAR-OLS quantiles are pseudo-quantiles from its in-sample residual distribution; HAR-QR and HAR-X-QR estimate the quantile directly.}
+\end{table}

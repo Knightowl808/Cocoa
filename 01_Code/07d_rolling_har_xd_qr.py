@@ -165,7 +165,7 @@ def rolling_har_xd_qr(df, horizon_key, horizon_label):
     valid = df[["Date"] + feature_cols + [target_col]].dropna().reset_index(drop=True)
     n = len(valid)
 
-    if n < WINDOW + 100:
+    if n < WINDOW + horizon_key + 100:
         print(f"  WARNING: Only {n} valid obs for h={horizon_key}")
         return None
 
@@ -176,7 +176,10 @@ def rolling_har_xd_qr(df, horizon_key, horizon_label):
     cached_params  = {tau: None for tau in QUANTILES}
     last_estimated = -REESTIMATE_EVERY
 
-    for t in tqdm(range(WINDOW, n), desc=f"  HAR-XD-QR h={horizon_label}", leave=True):
+    # Estimation window ends at t - h: rows s > t - h have forward targets
+    # not fully realized at the forecast origin t (avoids look-ahead bias).
+    h = horizon_key
+    for t in tqdm(range(WINDOW + h, n), desc=f"  HAR-XD-QR h={horizon_label}", leave=True):
         y_actual = valid.iloc[t][target_col]
         if np.isnan(y_actual):
             continue
@@ -185,7 +188,7 @@ def rolling_har_xd_qr(df, horizon_key, horizon_label):
         X_test_const = np.concatenate([[1.0], X_test])
 
         if t - last_estimated >= REESTIMATE_EVERY:
-            train   = valid.iloc[t - WINDOW : t]
+            train   = valid.iloc[t - h - WINDOW : t - h]
             X_train = sm.add_constant(train[feature_cols].values)
             y_train = train[target_col].values
 

@@ -86,11 +86,14 @@ def rolling_har_qr(df, horizon_key, horizon_label):
     target_col = f"target_{horizon_label}"
     feature_cols = ["sigma_d", "sigma_w", "sigma_m"]
 
-    # Prepare valid data
-    valid = df[["Date"] + feature_cols + [target_col]].dropna().reset_index(drop=True)
+    # Prepare valid data. 'enso' is NOT a regressor here; it is included in
+    # the dropna only to align the evaluation sample with the ENSO-augmented
+    # models (07b/07d/07h), so losses are computed over identical dates.
+    valid = (df[["Date", "enso"] + feature_cols + [target_col]]
+             .dropna().reset_index(drop=True))
     n = len(valid)
 
-    if n < WINDOW + 100:
+    if n < WINDOW + horizon_key + 100:
         print(f"  WARNING: Only {n} valid obs for h={horizon_key}")
         return None
 
@@ -103,7 +106,11 @@ def rolling_har_qr(df, horizon_key, horizon_label):
     cached_params = {tau: None for tau in QUANTILES}
     last_estimated = -REESTIMATE_EVERY  # force estimation on first iteration
 
-    for t in tqdm(range(WINDOW, n), desc=f"  HAR-QR h={horizon_label}", leave=True):
+    # The estimation window ends at t - h, not t: the target of row s covers
+    # sigma over s+1 ... s+h, so rows s > t - h have targets that are not
+    # fully realized at the forecast origin t (look-ahead bias otherwise).
+    h = horizon_key
+    for t in tqdm(range(WINDOW + h, n), desc=f"  HAR-QR h={horizon_label}", leave=True):
         y_actual = valid.iloc[t][target_col]
         if np.isnan(y_actual):
             continue
@@ -113,7 +120,7 @@ def rolling_har_qr(df, horizon_key, horizon_label):
 
         # Re-estimate every REESTIMATE_EVERY days
         if t - last_estimated >= REESTIMATE_EVERY:
-            train = valid.iloc[t - WINDOW : t]
+            train = valid.iloc[t - h - WINDOW : t - h]
             X_train = sm.add_constant(train[feature_cols].values)
             y_train = train[target_col].values
 

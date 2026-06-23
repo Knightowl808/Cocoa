@@ -1,0 +1,2266 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.3 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{nyt/global//global/global/global}
+    \entry{alfeusForecastingVolatilityCommodity2022}{article}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=6fe0251902dd1ba19ee00fea3cd23a0b}{%
+           family={Alfeus},
+           familyi={A\bibinitperiod},
+           given={Mesias},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=4e5b2866ea0265288ae6579db7aa454c}{%
+           family={Nikitopoulos},
+           familyi={N\bibinitperiod},
+           given={Christina\bibnamedelima Sklibosios},
+           giveni={C\bibinitperiod\bibinitdelim S\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{bbbbce20657277a5c0b3a553a28fb121}
+      \strng{fullhash}{bbbbce20657277a5c0b3a553a28fb121}
+      \strng{fullhashraw}{bbbbce20657277a5c0b3a553a28fb121}
+      \strng{bibnamehash}{bbbbce20657277a5c0b3a553a28fb121}
+      \strng{authorbibnamehash}{bbbbce20657277a5c0b3a553a28fb121}
+      \strng{authornamehash}{bbbbce20657277a5c0b3a553a28fb121}
+      \strng{authorfullhash}{bbbbce20657277a5c0b3a553a28fb121}
+      \strng{authorfullhashraw}{bbbbce20657277a5c0b3a553a28fb121}
+      \field{sortinit}{A}
+      \field{sortinithash}{2f401846e2029bad6b3ecc16d50031e2}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Commodity Markets}
+      \field{title}{Forecasting Volatility in Commodity Markets with Long-Memory Models}
+      \field{volume}{28}
+      \field{year}{2022}
+      \field{pages}{100248}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1016/j.jcomm.2022.100248
+      \endverb
+    \endentry
+    \entry{andersen1998answering}{article}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=09c85c9c10e1f8f0e62363a927495479}{%
+           family={Andersen},
+           familyi={A\bibinitperiod},
+           given={Torben\bibnamedelima G.},
+           giveni={T\bibinitperiod\bibinitdelim G\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=39f8f5a428abd62057a0152546172106}{%
+           family={Bollerslev},
+           familyi={B\bibinitperiod},
+           given={Tim},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{66206305e0f1ae2d30041520af83f69c}
+      \strng{fullhash}{66206305e0f1ae2d30041520af83f69c}
+      \strng{fullhashraw}{66206305e0f1ae2d30041520af83f69c}
+      \strng{bibnamehash}{66206305e0f1ae2d30041520af83f69c}
+      \strng{authorbibnamehash}{66206305e0f1ae2d30041520af83f69c}
+      \strng{authornamehash}{66206305e0f1ae2d30041520af83f69c}
+      \strng{authorfullhash}{66206305e0f1ae2d30041520af83f69c}
+      \strng{authorfullhashraw}{66206305e0f1ae2d30041520af83f69c}
+      \field{sortinit}{A}
+      \field{sortinithash}{2f401846e2029bad6b3ecc16d50031e2}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{International Economic Review}
+      \field{number}{4}
+      \field{title}{Answering the Skeptics: Yes, Standard Volatility Models Do Provide Accurate Forecasts}
+      \field{volume}{39}
+      \field{year}{1998}
+      \field{pages}{885\bibrangedash 905}
+      \range{pages}{21}
+      \verb{doi}
+      \verb 10.2307/2527343
+      \endverb
+    \endentry
+    \entry{andersen2007roughing}{article}{}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=09c85c9c10e1f8f0e62363a927495479}{%
+           family={Andersen},
+           familyi={A\bibinitperiod},
+           given={Torben\bibnamedelima G.},
+           giveni={T\bibinitperiod\bibinitdelim G\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=39f8f5a428abd62057a0152546172106}{%
+           family={Bollerslev},
+           familyi={B\bibinitperiod},
+           given={Tim},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=15cc2e3b52b5ea2d3045be532376a348}{%
+           family={Diebold},
+           familyi={D\bibinitperiod},
+           given={Francis\bibnamedelima X.},
+           giveni={F\bibinitperiod\bibinitdelim X\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{9272a1c6d168447aacb6c6349cd85cab}
+      \strng{fullhash}{3cdc87177c9c65d6c82cbb521aedb4ee}
+      \strng{fullhashraw}{3cdc87177c9c65d6c82cbb521aedb4ee}
+      \strng{bibnamehash}{3cdc87177c9c65d6c82cbb521aedb4ee}
+      \strng{authorbibnamehash}{3cdc87177c9c65d6c82cbb521aedb4ee}
+      \strng{authornamehash}{9272a1c6d168447aacb6c6349cd85cab}
+      \strng{authorfullhash}{3cdc87177c9c65d6c82cbb521aedb4ee}
+      \strng{authorfullhashraw}{3cdc87177c9c65d6c82cbb521aedb4ee}
+      \field{extraname}{1}
+      \field{sortinit}{A}
+      \field{sortinithash}{2f401846e2029bad6b3ecc16d50031e2}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Review of Economics and Statistics}
+      \field{number}{4}
+      \field{title}{Roughing It Up: Including Jump Components in the Measurement, Modeling, and Forecasting of Return Volatility}
+      \field{volume}{89}
+      \field{year}{2007}
+      \field{pages}{701\bibrangedash 720}
+      \range{pages}{20}
+      \verb{doi}
+      \verb 10.1162/rest.89.4.701
+      \endverb
+    \endentry
+    \entry{andersen2001distribution}{article}{}{}
+      \name{author}{4}{}{%
+        {{un=0,uniquepart=base,hash=09c85c9c10e1f8f0e62363a927495479}{%
+           family={Andersen},
+           familyi={A\bibinitperiod},
+           given={Torben\bibnamedelima G.},
+           giveni={T\bibinitperiod\bibinitdelim G\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=39f8f5a428abd62057a0152546172106}{%
+           family={Bollerslev},
+           familyi={B\bibinitperiod},
+           given={Tim},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=15cc2e3b52b5ea2d3045be532376a348}{%
+           family={Diebold},
+           familyi={D\bibinitperiod},
+           given={Francis\bibnamedelima X.},
+           giveni={F\bibinitperiod\bibinitdelim X\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=e1a168b034df2b20c2024d8976ae0157}{%
+           family={Labys},
+           familyi={L\bibinitperiod},
+           given={Paul},
+           giveni={P\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{9272a1c6d168447aacb6c6349cd85cab}
+      \strng{fullhash}{0b66d427f86ffe531c2d3ee63ee443a0}
+      \strng{fullhashraw}{0b66d427f86ffe531c2d3ee63ee443a0}
+      \strng{bibnamehash}{0b66d427f86ffe531c2d3ee63ee443a0}
+      \strng{authorbibnamehash}{0b66d427f86ffe531c2d3ee63ee443a0}
+      \strng{authornamehash}{9272a1c6d168447aacb6c6349cd85cab}
+      \strng{authorfullhash}{0b66d427f86ffe531c2d3ee63ee443a0}
+      \strng{authorfullhashraw}{0b66d427f86ffe531c2d3ee63ee443a0}
+      \field{extraname}{2}
+      \field{sortinit}{A}
+      \field{sortinithash}{2f401846e2029bad6b3ecc16d50031e2}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of the American Statistical Association}
+      \field{number}{453}
+      \field{title}{The Distribution of Realized Exchange Rate Volatility}
+      \field{volume}{96}
+      \field{year}{2001}
+      \field{pages}{42\bibrangedash 55}
+      \range{pages}{14}
+      \verb{doi}
+      \verb 10.1198/016214501750332965
+      \endverb
+    \endentry
+    \entry{asanteClimateChangeImpacts2025}{article}{}{}
+      \name{author}{6}{}{%
+        {{un=0,uniquepart=base,hash=89479404f5b48455d21c4c19599c7173}{%
+           family={Asante},
+           familyi={A\bibinitperiod},
+           given={Paulina\bibnamedelima A.},
+           giveni={P\bibinitperiod\bibinitdelim A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=b0bbe525a7b2e0bd9a01cf3b8feca159}{%
+           family={Rahn},
+           familyi={R\bibinitperiod},
+           given={Eric},
+           giveni={E\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=6e3dbca7b40006f392b25be7f83d026a}{%
+           family={Anten},
+           familyi={A\bibinitperiod},
+           given={Niels\bibnamedelimb P.\bibnamedelimi R.},
+           giveni={N\bibinitperiod\bibinitdelim P\bibinitperiod\bibinitdelim R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=6a871d1951e22148cbcb9810de476efe}{%
+           family={Zuidema},
+           familyi={Z\bibinitperiod},
+           given={Pieter\bibnamedelima A.},
+           giveni={P\bibinitperiod\bibinitdelim A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=06d1f9e57266d07ba19032c7c939d0e8}{%
+           family={Morales},
+           familyi={M\bibinitperiod},
+           given={Alejandro},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=6ca69123d3c8a1260e71e47da82037fa}{%
+           family={Rozendaal},
+           familyi={R\bibinitperiod},
+           given={Danaë\bibnamedelimb M.\bibnamedelimi A.},
+           giveni={D\bibinitperiod\bibinitdelim M\bibinitperiod\bibinitdelim A\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{159d2466945f59d2946fda5ecffc28d9}
+      \strng{fullhash}{de402cd127e9f7d5af38e443e9e7cb14}
+      \strng{fullhashraw}{de402cd127e9f7d5af38e443e9e7cb14}
+      \strng{bibnamehash}{de402cd127e9f7d5af38e443e9e7cb14}
+      \strng{authorbibnamehash}{de402cd127e9f7d5af38e443e9e7cb14}
+      \strng{authornamehash}{159d2466945f59d2946fda5ecffc28d9}
+      \strng{authorfullhash}{de402cd127e9f7d5af38e443e9e7cb14}
+      \strng{authorfullhashraw}{de402cd127e9f7d5af38e443e9e7cb14}
+      \field{sortinit}{A}
+      \field{sortinithash}{2f401846e2029bad6b3ecc16d50031e2}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Agricultural and Forest Meteorology}
+      \field{title}{Climate change impacts on cocoa production in the major producing countries of {West} and {Central Africa} by mid-century}
+      \field{year}{2025}
+      \verb{doi}
+      \verb 10.1016/j.agrformet.2025.110339
+      \endverb
+    \endentry
+    \entry{baurQuantileRegressionApproach2019}{article}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=1ce923a1009897ad72fa3ab179f295a6}{%
+           family={Baur},
+           familyi={B\bibinitperiod},
+           given={Dirk\bibnamedelima G.},
+           giveni={D\bibinitperiod\bibinitdelim G\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=b7c4ffee32d26fc7c89d3de05ec27aa3}{%
+           family={Dimpfl},
+           familyi={D\bibinitperiod},
+           given={Thomas},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{537d284195d422c97f10b83cb0734827}
+      \strng{fullhash}{537d284195d422c97f10b83cb0734827}
+      \strng{fullhashraw}{537d284195d422c97f10b83cb0734827}
+      \strng{bibnamehash}{537d284195d422c97f10b83cb0734827}
+      \strng{authorbibnamehash}{537d284195d422c97f10b83cb0734827}
+      \strng{authornamehash}{537d284195d422c97f10b83cb0734827}
+      \strng{authorfullhash}{537d284195d422c97f10b83cb0734827}
+      \strng{authorfullhashraw}{537d284195d422c97f10b83cb0734827}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Financial Econometrics}
+      \field{number}{4}
+      \field{title}{A Quantile Regression Approach to Estimate the Variance of Financial Returns}
+      \field{volume}{17}
+      \field{year}{2019}
+      \field{pages}{616\bibrangedash 644}
+      \range{pages}{29}
+      \verb{doi}
+      \verb 10.1093/jjfinec/nby027
+      \endverb
+    \endentry
+    \entry{benschFinalReportFederal}{report}{}{}
+      \name{author}{5}{}{%
+        {{un=0,uniquepart=base,hash=4cf8ac1f8d1eb00792c457e83790a02d}{%
+           family={Bensch},
+           familyi={B\bibinitperiod},
+           given={Gunther},
+           giveni={G\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=401c754efb71b3953838884bd0a7364b}{%
+           family={Kaestner},
+           familyi={K\bibinitperiod},
+           given={Kathrin},
+           giveni={K\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=9bdca8df4e467c3ccfc8eb5d5af7b8d7}{%
+           family={Schmid},
+           familyi={S\bibinitperiod},
+           given={Laura},
+           giveni={L\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=50bea9e05a91650d364afe7e107d0833}{%
+           family={Vance},
+           familyi={V\bibinitperiod},
+           given={Colin},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=390214b6585b6e39c58567be987a20b6}{%
+           family={Wilhelm},
+           familyi={W\bibinitperiod},
+           given={Adalbert},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{institution}{1}{%
+        {RWI -- Leibniz-Institut für Wirtschaftsforschung}%
+      }
+      \strng{namehash}{d9d32e160744df9bff79972a8ef1fafb}
+      \strng{fullhash}{7de3fc2f9e12c047ba34842ef3d7e08b}
+      \strng{fullhashraw}{7de3fc2f9e12c047ba34842ef3d7e08b}
+      \strng{bibnamehash}{7de3fc2f9e12c047ba34842ef3d7e08b}
+      \strng{authorbibnamehash}{7de3fc2f9e12c047ba34842ef3d7e08b}
+      \strng{authornamehash}{d9d32e160744df9bff79972a8ef1fafb}
+      \strng{authorfullhash}{7de3fc2f9e12c047ba34842ef3d7e08b}
+      \strng{authorfullhashraw}{7de3fc2f9e12c047ba34842ef3d7e08b}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Final Report for the Federal Agency for Agriculture and Food: Price Formation on the Cocoa Futures Market and on Physical Markets for Raw Cocoa}
+      \field{type}{Research Report}
+      \field{year}{2022}
+    \endentry
+    \entry{berganderDeepLearningCocoa2025}{article}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=7b27d9b0cab1b391b794d0ba45d746b4}{%
+           family={Bergander},
+           familyi={B\bibinitperiod},
+           given={Felix},
+           giveni={F\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{7b27d9b0cab1b391b794d0ba45d746b4}
+      \strng{fullhash}{7b27d9b0cab1b391b794d0ba45d746b4}
+      \strng{fullhashraw}{7b27d9b0cab1b391b794d0ba45d746b4}
+      \strng{bibnamehash}{7b27d9b0cab1b391b794d0ba45d746b4}
+      \strng{authorbibnamehash}{7b27d9b0cab1b391b794d0ba45d746b4}
+      \strng{authornamehash}{7b27d9b0cab1b391b794d0ba45d746b4}
+      \strng{authorfullhash}{7b27d9b0cab1b391b794d0ba45d746b4}
+      \strng{authorfullhashraw}{7b27d9b0cab1b391b794d0ba45d746b4}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Working Paper}
+      \field{title}{Deep Learning for Cocoa Price Forecasting: Integrating Weather and Fundamental Data}
+      \field{year}{2025}
+    \endentry
+    \entry{bollerslev1986generalized}{article}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=39f8f5a428abd62057a0152546172106}{%
+           family={Bollerslev},
+           familyi={B\bibinitperiod},
+           given={Tim},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{39f8f5a428abd62057a0152546172106}
+      \strng{fullhash}{39f8f5a428abd62057a0152546172106}
+      \strng{fullhashraw}{39f8f5a428abd62057a0152546172106}
+      \strng{bibnamehash}{39f8f5a428abd62057a0152546172106}
+      \strng{authorbibnamehash}{39f8f5a428abd62057a0152546172106}
+      \strng{authornamehash}{39f8f5a428abd62057a0152546172106}
+      \strng{authorfullhash}{39f8f5a428abd62057a0152546172106}
+      \strng{authorfullhashraw}{39f8f5a428abd62057a0152546172106}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Econometrics}
+      \field{number}{3}
+      \field{title}{Generalized Autoregressive Conditional Heteroskedasticity}
+      \field{volume}{31}
+      \field{year}{1986}
+      \field{pages}{307\bibrangedash 327}
+      \range{pages}{21}
+      \verb{doi}
+      \verb 10.1016/0304-4076(86)90063-1
+      \endverb
+    \endentry
+    \entry{bonatoNinoNinaForecastability2023}{article}{}{}
+      \name{author}{4}{}{%
+        {{un=0,uniquepart=base,hash=f8cb7403ce730adb0fa3afb956955e49}{%
+           family={Bonato},
+           familyi={B\bibinitperiod},
+           given={Matteo},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=51e6c8712a881d1f1d76ff4d6eb837c4}{%
+           family={Çepni},
+           familyi={Ç\bibinitperiod},
+           given={Oğuzhan},
+           giveni={O\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=6d2a6f686850299cb3a372d85ea4ada6}{%
+           family={Gupta},
+           familyi={G\bibinitperiod},
+           given={Rangan},
+           giveni={R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=2ca66c1178f341c106947918d87553af}{%
+           family={Pierdzioch},
+           familyi={P\bibinitperiod},
+           given={Christian},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{f9d0f93bb662d2270f0240619b2acb4c}
+      \strng{fullhash}{9a441dc5ac136190d990c5b33eb8a446}
+      \strng{fullhashraw}{9a441dc5ac136190d990c5b33eb8a446}
+      \strng{bibnamehash}{9a441dc5ac136190d990c5b33eb8a446}
+      \strng{authorbibnamehash}{9a441dc5ac136190d990c5b33eb8a446}
+      \strng{authornamehash}{f9d0f93bb662d2270f0240619b2acb4c}
+      \strng{authorfullhash}{9a441dc5ac136190d990c5b33eb8a446}
+      \strng{authorfullhashraw}{9a441dc5ac136190d990c5b33eb8a446}
+      \field{extraname}{1}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Forecasting}
+      \field{number}{4}
+      \field{title}{{El Niño}, {La Niña}, and Forecastability of the Realized Variance of Agricultural Commodity Prices: Evidence from a Machine Learning Approach}
+      \field{volume}{42}
+      \field{year}{2023}
+      \field{pages}{785\bibrangedash 801}
+      \range{pages}{17}
+      \verb{doi}
+      \verb 10.1002/for.2914
+      \endverb
+    \endentry
+    \entry{bonatoForecastingRealizedVolatility2024}{article}{}{}
+      \name{author}{4}{}{%
+        {{un=0,uniquepart=base,hash=f8cb7403ce730adb0fa3afb956955e49}{%
+           family={Bonato},
+           familyi={B\bibinitperiod},
+           given={Matteo},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=51e6c8712a881d1f1d76ff4d6eb837c4}{%
+           family={Çepni},
+           familyi={Ç\bibinitperiod},
+           given={Oğuzhan},
+           giveni={O\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=6d2a6f686850299cb3a372d85ea4ada6}{%
+           family={Gupta},
+           familyi={G\bibinitperiod},
+           given={Rangan},
+           giveni={R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=2ca66c1178f341c106947918d87553af}{%
+           family={Pierdzioch},
+           familyi={P\bibinitperiod},
+           given={Christian},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{f9d0f93bb662d2270f0240619b2acb4c}
+      \strng{fullhash}{9a441dc5ac136190d990c5b33eb8a446}
+      \strng{fullhashraw}{9a441dc5ac136190d990c5b33eb8a446}
+      \strng{bibnamehash}{9a441dc5ac136190d990c5b33eb8a446}
+      \strng{authorbibnamehash}{9a441dc5ac136190d990c5b33eb8a446}
+      \strng{authornamehash}{f9d0f93bb662d2270f0240619b2acb4c}
+      \strng{authorfullhash}{9a441dc5ac136190d990c5b33eb8a446}
+      \strng{authorfullhashraw}{9a441dc5ac136190d990c5b33eb8a446}
+      \field{extraname}{2}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Forecasting}
+      \field{number}{6}
+      \field{title}{Forecasting the Realized Volatility of Agricultural Commodity Prices: Does Sentiment Matter?}
+      \field{volume}{43}
+      \field{year}{2024}
+      \field{pages}{2088\bibrangedash 2125}
+      \range{pages}{38}
+      \verb{doi}
+      \verb 10.1002/for.3106
+      \endverb
+    \endentry
+    \entry{bouriNinoForecastabilityOilprice2021}{article}{}{}
+      \name{author}{4}{}{%
+        {{un=0,uniquepart=base,hash=e5a84a2df15c342eb56bb61d879ae67d}{%
+           family={Bouri},
+           familyi={B\bibinitperiod},
+           given={Elie},
+           giveni={E\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=6d2a6f686850299cb3a372d85ea4ada6}{%
+           family={Gupta},
+           familyi={G\bibinitperiod},
+           given={Rangan},
+           giveni={R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=2ca66c1178f341c106947918d87553af}{%
+           family={Pierdzioch},
+           familyi={P\bibinitperiod},
+           given={Christian},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=5f8ce7f33538440a60cc1a80c878099e}{%
+           family={Salisu},
+           familyi={S\bibinitperiod},
+           given={Afees\bibnamedelima A.},
+           giveni={A\bibinitperiod\bibinitdelim A\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{e6ce64011f81d49372e4516d89e382ea}
+      \strng{fullhash}{275d254c6fae17ca63c77b96f04c960d}
+      \strng{fullhashraw}{275d254c6fae17ca63c77b96f04c960d}
+      \strng{bibnamehash}{275d254c6fae17ca63c77b96f04c960d}
+      \strng{authorbibnamehash}{275d254c6fae17ca63c77b96f04c960d}
+      \strng{authornamehash}{e6ce64011f81d49372e4516d89e382ea}
+      \strng{authorfullhash}{275d254c6fae17ca63c77b96f04c960d}
+      \strng{authorfullhashraw}{275d254c6fae17ca63c77b96f04c960d}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Theoretical and Applied Climatology}
+      \field{title}{{El Niño} and Forecastability of Oil-Price Realized Volatility}
+      \field{volume}{144}
+      \field{year}{2021}
+      \field{pages}{1173\bibrangedash 1180}
+      \range{pages}{8}
+      \verb{doi}
+      \verb 10.1007/s00704-021-03569-1
+      \endverb
+    \endentry
+    \entry{christoffersen1998evaluating}{article}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=b47c3bafdfadc74b766e8aae014e66fd}{%
+           family={Christoffersen},
+           familyi={C\bibinitperiod},
+           given={Peter\bibnamedelima F.},
+           giveni={P\bibinitperiod\bibinitdelim F\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{b47c3bafdfadc74b766e8aae014e66fd}
+      \strng{fullhash}{b47c3bafdfadc74b766e8aae014e66fd}
+      \strng{fullhashraw}{b47c3bafdfadc74b766e8aae014e66fd}
+      \strng{bibnamehash}{b47c3bafdfadc74b766e8aae014e66fd}
+      \strng{authorbibnamehash}{b47c3bafdfadc74b766e8aae014e66fd}
+      \strng{authornamehash}{b47c3bafdfadc74b766e8aae014e66fd}
+      \strng{authorfullhash}{b47c3bafdfadc74b766e8aae014e66fd}
+      \strng{authorfullhashraw}{b47c3bafdfadc74b766e8aae014e66fd}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{International Economic Review}
+      \field{number}{4}
+      \field{title}{Evaluating Interval Forecasts}
+      \field{volume}{39}
+      \field{year}{1998}
+      \field{pages}{841\bibrangedash 862}
+      \range{pages}{22}
+      \verb{doi}
+      \verb 10.2307/2527341
+      \endverb
+    \endentry
+    \entry{clementsHarvestingHARXVolatility2024}{article}{}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=2c46c37643e1cf4e88da20db19956429}{%
+           family={Clements},
+           familyi={C\bibinitperiod},
+           given={Adam},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=88a3c0ece4861b27676cfa38f9d7022a}{%
+           family={Hurn},
+           familyi={H\bibinitperiod},
+           given={Stan},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=0937a097af212dce8c955a5c7f404f1a}{%
+           family={Volkov},
+           familyi={V\bibinitperiod},
+           given={Vladimir},
+           giveni={V\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{d9aacb92ef60f920ef6a8f9337b0bc0f}
+      \strng{fullhash}{4fbc98f5f2ae1b9eb15729a8511f88b6}
+      \strng{fullhashraw}{4fbc98f5f2ae1b9eb15729a8511f88b6}
+      \strng{bibnamehash}{4fbc98f5f2ae1b9eb15729a8511f88b6}
+      \strng{authorbibnamehash}{4fbc98f5f2ae1b9eb15729a8511f88b6}
+      \strng{authornamehash}{d9aacb92ef60f920ef6a8f9337b0bc0f}
+      \strng{authorfullhash}{4fbc98f5f2ae1b9eb15729a8511f88b6}
+      \strng{authorfullhashraw}{4fbc98f5f2ae1b9eb15729a8511f88b6}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Empirical Finance}
+      \field{title}{Harvesting {HAR-X} Volatility Forecasts Using {OHLC} Data}
+      \field{volume}{79}
+      \field{year}{2024}
+      \field{pages}{101555}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1016/j.jempfin.2024.101555
+      \endverb
+    \endentry
+    \entry{corsiSimpleApproximateLongMemory2008}{article}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=129c77b46135add6df324fff12fb9b28}{%
+           family={Corsi},
+           familyi={C\bibinitperiod},
+           given={Fulvio},
+           giveni={F\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{129c77b46135add6df324fff12fb9b28}
+      \strng{fullhash}{129c77b46135add6df324fff12fb9b28}
+      \strng{fullhashraw}{129c77b46135add6df324fff12fb9b28}
+      \strng{bibnamehash}{129c77b46135add6df324fff12fb9b28}
+      \strng{authorbibnamehash}{129c77b46135add6df324fff12fb9b28}
+      \strng{authornamehash}{129c77b46135add6df324fff12fb9b28}
+      \strng{authorfullhash}{129c77b46135add6df324fff12fb9b28}
+      \strng{authorfullhashraw}{129c77b46135add6df324fff12fb9b28}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Financial Econometrics}
+      \field{number}{2}
+      \field{title}{A Simple Approximate Long-Memory Model of Realized Volatility}
+      \field{volume}{7}
+      \field{year}{2009}
+      \field{pages}{174\bibrangedash 196}
+      \range{pages}{23}
+      \verb{doi}
+      \verb 10.1093/jjfinec/nbp001
+      \endverb
+    \endentry
+    \entry{degiannakisForecastingRealizedVolatility2022}{article}{}{}
+      \name{author}{4}{}{%
+        {{un=0,uniquepart=base,hash=20bafc8e72ea896a3e239e542d7ad2b0}{%
+           family={Degiannakis},
+           familyi={D\bibinitperiod},
+           given={Stavros},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=341aa6e4d398f30f908e89a4f2dec8ce}{%
+           family={Filis},
+           familyi={F\bibinitperiod},
+           given={George},
+           giveni={G\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=45c87939cd289cbcb232bbbebdad897d}{%
+           family={Klein},
+           familyi={K\bibinitperiod},
+           given={Tony},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=c611c9b1ca56c0bdc6050a7c15579291}{%
+           family={Walther},
+           familyi={W\bibinitperiod},
+           given={Thomas},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{1cacbb4cb83347481dd2b172f650213a}
+      \strng{fullhash}{6e32e1e143bc7259a0eebfa439da3bb7}
+      \strng{fullhashraw}{6e32e1e143bc7259a0eebfa439da3bb7}
+      \strng{bibnamehash}{6e32e1e143bc7259a0eebfa439da3bb7}
+      \strng{authorbibnamehash}{6e32e1e143bc7259a0eebfa439da3bb7}
+      \strng{authornamehash}{1cacbb4cb83347481dd2b172f650213a}
+      \strng{authorfullhash}{6e32e1e143bc7259a0eebfa439da3bb7}
+      \strng{authorfullhashraw}{6e32e1e143bc7259a0eebfa439da3bb7}
+      \field{sortinit}{D}
+      \field{sortinithash}{6f385f66841fb5e82009dc833c761848}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{International Journal of Forecasting}
+      \field{number}{1}
+      \field{title}{Forecasting Realized Volatility of Agricultural Commodities}
+      \field{volume}{38}
+      \field{year}{2022}
+      \field{pages}{74\bibrangedash 96}
+      \range{pages}{23}
+      \verb{doi}
+      \verb 10.1016/j.ijforecast.2019.08.011
+      \endverb
+    \endentry
+    \entry{dickey1979distribution}{article}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=f71b803d01236b0fcd2bb3e25e740864}{%
+           family={Dickey},
+           familyi={D\bibinitperiod},
+           given={David\bibnamedelima A.},
+           giveni={D\bibinitperiod\bibinitdelim A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=c387dbcd083b0685a01bb3f63c78387a}{%
+           family={Fuller},
+           familyi={F\bibinitperiod},
+           given={Wayne\bibnamedelima A.},
+           giveni={W\bibinitperiod\bibinitdelim A\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{bcf86ed68621816d8a6e135ace8b77cc}
+      \strng{fullhash}{bcf86ed68621816d8a6e135ace8b77cc}
+      \strng{fullhashraw}{bcf86ed68621816d8a6e135ace8b77cc}
+      \strng{bibnamehash}{bcf86ed68621816d8a6e135ace8b77cc}
+      \strng{authorbibnamehash}{bcf86ed68621816d8a6e135ace8b77cc}
+      \strng{authornamehash}{bcf86ed68621816d8a6e135ace8b77cc}
+      \strng{authorfullhash}{bcf86ed68621816d8a6e135ace8b77cc}
+      \strng{authorfullhashraw}{bcf86ed68621816d8a6e135ace8b77cc}
+      \field{sortinit}{D}
+      \field{sortinithash}{6f385f66841fb5e82009dc833c761848}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of the American Statistical Association}
+      \field{number}{366}
+      \field{title}{Distribution of the Estimators for Autoregressive Time Series with a Unit Root}
+      \field{volume}{74}
+      \field{year}{1979}
+      \field{pages}{427\bibrangedash 431}
+      \range{pages}{5}
+      \verb{doi}
+      \verb 10.2307/2286348
+      \endverb
+    \endentry
+    \entry{dimitriadisStatisticalInferenceScore2026}{article}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=1b778782737a7ed8deaf6db021fa6615}{%
+           family={Dimitriadis},
+           familyi={D\bibinitperiod},
+           given={Timo},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=c04817fbc6d5a5d4f047df1ac43fd17b}{%
+           family={Puke},
+           familyi={P\bibinitperiod},
+           given={Marius},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{6149654f7c53dcf8df39dba616b1f497}
+      \strng{fullhash}{6149654f7c53dcf8df39dba616b1f497}
+      \strng{fullhashraw}{6149654f7c53dcf8df39dba616b1f497}
+      \strng{bibnamehash}{6149654f7c53dcf8df39dba616b1f497}
+      \strng{authorbibnamehash}{6149654f7c53dcf8df39dba616b1f497}
+      \strng{authornamehash}{6149654f7c53dcf8df39dba616b1f497}
+      \strng{authorfullhash}{6149654f7c53dcf8df39dba616b1f497}
+      \strng{authorfullhashraw}{6149654f7c53dcf8df39dba616b1f497}
+      \field{sortinit}{D}
+      \field{sortinithash}{6f385f66841fb5e82009dc833c761848}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Working Paper}
+      \field{title}{Statistical Inference for Score-Based Forecast Evaluation}
+      \field{year}{2026}
+    \endentry
+    \entry{engle1982autoregressive}{article}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=d491df6781389ebb4ef255c1ec0ca7ed}{%
+           family={Engle},
+           familyi={E\bibinitperiod},
+           given={Robert\bibnamedelima F.},
+           giveni={R\bibinitperiod\bibinitdelim F\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{d491df6781389ebb4ef255c1ec0ca7ed}
+      \strng{fullhash}{d491df6781389ebb4ef255c1ec0ca7ed}
+      \strng{fullhashraw}{d491df6781389ebb4ef255c1ec0ca7ed}
+      \strng{bibnamehash}{d491df6781389ebb4ef255c1ec0ca7ed}
+      \strng{authorbibnamehash}{d491df6781389ebb4ef255c1ec0ca7ed}
+      \strng{authornamehash}{d491df6781389ebb4ef255c1ec0ca7ed}
+      \strng{authorfullhash}{d491df6781389ebb4ef255c1ec0ca7ed}
+      \strng{authorfullhashraw}{d491df6781389ebb4ef255c1ec0ca7ed}
+      \field{sortinit}{E}
+      \field{sortinithash}{8da8a182d344d5b9047633dfc0cc9131}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Econometrica}
+      \field{number}{4}
+      \field{title}{Autoregressive Conditional Heteroscedasticity with Estimates of the Variance of {United Kingdom} Inflation}
+      \field{volume}{50}
+      \field{year}{1982}
+      \field{pages}{987\bibrangedash 1007}
+      \range{pages}{21}
+      \verb{doi}
+      \verb 10.2307/1912773
+      \endverb
+    \endentry
+    \entry{geVolatilityMugCup2025}{article}{}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=49931336025224eccb2de22b80165f53}{%
+           family={Ge},
+           familyi={G\bibinitperiod},
+           given={Yiqun},
+           giveni={Y\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=22c5b8cfc6ff3a59685ad529b39e5c9f}{%
+           family={Chen},
+           familyi={C\bibinitperiod},
+           given={Xinru},
+           giveni={X\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=d07ab69b191db72008ca49a9eabb2191}{%
+           family={Ding},
+           familyi={D\bibinitperiod},
+           given={Lili},
+           giveni={L\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{b30e1602adc773a5781d23c312d8e731}
+      \strng{fullhash}{57b60a541c34a8aea29e201d087967ed}
+      \strng{fullhashraw}{57b60a541c34a8aea29e201d087967ed}
+      \strng{bibnamehash}{57b60a541c34a8aea29e201d087967ed}
+      \strng{authorbibnamehash}{57b60a541c34a8aea29e201d087967ed}
+      \strng{authornamehash}{b30e1602adc773a5781d23c312d8e731}
+      \strng{authorfullhash}{57b60a541c34a8aea29e201d087967ed}
+      \strng{authorfullhashraw}{57b60a541c34a8aea29e201d087967ed}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Finance Research Letters}
+      \field{title}{Volatility in a Mug Cup: Forecasting and Spillover Analysis of Cocoa, Coffee and Sugar Futures}
+      \field{volume}{75}
+      \field{year}{2025}
+      \field{pages}{106810}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1016/j.frl.2025.106810
+      \endverb
+    \endentry
+    \entry{ghyselsDirectIteratedMultiperiod2019}{article}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=fe30f81765eb94de52128d1b6585cc7f}{%
+           family={Ghysels},
+           familyi={G\bibinitperiod},
+           given={Eric},
+           giveni={E\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=9a2e3d65329af03acd5f62d53e2cb4f4}{%
+           family={Marcellino},
+           familyi={M\bibinitperiod},
+           given={Massimiliano},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Oxford University Press}%
+      }
+      \strng{namehash}{4ea5d30f9adb8bb70957d67faaeffe0d}
+      \strng{fullhash}{4ea5d30f9adb8bb70957d67faaeffe0d}
+      \strng{fullhashraw}{4ea5d30f9adb8bb70957d67faaeffe0d}
+      \strng{bibnamehash}{4ea5d30f9adb8bb70957d67faaeffe0d}
+      \strng{authorbibnamehash}{4ea5d30f9adb8bb70957d67faaeffe0d}
+      \strng{authornamehash}{4ea5d30f9adb8bb70957d67faaeffe0d}
+      \strng{authorfullhash}{4ea5d30f9adb8bb70957d67faaeffe0d}
+      \strng{authorfullhashraw}{4ea5d30f9adb8bb70957d67faaeffe0d}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Applied Economic Forecasting Using Time Series Methods}
+      \field{year}{2018}
+    \endentry
+    \entry{gilbertFoodPriceVolatility2010}{article}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=89f772f51f16555280068dc663c85183}{%
+           family={Gilbert},
+           familyi={G\bibinitperiod},
+           given={Christopher\bibnamedelima L.},
+           giveni={C\bibinitperiod\bibinitdelim L\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=d1327d2e50401c9b8aca030fdda4f35b}{%
+           family={Morgan},
+           familyi={M\bibinitperiod},
+           given={C.\bibnamedelimi Wyn},
+           giveni={C\bibinitperiod\bibinitdelim W\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{8e180cabe7e6ef1207027e651ccb98be}
+      \strng{fullhash}{8e180cabe7e6ef1207027e651ccb98be}
+      \strng{fullhashraw}{8e180cabe7e6ef1207027e651ccb98be}
+      \strng{bibnamehash}{8e180cabe7e6ef1207027e651ccb98be}
+      \strng{authorbibnamehash}{8e180cabe7e6ef1207027e651ccb98be}
+      \strng{authornamehash}{8e180cabe7e6ef1207027e651ccb98be}
+      \strng{authorfullhash}{8e180cabe7e6ef1207027e651ccb98be}
+      \strng{authorfullhashraw}{8e180cabe7e6ef1207027e651ccb98be}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Philosophical Transactions of the Royal Society B: Biological Sciences}
+      \field{number}{1554}
+      \field{title}{Food Price Volatility}
+      \field{volume}{365}
+      \field{year}{2010}
+      \field{pages}{3023\bibrangedash 3034}
+      \range{pages}{12}
+      \verb{doi}
+      \verb 10.1098/rstb.2010.0139
+      \endverb
+    \endentry
+    \entry{gongRealizedVolatilityForecasting2017}{article}{}{}
+      \name{author}{4}{}{%
+        {{un=0,uniquepart=base,hash=32b5a28667df78456cf3ffe239a8beb1}{%
+           family={Gong},
+           familyi={G\bibinitperiod},
+           given={Xu},
+           giveni={X\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=b2673ce0d1279b252ba0367b223297d7}{%
+           family={Si},
+           familyi={S\bibinitperiod},
+           given={Zengyan},
+           giveni={Z\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=d392a1f8a06789e902c1df595b7a8bfe}{%
+           family={Jiang},
+           familyi={J\bibinitperiod},
+           given={Ping},
+           giveni={P\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=29e4e30c91dfa3e95b68ab9aaf0b3b8e}{%
+           family={Ma},
+           familyi={M\bibinitperiod},
+           given={Qi},
+           giveni={Q\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{9ffb1241f60bfff81a03d626abefc012}
+      \strng{fullhash}{316552c39dd7e7266fe20859630c5c3a}
+      \strng{fullhashraw}{316552c39dd7e7266fe20859630c5c3a}
+      \strng{bibnamehash}{316552c39dd7e7266fe20859630c5c3a}
+      \strng{authorbibnamehash}{316552c39dd7e7266fe20859630c5c3a}
+      \strng{authornamehash}{9ffb1241f60bfff81a03d626abefc012}
+      \strng{authorfullhash}{316552c39dd7e7266fe20859630c5c3a}
+      \strng{authorfullhashraw}{316552c39dd7e7266fe20859630c5c3a}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{International Journal of Forecasting}
+      \field{number}{1}
+      \field{title}{Realized Volatility Forecasting of Agricultural Commodity Futures Using the {HAR} Model with Time-Varying Sparsity}
+      \field{volume}{33}
+      \field{year}{2017}
+      \field{pages}{132\bibrangedash 152}
+      \range{pages}{21}
+      \verb{doi}
+      \verb 10.1016/j.ijforecast.2016.09.004
+      \endverb
+    \endentry
+    \entry{guoForecastingVolatilityCommodity2025}{article}{}{}
+      \name{author}{4}{}{%
+        {{un=0,uniquepart=base,hash=363d258f2379bebd13fa201a8a53194d}{%
+           family={Guo},
+           familyi={G\bibinitperiod},
+           given={Yangli},
+           giveni={Y\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=ed149afaa8f4d7ce8fef0b4cb4da56d9}{%
+           family={Peng},
+           familyi={P\bibinitperiod},
+           given={Pei},
+           giveni={P\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=2ec91a1514d3b30f418a2a2d289908d4}{%
+           family={Zhou},
+           familyi={Z\bibinitperiod},
+           given={Ling},
+           giveni={L\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=cbab1417b785a8bcabd63b9b2fddd37f}{%
+           family={Tang},
+           familyi={T\bibinitperiod},
+           given={Yusui},
+           giveni={Y\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{bf047ee70d90fad92bba9e3598a14d03}
+      \strng{fullhash}{b503710c880775bf8b6b9353cbe935b6}
+      \strng{fullhashraw}{b503710c880775bf8b6b9353cbe935b6}
+      \strng{bibnamehash}{b503710c880775bf8b6b9353cbe935b6}
+      \strng{authorbibnamehash}{b503710c880775bf8b6b9353cbe935b6}
+      \strng{authornamehash}{bf047ee70d90fad92bba9e3598a14d03}
+      \strng{authorfullhash}{b503710c880775bf8b6b9353cbe935b6}
+      \strng{authorfullhashraw}{b503710c880775bf8b6b9353cbe935b6}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Finance Research Letters}
+      \field{title}{Forecasting Volatility in Commodity Markets with Climate Risk}
+      \field{volume}{71}
+      \field{year}{2025}
+      \field{pages}{106357}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1016/j.frl.2024.106357
+      \endverb
+    \endentry
+    \entry{hansen2005forecast}{article}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=1b69f8d059ca7b024817e06b9be0fda6}{%
+           family={Hansen},
+           familyi={H\bibinitperiod},
+           given={Peter\bibnamedelima R.},
+           giveni={P\bibinitperiod\bibinitdelim R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=8d526c5bfbc93e7d59acb3e0d9853324}{%
+           family={Lunde},
+           familyi={L\bibinitperiod},
+           given={Asger},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{938766e2ed127e1c0c61a8b9084ade36}
+      \strng{fullhash}{938766e2ed127e1c0c61a8b9084ade36}
+      \strng{fullhashraw}{938766e2ed127e1c0c61a8b9084ade36}
+      \strng{bibnamehash}{938766e2ed127e1c0c61a8b9084ade36}
+      \strng{authorbibnamehash}{938766e2ed127e1c0c61a8b9084ade36}
+      \strng{authornamehash}{938766e2ed127e1c0c61a8b9084ade36}
+      \strng{authorfullhash}{938766e2ed127e1c0c61a8b9084ade36}
+      \strng{authorfullhashraw}{938766e2ed127e1c0c61a8b9084ade36}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Applied Econometrics}
+      \field{number}{7}
+      \field{title}{A Forecast Comparison of Volatility Models: Does Anything Beat a {GARCH}(1,1)?}
+      \field{volume}{20}
+      \field{year}{2005}
+      \field{pages}{873\bibrangedash 889}
+      \range{pages}{17}
+      \verb{doi}
+      \verb 10.1002/jae.800
+      \endverb
+    \endentry
+    \entry{hansen2011model}{article}{}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=1b69f8d059ca7b024817e06b9be0fda6}{%
+           family={Hansen},
+           familyi={H\bibinitperiod},
+           given={Peter\bibnamedelima R.},
+           giveni={P\bibinitperiod\bibinitdelim R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=8d526c5bfbc93e7d59acb3e0d9853324}{%
+           family={Lunde},
+           familyi={L\bibinitperiod},
+           given={Asger},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=3ca7711233031156b6b4de630faa6724}{%
+           family={Nason},
+           familyi={N\bibinitperiod},
+           given={James\bibnamedelima M.},
+           giveni={J\bibinitperiod\bibinitdelim M\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{3635c3d620617105c21bc48d5dd037eb}
+      \strng{fullhash}{afc8041b233f6768b08a311935e640fe}
+      \strng{fullhashraw}{afc8041b233f6768b08a311935e640fe}
+      \strng{bibnamehash}{afc8041b233f6768b08a311935e640fe}
+      \strng{authorbibnamehash}{afc8041b233f6768b08a311935e640fe}
+      \strng{authornamehash}{3635c3d620617105c21bc48d5dd037eb}
+      \strng{authorfullhash}{afc8041b233f6768b08a311935e640fe}
+      \strng{authorfullhashraw}{afc8041b233f6768b08a311935e640fe}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Econometrica}
+      \field{number}{2}
+      \field{title}{The Model Confidence Set}
+      \field{volume}{79}
+      \field{year}{2011}
+      \field{pages}{453\bibrangedash 497}
+      \range{pages}{45}
+      \verb{doi}
+      \verb 10.3982/ECTA5771
+      \endverb
+    \endentry
+    \entry{haugomParsimoniousQuantileRegression2016}{article}{}{}
+      \name{author}{5}{}{%
+        {{un=0,uniquepart=base,hash=e58947fc3e36a0ae60dd45395b669ec6}{%
+           family={Haugom},
+           familyi={H\bibinitperiod},
+           given={Erik},
+           giveni={E\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=05ae77fbd987184de76d1c7cb6ef1e76}{%
+           family={Ray},
+           familyi={R\bibinitperiod},
+           given={Rina},
+           giveni={R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=4bda8738b9c2d9b1628d788a96cbb274}{%
+           family={Ullrich},
+           familyi={U\bibinitperiod},
+           given={Carl\bibnamedelima J.},
+           giveni={C\bibinitperiod\bibinitdelim J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=e2825aa4360099b495dd36cfb4d61ed8}{%
+           family={Veka},
+           familyi={V\bibinitperiod},
+           given={Steinar},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=579a0918b1c2a5abd02efb2f69792b59}{%
+           family={Westgaard},
+           familyi={W\bibinitperiod},
+           given={Sjur},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{b646f01dc7e5a67daa6b79cc68773849}
+      \strng{fullhash}{4b3690162531d70f0a3d7975c151dc63}
+      \strng{fullhashraw}{4b3690162531d70f0a3d7975c151dc63}
+      \strng{bibnamehash}{4b3690162531d70f0a3d7975c151dc63}
+      \strng{authorbibnamehash}{4b3690162531d70f0a3d7975c151dc63}
+      \strng{authornamehash}{b646f01dc7e5a67daa6b79cc68773849}
+      \strng{authorfullhash}{4b3690162531d70f0a3d7975c151dc63}
+      \strng{authorfullhashraw}{4b3690162531d70f0a3d7975c151dc63}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Finance Research Letters}
+      \field{title}{A Parsimonious Quantile Regression Model to Forecast Day-Ahead Value-at-Risk}
+      \field{volume}{16}
+      \field{year}{2016}
+      \field{pages}{196\bibrangedash 207}
+      \range{pages}{12}
+      \verb{doi}
+      \verb 10.1016/j.frl.2015.12.006
+      \endverb
+    \endentry
+    \entry{huangHighfrequencyApproachVaR2022}{article}{}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=b10f3e0ce7f16f0a94ce1010d46e826e}{%
+           family={Huang},
+           familyi={H\bibinitperiod},
+           given={Jiefei},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=9eda43a644030ac3eceaf837cb2489ac}{%
+           family={Xu},
+           familyi={X\bibinitperiod},
+           given={Yang},
+           giveni={Y\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=a50edb51088b4f0c7e6bd7779e94c9df}{%
+           family={Song},
+           familyi={S\bibinitperiod},
+           given={Yuping},
+           giveni={Y\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{a8086c29e5fd63a2fc03f07b66a54ffb}
+      \strng{fullhash}{5b2b6658128c0886042c5c471043ada6}
+      \strng{fullhashraw}{5b2b6658128c0886042c5c471043ada6}
+      \strng{bibnamehash}{5b2b6658128c0886042c5c471043ada6}
+      \strng{authorbibnamehash}{5b2b6658128c0886042c5c471043ada6}
+      \strng{authornamehash}{a8086c29e5fd63a2fc03f07b66a54ffb}
+      \strng{authorfullhash}{5b2b6658128c0886042c5c471043ada6}
+      \strng{authorfullhashraw}{5b2b6658128c0886042c5c471043ada6}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Physica A: Statistical Mechanics and its Applications}
+      \field{title}{A High-Frequency Approach to {VaR} Measures and Forecasts Based on the {HAR-QREG} Model with Jumps}
+      \field{volume}{608}
+      \field{year}{2022}
+      \field{pages}{128253}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1016/j.physa.2022.128253
+      \endverb
+    \endentry
+    \entry{ifpriSoaringCocoaPrices2024}{article}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=55a1ba106fdd047a627693eefc3b1893}{%
+           family={Institute},
+           familyi={I\bibinitperiod},
+           given={International\bibnamedelimb Food\bibnamedelimb Policy\bibnamedelima Research},
+           giveni={I\bibinitperiod\bibinitdelim F\bibinitperiod\bibinitdelim P\bibinitperiod\bibinitdelim R\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{55a1ba106fdd047a627693eefc3b1893}
+      \strng{fullhash}{55a1ba106fdd047a627693eefc3b1893}
+      \strng{fullhashraw}{55a1ba106fdd047a627693eefc3b1893}
+      \strng{bibnamehash}{55a1ba106fdd047a627693eefc3b1893}
+      \strng{authorbibnamehash}{55a1ba106fdd047a627693eefc3b1893}
+      \strng{authornamehash}{55a1ba106fdd047a627693eefc3b1893}
+      \strng{authorfullhash}{55a1ba106fdd047a627693eefc3b1893}
+      \strng{authorfullhashraw}{55a1ba106fdd047a627693eefc3b1893}
+      \field{sortinit}{I}
+      \field{sortinithash}{8d291c51ee89b6cd86bf5379f0b151d8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IFPRI Blog}
+      \field{note}{Accessed 2026-05-29}
+      \field{title}{Soaring Cocoa Prices: Diverse Impacts and Implications for Key West African Producers}
+      \field{year}{2024}
+      \verb{urlraw}
+      \verb https://www.ifpri.org/blog/soaring-cocoa-prices-diverse-impacts-and-implications-key-west-african-producers
+      \endverb
+      \verb{url}
+      \verb https://www.ifpri.org/blog/soaring-cocoa-prices-diverse-impacts-and-implications-key-west-african-producers
+      \endverb
+    \endentry
+    \entry{koenker1978regression}{article}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=713ca648cccb03223d755f3f2ff51a5c}{%
+           family={Koenker},
+           familyi={K\bibinitperiod},
+           given={Roger},
+           giveni={R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=c9f29d0eb68fa72d93bcdec3a7f8d124}{%
+           family={Bassett},
+           familyi={B\bibinitperiod},
+           given={Gilbert},
+           giveni={G\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{17a6c2dbc6141333000fcbaf65eb2c10}
+      \strng{fullhash}{17a6c2dbc6141333000fcbaf65eb2c10}
+      \strng{fullhashraw}{17a6c2dbc6141333000fcbaf65eb2c10}
+      \strng{bibnamehash}{17a6c2dbc6141333000fcbaf65eb2c10}
+      \strng{authorbibnamehash}{17a6c2dbc6141333000fcbaf65eb2c10}
+      \strng{authornamehash}{17a6c2dbc6141333000fcbaf65eb2c10}
+      \strng{authorfullhash}{17a6c2dbc6141333000fcbaf65eb2c10}
+      \strng{authorfullhashraw}{17a6c2dbc6141333000fcbaf65eb2c10}
+      \field{sortinit}{K}
+      \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Econometrica}
+      \field{number}{1}
+      \field{title}{Regression Quantiles}
+      \field{volume}{46}
+      \field{year}{1978}
+      \field{pages}{33\bibrangedash 50}
+      \range{pages}{18}
+      \verb{doi}
+      \verb 10.2307/1913643
+      \endverb
+    \endentry
+    \entry{koenker1987algorithm}{article}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=713ca648cccb03223d755f3f2ff51a5c}{%
+           family={Koenker},
+           familyi={K\bibinitperiod},
+           given={Roger},
+           giveni={R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=f279b9a8792522e6b15b1543f5ff646a}{%
+           family={d'Orey},
+           familyi={d\bibinitperiod},
+           given={Vasco},
+           giveni={V\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{67a21ebcce1822ee9d731de709ea8d0a}
+      \strng{fullhash}{67a21ebcce1822ee9d731de709ea8d0a}
+      \strng{fullhashraw}{67a21ebcce1822ee9d731de709ea8d0a}
+      \strng{bibnamehash}{67a21ebcce1822ee9d731de709ea8d0a}
+      \strng{authorbibnamehash}{67a21ebcce1822ee9d731de709ea8d0a}
+      \strng{authornamehash}{67a21ebcce1822ee9d731de709ea8d0a}
+      \strng{authorfullhash}{67a21ebcce1822ee9d731de709ea8d0a}
+      \strng{authorfullhashraw}{67a21ebcce1822ee9d731de709ea8d0a}
+      \field{sortinit}{K}
+      \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Applied Statistics}
+      \field{number}{3}
+      \field{title}{Algorithm {AS} 229: Computing Regression Quantiles}
+      \field{volume}{36}
+      \field{year}{1987}
+      \field{pages}{383\bibrangedash 393}
+      \range{pages}{11}
+      \verb{doi}
+      \verb 10.2307/2347802
+      \endverb
+    \endentry
+    \entry{laderachPredictingFutureClimatic2013}{article}{}{}
+      \name{author}{4}{}{%
+        {{un=0,uniquepart=base,hash=e6762ef6c377c16581b8920e2c78824a}{%
+           family={Läderach},
+           familyi={L\bibinitperiod},
+           given={Peter},
+           giveni={P\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=f679f03351e72bc6d7edd1f9b47523b2}{%
+           family={Martinez-Valle},
+           familyi={M\bibinithyphendelim V\bibinitperiod},
+           given={Armando},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=be777a0f50b02516bf3bfc699245bc9a}{%
+           family={Schroth},
+           familyi={S\bibinitperiod},
+           given={Götz},
+           giveni={G\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=773ae0503d7902379e7dd2b4d5f2c336}{%
+           family={Castro},
+           familyi={C\bibinitperiod},
+           given={Nestor},
+           giveni={N\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{a4fcba10754b68afa11a466ad5143fb2}
+      \strng{fullhash}{41ddec5a2471ab0995ed2ad35793693e}
+      \strng{fullhashraw}{41ddec5a2471ab0995ed2ad35793693e}
+      \strng{bibnamehash}{41ddec5a2471ab0995ed2ad35793693e}
+      \strng{authorbibnamehash}{41ddec5a2471ab0995ed2ad35793693e}
+      \strng{authornamehash}{a4fcba10754b68afa11a466ad5143fb2}
+      \strng{authorfullhash}{41ddec5a2471ab0995ed2ad35793693e}
+      \strng{authorfullhashraw}{41ddec5a2471ab0995ed2ad35793693e}
+      \field{sortinit}{L}
+      \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Climatic Change}
+      \field{number}{3--4}
+      \field{title}{Predicting the future climatic suitability for cocoa farming of the world's leading producer countries, {Ghana} and {Côte d'Ivoire}}
+      \field{volume}{119}
+      \field{year}{2013}
+      \field{pages}{841\bibrangedash 854}
+      \range{pages}{14}
+      \verb{doi}
+      \verb 10.1007/s10584-013-0774-8
+      \endverb
+    \endentry
+    \entry{linsdeyOceanicNinoIndex2009}{misc}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=d60846d0db4450158a0668e03b373209}{%
+           family={Lindsey},
+           familyi={L\bibinitperiod},
+           given={Rebecca},
+           giveni={R\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {NOAA Climate.gov}%
+      }
+      \strng{namehash}{d60846d0db4450158a0668e03b373209}
+      \strng{fullhash}{d60846d0db4450158a0668e03b373209}
+      \strng{fullhashraw}{d60846d0db4450158a0668e03b373209}
+      \strng{bibnamehash}{d60846d0db4450158a0668e03b373209}
+      \strng{authorbibnamehash}{d60846d0db4450158a0668e03b373209}
+      \strng{authornamehash}{d60846d0db4450158a0668e03b373209}
+      \strng{authorfullhash}{d60846d0db4450158a0668e03b373209}
+      \strng{authorfullhashraw}{d60846d0db4450158a0668e03b373209}
+      \field{sortinit}{L}
+      \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{https://www.climate.gov/news-features/understanding-climate/climate-variability-oceanic-nino-index}}
+      \field{month}{8}
+      \field{note}{Reviewed by Tom Di Liberto}
+      \field{title}{Climate Variability: {Oceanic Niño Index}}
+      \field{urlday}{16}
+      \field{urlmonth}{6}
+      \field{urlyear}{2026}
+      \field{year}{2009}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://www.climate.gov/news-features/understanding-climate/climate-variability-oceanic-nino-index
+      \endverb
+      \verb{url}
+      \verb https://www.climate.gov/news-features/understanding-climate/climate-variability-oceanic-nino-index
+      \endverb
+    \endentry
+    \entry{luoForecastingRealizedVolatility2022}{article}{}{}
+      \name{author}{4}{}{%
+        {{un=0,uniquepart=base,hash=94c9360abbb44f85691ae7b4eada9612}{%
+           family={Luo},
+           familyi={L\bibinitperiod},
+           given={Jiawen},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=45c87939cd289cbcb232bbbebdad897d}{%
+           family={Klein},
+           familyi={K\bibinitperiod},
+           given={Tony},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=f2825e3c1e08515c8a535d9517c5879f}{%
+           family={Ji},
+           familyi={J\bibinitperiod},
+           given={Qiang},
+           giveni={Q\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=c33356fa9a444553db6265fcb93e02e6}{%
+           family={Hou},
+           familyi={H\bibinitperiod},
+           given={Chenghan},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{94228202f94bd7c49437dc5cfba77d71}
+      \strng{fullhash}{54d03636b70e7f9ee20b449db260a9e9}
+      \strng{fullhashraw}{54d03636b70e7f9ee20b449db260a9e9}
+      \strng{bibnamehash}{54d03636b70e7f9ee20b449db260a9e9}
+      \strng{authorbibnamehash}{54d03636b70e7f9ee20b449db260a9e9}
+      \strng{authornamehash}{94228202f94bd7c49437dc5cfba77d71}
+      \strng{authorfullhash}{54d03636b70e7f9ee20b449db260a9e9}
+      \strng{authorfullhashraw}{54d03636b70e7f9ee20b449db260a9e9}
+      \field{sortinit}{L}
+      \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{International Journal of Forecasting}
+      \field{number}{1}
+      \field{title}{Forecasting Realized Volatility of Agricultural Commodity Futures with Infinite {Hidden Markov HAR} Models}
+      \field{volume}{38}
+      \field{year}{2022}
+      \field{pages}{51\bibrangedash 73}
+      \range{pages}{23}
+      \verb{doi}
+      \verb 10.1016/j.ijforecast.2019.08.008
+      \endverb
+    \endentry
+    \entry{lyocsaImprovingStockMarket2021}{article}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=6fe2674d0ff1461502dcd04403677fd5}{%
+           family={Lyócsa},
+           familyi={L\bibinitperiod},
+           given={Štefan},
+           giveni={Š\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=244d556e588967d73a3e1ad029a28dfc}{%
+           family={Stašek},
+           familyi={S\bibinitperiod},
+           given={Daniel},
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{ee0d7d16ede498d03061d46132f8014f}
+      \strng{fullhash}{ee0d7d16ede498d03061d46132f8014f}
+      \strng{fullhashraw}{ee0d7d16ede498d03061d46132f8014f}
+      \strng{bibnamehash}{ee0d7d16ede498d03061d46132f8014f}
+      \strng{authorbibnamehash}{ee0d7d16ede498d03061d46132f8014f}
+      \strng{authornamehash}{ee0d7d16ede498d03061d46132f8014f}
+      \strng{authorfullhash}{ee0d7d16ede498d03061d46132f8014f}
+      \strng{authorfullhashraw}{ee0d7d16ede498d03061d46132f8014f}
+      \field{sortinit}{L}
+      \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Expert Systems with Applications}
+      \field{title}{Improving Stock Market Volatility Forecasts with Complete Subset Linear and Quantile {HAR} Models}
+      \field{volume}{183}
+      \field{year}{2021}
+      \field{pages}{115370}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1016/j.eswa.2021.115370
+      \endverb
+    \endentry
+    \entry{mullerVolatilitiesDifferentTime1997}{article}{}{}
+      \name{author}{6}{}{%
+        {{un=0,uniquepart=base,hash=d25908671e202dc58e8ec7a746a76b35}{%
+           family={Müller},
+           familyi={M\bibinitperiod},
+           given={Ulrich\bibnamedelima A.},
+           giveni={U\bibinitperiod\bibinitdelim A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=d1aab31b475fe5413d87f5807bcdfcf2}{%
+           family={Dacorogna},
+           familyi={D\bibinitperiod},
+           given={Michel\bibnamedelima M.},
+           giveni={M\bibinitperiod\bibinitdelim M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=4860679dbf30c77fd5526aade5b4fdc3}{%
+           family={Davé},
+           familyi={D\bibinitperiod},
+           given={Rakhal\bibnamedelima D.},
+           giveni={R\bibinitperiod\bibinitdelim D\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=8f150514d9d216a7a445e88c2aab7ae4}{%
+           family={Olsen},
+           familyi={O\bibinitperiod},
+           given={Richard\bibnamedelima B.},
+           giveni={R\bibinitperiod\bibinitdelim B\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=f4b75a18889c6802a676165979258285}{%
+           family={Pictet},
+           familyi={P\bibinitperiod},
+           given={Olivier\bibnamedelima V.},
+           giveni={O\bibinitperiod\bibinitdelim V\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=93cacb03822b5e63cccd8dfcbd1e10ff}{%
+           family={Weizsäcker},
+           familyi={W\bibinitperiod},
+           given={Jakob\bibnamedelima E.},
+           giveni={J\bibinitperiod\bibinitdelim E\bibinitperiod},
+           givenun=0,
+           prefix={von},
+           prefixi={v\bibinitperiod},
+           prefixun=0}}%
+      }
+      \strng{namehash}{ef074ffc2fdf1443d3762d7853dc1a58}
+      \strng{fullhash}{5d07417e7c18be95f0fe6dad96a4f92c}
+      \strng{fullhashraw}{5d07417e7c18be95f0fe6dad96a4f92c}
+      \strng{bibnamehash}{5d07417e7c18be95f0fe6dad96a4f92c}
+      \strng{authorbibnamehash}{5d07417e7c18be95f0fe6dad96a4f92c}
+      \strng{authornamehash}{ef074ffc2fdf1443d3762d7853dc1a58}
+      \strng{authorfullhash}{5d07417e7c18be95f0fe6dad96a4f92c}
+      \strng{authorfullhashraw}{5d07417e7c18be95f0fe6dad96a4f92c}
+      \field{sortinit}{M}
+      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Empirical Finance}
+      \field{number}{2-3}
+      \field{title}{Volatilities of Different Time Resolutions -- Analyzing the Dynamics of Market Components}
+      \field{volume}{4}
+      \field{year}{1997}
+      \field{pages}{213\bibrangedash 239}
+      \range{pages}{27}
+      \verb{doi}
+      \verb 10.1016/S0927-5398(97)00007-8
+      \endverb
+    \endentry
+    \entry{iccoCocoaMarketReportMarch2024}{article}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=60d23c8d8ae7981d571bf95aac9814c3}{%
+           family={Organization},
+           familyi={O\bibinitperiod},
+           given={International\bibnamedelima Cocoa},
+           giveni={I\bibinitperiod\bibinitdelim C\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{60d23c8d8ae7981d571bf95aac9814c3}
+      \strng{fullhash}{60d23c8d8ae7981d571bf95aac9814c3}
+      \strng{fullhashraw}{60d23c8d8ae7981d571bf95aac9814c3}
+      \strng{bibnamehash}{60d23c8d8ae7981d571bf95aac9814c3}
+      \strng{authorbibnamehash}{60d23c8d8ae7981d571bf95aac9814c3}
+      \strng{authornamehash}{60d23c8d8ae7981d571bf95aac9814c3}
+      \strng{authorfullhash}{60d23c8d8ae7981d571bf95aac9814c3}
+      \strng{authorfullhashraw}{60d23c8d8ae7981d571bf95aac9814c3}
+      \field{sortinit}{O}
+      \field{sortinithash}{2cd7140a07aea5341f9e2771efe90aae}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{ICCO Market Report}
+      \field{note}{Accessed 2026-05-29}
+      \field{title}{Cocoa Market Report for March 2024}
+      \field{year}{2024}
+      \verb{urlraw}
+      \verb https://www.icco.org/cocoa-market-report-for-march-2024
+      \endverb
+      \verb{url}
+      \verb https://www.icco.org/cocoa-market-report-for-march-2024
+      \endverb
+    \endentry
+    \entry{parkinson1980extreme}{article}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=c1f05cc7dac366e0205c52435de659d2}{%
+           family={Parkinson},
+           familyi={P\bibinitperiod},
+           given={Michael},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{c1f05cc7dac366e0205c52435de659d2}
+      \strng{fullhash}{c1f05cc7dac366e0205c52435de659d2}
+      \strng{fullhashraw}{c1f05cc7dac366e0205c52435de659d2}
+      \strng{bibnamehash}{c1f05cc7dac366e0205c52435de659d2}
+      \strng{authorbibnamehash}{c1f05cc7dac366e0205c52435de659d2}
+      \strng{authornamehash}{c1f05cc7dac366e0205c52435de659d2}
+      \strng{authorfullhash}{c1f05cc7dac366e0205c52435de659d2}
+      \strng{authorfullhashraw}{c1f05cc7dac366e0205c52435de659d2}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Business}
+      \field{number}{1}
+      \field{title}{The Extreme Value Method for Estimating the Variance of the Rate of Return}
+      \field{volume}{53}
+      \field{year}{1980}
+      \field{pages}{61\bibrangedash 65}
+      \range{pages}{5}
+      \verb{doi}
+      \verb 10.1086/296071
+      \endverb
+    \endentry
+    \entry{pattonVolatilityForecastComparison}{article}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=a4a103d050a59b8cf50ce433a3cc51ec}{%
+           family={Patton},
+           familyi={P\bibinitperiod},
+           given={Andrew\bibnamedelima J.},
+           giveni={A\bibinitperiod\bibinitdelim J\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{a4a103d050a59b8cf50ce433a3cc51ec}
+      \strng{fullhash}{a4a103d050a59b8cf50ce433a3cc51ec}
+      \strng{fullhashraw}{a4a103d050a59b8cf50ce433a3cc51ec}
+      \strng{bibnamehash}{a4a103d050a59b8cf50ce433a3cc51ec}
+      \strng{authorbibnamehash}{a4a103d050a59b8cf50ce433a3cc51ec}
+      \strng{authornamehash}{a4a103d050a59b8cf50ce433a3cc51ec}
+      \strng{authorfullhash}{a4a103d050a59b8cf50ce433a3cc51ec}
+      \strng{authorfullhashraw}{a4a103d050a59b8cf50ce433a3cc51ec}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Econometrics}
+      \field{number}{1}
+      \field{title}{Volatility Forecast Comparison Using Imperfect Volatility Proxies}
+      \field{volume}{160}
+      \field{year}{2011}
+      \field{pages}{246\bibrangedash 256}
+      \range{pages}{11}
+      \verb{doi}
+      \verb 10.1016/j.jeconom.2010.03.034
+      \endverb
+    \endentry
+    \entry{patton2015good}{article}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=a4a103d050a59b8cf50ce433a3cc51ec}{%
+           family={Patton},
+           familyi={P\bibinitperiod},
+           given={Andrew\bibnamedelima J.},
+           giveni={A\bibinitperiod\bibinitdelim J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=22fcbc93c38819e962968aad3e3cba7f}{%
+           family={Sheppard},
+           familyi={S\bibinitperiod},
+           given={Kevin},
+           giveni={K\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{87f6229c8b9041acc221b68d5dd6822f}
+      \strng{fullhash}{87f6229c8b9041acc221b68d5dd6822f}
+      \strng{fullhashraw}{87f6229c8b9041acc221b68d5dd6822f}
+      \strng{bibnamehash}{87f6229c8b9041acc221b68d5dd6822f}
+      \strng{authorbibnamehash}{87f6229c8b9041acc221b68d5dd6822f}
+      \strng{authornamehash}{87f6229c8b9041acc221b68d5dd6822f}
+      \strng{authorfullhash}{87f6229c8b9041acc221b68d5dd6822f}
+      \strng{authorfullhashraw}{87f6229c8b9041acc221b68d5dd6822f}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Review of Economics and Statistics}
+      \field{number}{3}
+      \field{title}{Good Volatility, Bad Volatility: Signed Jumps and the Persistence of Volatility}
+      \field{volume}{97}
+      \field{year}{2015}
+      \field{pages}{683\bibrangedash 697}
+      \range{pages}{15}
+      \verb{doi}
+      \verb 10.1162/REST_a_00503
+      \endverb
+    \endentry
+    \entry{payeInstabilityReturnPrediction2006}{article}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=984c01b2d7a18577c86f4fce5aab4dc0}{%
+           family={Paye},
+           familyi={P\bibinitperiod},
+           given={Bradley\bibnamedelima S.},
+           giveni={B\bibinitperiod\bibinitdelim S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=402c6ccc2c21c4d48ed2eef0058ff70d}{%
+           family={Timmermann},
+           familyi={T\bibinitperiod},
+           given={Allan},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{08e673e2ffa39767bf8757273a4970f1}
+      \strng{fullhash}{08e673e2ffa39767bf8757273a4970f1}
+      \strng{fullhashraw}{08e673e2ffa39767bf8757273a4970f1}
+      \strng{bibnamehash}{08e673e2ffa39767bf8757273a4970f1}
+      \strng{authorbibnamehash}{08e673e2ffa39767bf8757273a4970f1}
+      \strng{authornamehash}{08e673e2ffa39767bf8757273a4970f1}
+      \strng{authorfullhash}{08e673e2ffa39767bf8757273a4970f1}
+      \strng{authorfullhashraw}{08e673e2ffa39767bf8757273a4970f1}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Empirical Finance}
+      \field{number}{3}
+      \field{title}{Instability of Return Prediction Models}
+      \field{volume}{13}
+      \field{year}{2006}
+      \field{pages}{274\bibrangedash 315}
+      \range{pages}{42}
+      \verb{doi}
+      \verb 10.1016/j.jempfin.2005.11.003
+      \endverb
+    \endentry
+    \entry{phillips1988testing}{article}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=10ed28fafaff02f63917d3120eec9502}{%
+           family={Phillips},
+           familyi={P\bibinitperiod},
+           given={Peter\bibnamedelimb C.\bibnamedelimi B.},
+           giveni={P\bibinitperiod\bibinitdelim C\bibinitperiod\bibinitdelim B\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=59c1c7b3feccde623cd486dbd1fcc6fb}{%
+           family={Perron},
+           familyi={P\bibinitperiod},
+           given={Pierre},
+           giveni={P\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{f15d1fdf4339186c3a5838e857992628}
+      \strng{fullhash}{f15d1fdf4339186c3a5838e857992628}
+      \strng{fullhashraw}{f15d1fdf4339186c3a5838e857992628}
+      \strng{bibnamehash}{f15d1fdf4339186c3a5838e857992628}
+      \strng{authorbibnamehash}{f15d1fdf4339186c3a5838e857992628}
+      \strng{authornamehash}{f15d1fdf4339186c3a5838e857992628}
+      \strng{authorfullhash}{f15d1fdf4339186c3a5838e857992628}
+      \strng{authorfullhashraw}{f15d1fdf4339186c3a5838e857992628}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Biometrika}
+      \field{number}{2}
+      \field{title}{Testing for a Unit Root in Time Series Regression}
+      \field{volume}{75}
+      \field{year}{1988}
+      \field{pages}{335\bibrangedash 346}
+      \range{pages}{12}
+      \verb{doi}
+      \verb 10.1093/biomet/75.2.335
+      \endverb
+    \endentry
+    \entry{poonForecastingVolatilityFinancial}{article}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=4bc47a55acee6ff20185e96bafcdd26b}{%
+           family={Poon},
+           familyi={P\bibinitperiod},
+           given={Ser-Huang},
+           giveni={S\bibinithyphendelim H\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=d97fcd65b851bd0d341ce547227991a3}{%
+           family={Granger},
+           familyi={G\bibinitperiod},
+           given={Clive\bibnamedelimb W.\bibnamedelimi J.},
+           giveni={C\bibinitperiod\bibinitdelim W\bibinitperiod\bibinitdelim J\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{046ded726611484c4c747d12a4ba3604}
+      \strng{fullhash}{046ded726611484c4c747d12a4ba3604}
+      \strng{fullhashraw}{046ded726611484c4c747d12a4ba3604}
+      \strng{bibnamehash}{046ded726611484c4c747d12a4ba3604}
+      \strng{authorbibnamehash}{046ded726611484c4c747d12a4ba3604}
+      \strng{authornamehash}{046ded726611484c4c747d12a4ba3604}
+      \strng{authorfullhash}{046ded726611484c4c747d12a4ba3604}
+      \strng{authorfullhashraw}{046ded726611484c4c747d12a4ba3604}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Economic Literature}
+      \field{number}{2}
+      \field{title}{Forecasting Volatility in Financial Markets: A Review}
+      \field{volume}{41}
+      \field{year}{2003}
+      \field{pages}{478\bibrangedash 539}
+      \range{pages}{62}
+      \verb{doi}
+      \verb 10.1257/002205103765762743
+      \endverb
+    \endentry
+    \entry{pukeCoherentForecastingRealized2026}{article}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=c04817fbc6d5a5d4f047df1ac43fd17b}{%
+           family={Puke},
+           familyi={P\bibinitperiod},
+           given={Marius},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=3f187822bea9f4babd10b47225a95811}{%
+           family={Schweikert},
+           familyi={S\bibinitperiod},
+           given={Karsten},
+           giveni={K\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{dc1c2707a98fff483353d5becfcf49bf}
+      \strng{fullhash}{dc1c2707a98fff483353d5becfcf49bf}
+      \strng{fullhashraw}{dc1c2707a98fff483353d5becfcf49bf}
+      \strng{bibnamehash}{dc1c2707a98fff483353d5becfcf49bf}
+      \strng{authorbibnamehash}{dc1c2707a98fff483353d5becfcf49bf}
+      \strng{authornamehash}{dc1c2707a98fff483353d5becfcf49bf}
+      \strng{authorfullhash}{dc1c2707a98fff483353d5becfcf49bf}
+      \strng{authorfullhashraw}{dc1c2707a98fff483353d5becfcf49bf}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Forecasting}
+      \field{title}{Coherent Forecasting of Realized Volatility}
+      \field{year}{2026}
+      \verb{doi}
+      \verb 10.1002/for.70114
+      \endverb
+    \endentry
+    \entry{rogers1991estimating}{article}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=59e81ab5f62166747d2d31966612496a}{%
+           family={Rogers},
+           familyi={R\bibinitperiod},
+           given={L.\bibnamedelimi C.\bibnamedelimi G.},
+           giveni={L\bibinitperiod\bibinitdelim C\bibinitperiod\bibinitdelim G\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=e33b901a6047fc7ef88c0801d8c936ee}{%
+           family={Satchell},
+           familyi={S\bibinitperiod},
+           given={S.\bibnamedelimi E.},
+           giveni={S\bibinitperiod\bibinitdelim E\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{f2c762855f359abdb8b86e4610e91815}
+      \strng{fullhash}{f2c762855f359abdb8b86e4610e91815}
+      \strng{fullhashraw}{f2c762855f359abdb8b86e4610e91815}
+      \strng{bibnamehash}{f2c762855f359abdb8b86e4610e91815}
+      \strng{authorbibnamehash}{f2c762855f359abdb8b86e4610e91815}
+      \strng{authornamehash}{f2c762855f359abdb8b86e4610e91815}
+      \strng{authorfullhash}{f2c762855f359abdb8b86e4610e91815}
+      \strng{authorfullhashraw}{f2c762855f359abdb8b86e4610e91815}
+      \field{sortinit}{R}
+      \field{sortinithash}{5e1c39a9d46ffb6bebd8f801023a9486}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Annals of Applied Probability}
+      \field{number}{4}
+      \field{title}{Estimating Variance from High, Low, and Closing Prices}
+      \field{volume}{1}
+      \field{year}{1991}
+      \field{pages}{504\bibrangedash 512}
+      \range{pages}{9}
+      \verb{doi}
+      \verb 10.1214/aoap/1177005835
+      \endverb
+    \endentry
+    \entry{rognaAnalysisCocoaMarket2025}{article}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=8c7285550bbebe8c925efdde9044fa9e}{%
+           family={Rogna},
+           familyi={R\bibinitperiod},
+           given={Marco},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=91d1880735f1dcbe4acf9ca9a9b259ce}{%
+           family={Tillie},
+           familyi={T\bibinitperiod},
+           given={Pierre},
+           giveni={P\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{4a5dacd0d0b1ee92b087722d67b42744}
+      \strng{fullhash}{4a5dacd0d0b1ee92b087722d67b42744}
+      \strng{fullhashraw}{4a5dacd0d0b1ee92b087722d67b42744}
+      \strng{bibnamehash}{4a5dacd0d0b1ee92b087722d67b42744}
+      \strng{authorbibnamehash}{4a5dacd0d0b1ee92b087722d67b42744}
+      \strng{authornamehash}{4a5dacd0d0b1ee92b087722d67b42744}
+      \strng{authorfullhash}{4a5dacd0d0b1ee92b087722d67b42744}
+      \strng{authorfullhashraw}{4a5dacd0d0b1ee92b087722d67b42744}
+      \field{sortinit}{R}
+      \field{sortinithash}{5e1c39a9d46ffb6bebd8f801023a9486}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Commodity Markets}
+      \field{title}{An Analysis of Cocoa Market Fundamentals and Price Transmission}
+      \field{volume}{37}
+      \field{year}{2025}
+      \field{pages}{100421}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1016/j.jcomm.2024.100421
+      \endverb
+    \endentry
+    \entry{rossiForecastingPresenceInstabilities2020}{report}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=18357ef23d1269528ca662e5882a9d01}{%
+           family={Rossi},
+           familyi={R\bibinitperiod},
+           given={Barbara},
+           giveni={B\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{institution}{1}{%
+        {Barcelona Graduate School of Economics}%
+      }
+      \strng{namehash}{18357ef23d1269528ca662e5882a9d01}
+      \strng{fullhash}{18357ef23d1269528ca662e5882a9d01}
+      \strng{fullhashraw}{18357ef23d1269528ca662e5882a9d01}
+      \strng{bibnamehash}{18357ef23d1269528ca662e5882a9d01}
+      \strng{authorbibnamehash}{18357ef23d1269528ca662e5882a9d01}
+      \strng{authornamehash}{18357ef23d1269528ca662e5882a9d01}
+      \strng{authorfullhash}{18357ef23d1269528ca662e5882a9d01}
+      \strng{authorfullhashraw}{18357ef23d1269528ca662e5882a9d01}
+      \field{sortinit}{R}
+      \field{sortinithash}{5e1c39a9d46ffb6bebd8f801023a9486}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Forecasting in the Presence of Instabilities: {How} Do We Know Whether Models Predict Well and How to Improve Them}
+      \field{type}{techreport}
+      \field{year}{2020}
+      \verb{urlraw}
+      \verb https://econ-papers.upf.edu/papers/1711.pdf
+      \endverb
+      \verb{url}
+      \verb https://econ-papers.upf.edu/papers/1711.pdf
+      \endverb
+    \endentry
+    \entry{schrothVulnerabilityClimateChange2016}{article}{}{}
+      \name{author}{5}{}{%
+        {{un=0,uniquepart=base,hash=be777a0f50b02516bf3bfc699245bc9a}{%
+           family={Schroth},
+           familyi={S\bibinitperiod},
+           given={Götz},
+           giveni={G\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=e6762ef6c377c16581b8920e2c78824a}{%
+           family={Läderach},
+           familyi={L\bibinitperiod},
+           given={Peter},
+           giveni={P\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=40da42b992223260a2763549ee0ef403}{%
+           family={Martinez-Valle},
+           familyi={M\bibinithyphendelim V\bibinitperiod},
+           given={Armando\bibnamedelima Isaac},
+           giveni={A\bibinitperiod\bibinitdelim I\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=9749285cc85ad12a0c00d4e305a4f989}{%
+           family={Bunn},
+           familyi={B\bibinitperiod},
+           given={Christian},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=0b881bc9bfb45994c49c8e68e4e91bb9}{%
+           family={Jassogne},
+           familyi={J\bibinitperiod},
+           given={Laurence},
+           giveni={L\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{a2b139aa91fc4ad5e5f65fafeb0f4e67}
+      \strng{fullhash}{bd86897e70bdd625658fd219a24d80d6}
+      \strng{fullhashraw}{bd86897e70bdd625658fd219a24d80d6}
+      \strng{bibnamehash}{bd86897e70bdd625658fd219a24d80d6}
+      \strng{authorbibnamehash}{bd86897e70bdd625658fd219a24d80d6}
+      \strng{authornamehash}{a2b139aa91fc4ad5e5f65fafeb0f4e67}
+      \strng{authorfullhash}{bd86897e70bdd625658fd219a24d80d6}
+      \strng{authorfullhashraw}{bd86897e70bdd625658fd219a24d80d6}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Science of the Total Environment}
+      \field{title}{Vulnerability to climate change of cocoa in {West Africa}: Patterns, opportunities and limits to adaptation}
+      \field{volume}{556}
+      \field{year}{2016}
+      \field{pages}{231\bibrangedash 241}
+      \range{pages}{11}
+      \verb{doi}
+      \verb 10.1016/j.scitotenv.2016.03.024
+      \endverb
+    \endentry
+    \entry{songGoldFuturesVolatility2025}{inproceedings}{}{}
+      \name{author}{4}{}{%
+        {{un=0,uniquepart=base,hash=d3a2e45acb815e215a5ad1e99547d520}{%
+           family={Song},
+           familyi={S\bibinitperiod},
+           given={Yan},
+           giveni={Y\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=e35cac81641e7858c2ec2929a62b2cee}{%
+           family={Pei},
+           familyi={P\bibinitperiod},
+           given={Jiahui},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=ade440f561c7258db0cea60d0631c3c4}{%
+           family={Li},
+           familyi={L\bibinitperiod},
+           given={Yufeng},
+           giveni={Y\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=a50edb51088b4f0c7e6bd7779e94c9df}{%
+           family={Song},
+           familyi={S\bibinitperiod},
+           given={Yuping},
+           giveni={Y\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {IOS Press}%
+      }
+      \strng{namehash}{e61bf839f94740fd87cd99b6d4094a3c}
+      \strng{fullhash}{a8ec61743962e9770b421e8081c74fa7}
+      \strng{fullhashraw}{a8ec61743962e9770b421e8081c74fa7}
+      \strng{bibnamehash}{a8ec61743962e9770b421e8081c74fa7}
+      \strng{authorbibnamehash}{a8ec61743962e9770b421e8081c74fa7}
+      \strng{authornamehash}{e61bf839f94740fd87cd99b6d4094a3c}
+      \strng{authorfullhash}{a8ec61743962e9770b421e8081c74fa7}
+      \strng{authorfullhashraw}{a8ec61743962e9770b421e8081c74fa7}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Artificial Intelligence and Human-Computer Interaction}
+      \field{title}{Gold Futures Volatility Forecasting Based on {HAR-QR} and Machine Learning Model}
+      \field{year}{2025}
+      \verb{doi}
+      \verb 10.3233/FAIA250131
+      \endverb
+    \endentry
+    \entry{tianRealizedVolatilityForecasting2017}{article}{}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=01ed1e28b32bdb9f004f22177c9070cb}{%
+           family={Tian},
+           familyi={T\bibinitperiod},
+           given={Fengping},
+           giveni={F\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=decb3ccdac45fcb482db58da7bb34a14}{%
+           family={Yang},
+           familyi={Y\bibinitperiod},
+           given={Ke},
+           giveni={K\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=e8a62061fe1955a6d5368e884142262e}{%
+           family={Chen},
+           familyi={C\bibinitperiod},
+           given={Langnan},
+           giveni={L\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{33eab7367b122ed7b6d0557bfc3045c7}
+      \strng{fullhash}{4c17423639cab2376c198d4b03dd9346}
+      \strng{fullhashraw}{4c17423639cab2376c198d4b03dd9346}
+      \strng{bibnamehash}{4c17423639cab2376c198d4b03dd9346}
+      \strng{authorbibnamehash}{4c17423639cab2376c198d4b03dd9346}
+      \strng{authornamehash}{33eab7367b122ed7b6d0557bfc3045c7}
+      \strng{authorfullhash}{4c17423639cab2376c198d4b03dd9346}
+      \strng{authorfullhashraw}{4c17423639cab2376c198d4b03dd9346}
+      \field{sortinit}{T}
+      \field{sortinithash}{9af77f0292593c26bde9a56e688eaee9}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{International Journal of Forecasting}
+      \field{number}{1}
+      \field{title}{Realized Volatility Forecasting of Agricultural Commodity Futures Using the {HAR} Model with Time-Varying Sparsity}
+      \field{volume}{33}
+      \field{year}{2017}
+      \field{pages}{132\bibrangedash 152}
+      \range{pages}{21}
+      \verb{doi}
+      \verb 10.1016/j.ijforecast.2016.08.002
+      \endverb
+    \endentry
+    \entry{ubilavaRoleNinoSouthern2018}{article}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=b19d1273e682e827d6f100294d4ab9c8}{%
+           family={Ubilava},
+           familyi={U\bibinitperiod},
+           given={David},
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{b19d1273e682e827d6f100294d4ab9c8}
+      \strng{fullhash}{b19d1273e682e827d6f100294d4ab9c8}
+      \strng{fullhashraw}{b19d1273e682e827d6f100294d4ab9c8}
+      \strng{bibnamehash}{b19d1273e682e827d6f100294d4ab9c8}
+      \strng{authorbibnamehash}{b19d1273e682e827d6f100294d4ab9c8}
+      \strng{authornamehash}{b19d1273e682e827d6f100294d4ab9c8}
+      \strng{authorfullhash}{b19d1273e682e827d6f100294d4ab9c8}
+      \strng{authorfullhashraw}{b19d1273e682e827d6f100294d4ab9c8}
+      \field{sortinit}{U}
+      \field{sortinithash}{6901a00e45705986ee5e7ca9fd39adca}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{American Journal of Agricultural Economics}
+      \field{number}{1}
+      \field{title}{The Role of {El Niño} {Southern Oscillation} in Commodity Price Movement and Predictability}
+      \field{volume}{100}
+      \field{year}{2018}
+      \field{pages}{239\bibrangedash 263}
+      \range{pages}{25}
+      \verb{doi}
+      \verb 10.1093/ajae/aax060
+      \endverb
+    \endentry
+    \entry{yangDriftIndependentVolatility2000}{article}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=b016d716a469b1129b1ce2ea63f78681}{%
+           family={Yang},
+           familyi={Y\bibinitperiod},
+           given={Dennis},
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=08c1e9a58399d68669c800dc1ee6607b}{%
+           family={Zhang},
+           familyi={Z\bibinitperiod},
+           given={Qiang},
+           giveni={Q\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{22fc15b32401813d66b54e5c8434662d}
+      \strng{fullhash}{22fc15b32401813d66b54e5c8434662d}
+      \strng{fullhashraw}{22fc15b32401813d66b54e5c8434662d}
+      \strng{bibnamehash}{22fc15b32401813d66b54e5c8434662d}
+      \strng{authorbibnamehash}{22fc15b32401813d66b54e5c8434662d}
+      \strng{authornamehash}{22fc15b32401813d66b54e5c8434662d}
+      \strng{authorfullhash}{22fc15b32401813d66b54e5c8434662d}
+      \strng{authorfullhashraw}{22fc15b32401813d66b54e5c8434662d}
+      \field{sortinit}{Y}
+      \field{sortinithash}{fd67ad5a9ef0f7456bdd9aab10fe1495}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Business}
+      \field{number}{3}
+      \field{title}{Drift-Independent Volatility Estimation Based on High, Low, Open, and Close Prices}
+      \field{volume}{73}
+      \field{year}{2000}
+      \field{pages}{477\bibrangedash 491}
+      \range{pages}{15}
+      \verb{doi}
+      \verb 10.1086/209650
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

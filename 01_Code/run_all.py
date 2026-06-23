@@ -36,12 +36,39 @@ SCRIPTS_MODELS = [
     ("07b_rolling_har_x_qr.py",    "Rolling HAR-X-QR (with ENSO)"),
     ("07c_rolling_har_d_qr.py",    "Rolling HAR-D-QR (crisis dummy only)"),
     ("07d_rolling_har_xd_qr.py",   "Rolling HAR-XD-QR (ENSO + crisis dummy)"),
+    ("07f_rolling_har_x_lagged_qr.py", "Lag-decay diagnostic (lagged ENSO)"),
+    ("07h_rolling_har_x_vol_qr.py",    "HAR-X-QR with ENSO volatility"),
     ("08_benchmarks.py",           "Historical Vol + GARCH benchmarks"),
-    ("09_comparison_plots.py",     "Comparison Plots"),
-    ("10_summary_plots.py",        "Summary comparison plots"),
-    ("11_har_vs_har_x_comparison.py", "HAR-QR vs HAR-X-QR comparison (ENSO effects)"),
-    ("12_model_confidence_set.py",    "Model Confidence Set (Hansen et al. 2011)"),
-    ("18_enso_regime_test.py",        "ENSO regime test (4-way comparison)"),
+]
+
+SCRIPTS_EVAL = [
+    ("compute_har_ols_ql.py",          "HAR-OLS pseudo-quantile loss table"),
+    ("07e_precrisis_evaluation.py",    "Pre-crisis evaluation (HAR-QR vs HAR-X-QR)"),
+    ("07e2_precrisis_vol_evaluation.py", "Pre-crisis evaluation (ENSO vol specs)"),
+    ("12_model_confidence_set.py",     "Model Confidence Set (Hansen et al. 2011)"),
+    ("13_stationarity_tests.py",       "ADF and Phillips-Perron tests"),
+    ("18_enso_regime_test.py",         "ENSO regime test (4-way comparison)"),
+    ("20_regime_test_metrics.py",      "Regime test multi-metric robustness"),
+    ("21_boundary_sensitivity.py",     "Crisis-dummy boundary sensitivity (slow)"),
+    ("22_coefficient_estimates.py",    "Full-sample coefficient tables"),
+    ("23_christoffersen_coverage.py",  "Christoffersen coverage tests"),
+]
+
+SCRIPTS_FIGURES = [
+    ("09_comparison_plots.py",         "Comparison plots"),
+    ("10_upper_tail_comparison.py",    "Upper tail comparison"),
+    ("10b_crisis_zoom.py",             "Crisis zoom plot"),
+    ("10c_crisis_zoom_harxqr_vs_harqr.py", "Crisis zoom HAR-X-QR vs HAR-QR"),
+    ("11_exceedance_plot.py",          "Exceedance plot"),
+    ("14_mcs_heatmap.py",              "MCS heatmap"),
+    ("15_loss_heatmaps.py",            "Loss heatmaps"),
+    ("16_mse_mae_comparison.py",       "MSE/MAE comparison"),
+    ("17_robustness_metrics_plot.py",  "Robustness metrics plot"),
+    ("07i_enso_cocoa_ccf.py",          "ENSO-cocoa cross-correlation"),
+    ("07k_expanding_window_enso_gain.py", "Expanding-window ENSO gain"),
+    ("07k_lag_decay_figure.py",        "Lag-decay figure"),
+    ("07l_expanding_window_enso_matrix.py", "Expanding-window ENSO matrix"),
+    ("07l_enso_vol_comparison_figure.py",   "ENSO vol comparison figure"),
 ]
 
 
@@ -71,8 +98,12 @@ def run_script(script_name, description):
 if __name__ == "__main__":
     quick_mode = "--quick" in sys.argv
 
-    scripts = SCRIPTS_QUICK if quick_mode else SCRIPTS_QUICK + SCRIPTS_MODELS
-    mode_label = "QUICK MODE (data + descriptive only)" if quick_mode else "FULL PIPELINE"
+    if quick_mode:
+        scripts = SCRIPTS_QUICK
+        mode_label = "QUICK MODE (data + descriptive only)"
+    else:
+        scripts = SCRIPTS_QUICK + SCRIPTS_MODELS + SCRIPTS_EVAL + SCRIPTS_FIGURES
+        mode_label = "FULL PIPELINE"
 
     print(f"\n{'#'*60}")
     print(f"  Cocoa Volatility Analysis Pipeline")

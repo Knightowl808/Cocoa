@@ -64,39 +64,55 @@ def rolling_historical_vol(df, horizon_key, horizon_label):
     """
     Historical volatility benchmark (Methodology Eq. 3.10).
 
-    For mean forecast: rolling 252-day standard deviation of Yang-Zhang σ
-    For quantile forecasts: empirical quantiles of the past 252 days of σ
+    The forecast target is the h-day AVERAGE of daily volatility, so the
+    benchmark must forecast that object — not daily volatility itself.
+    We therefore build the backward-looking h-day rolling mean of sigma_yz
+    (fully observable at the origin) and use:
 
-    This is the simplest possible benchmark — no model, just look backward.
+      Mean forecast:     mean of the past HIST_WINDOW h-day averages
+      Quantile forecast: empirical quantiles of the past HIST_WINDOW
+                         h-day averages
+
+    Using daily-sigma quantiles instead would mechanically overstate the
+    dispersion of an h-day average and miscalibrate the benchmark at h > 1.
+
+    The loop starts at WINDOW + h so that forecast origins coincide exactly
+    with the HAR-family models and GARCH (identical evaluation samples).
+    'enso' enters the dropna only for that same sample alignment.
     """
     target_col = f"target_{horizon_label}"
-    sigma = df["sigma_yz"].copy()
 
-    valid = df[["Date", "sigma_yz", target_col]].dropna().reset_index(drop=True)
+    valid = (df[["Date", "enso", "sigma_yz", target_col]]
+             .dropna().reset_index(drop=True))
     n = len(valid)
+    h = horizon_key
 
-    if n < HIST_WINDOW + 100:
+    if n < WINDOW + h + 100:
         return None
+
+    # Backward h-day rolling average of daily sigma — same object as the
+    # target, but built from past observations only (known at the origin).
+    avg_h = valid["sigma_yz"].rolling(window=h, min_periods=h).mean()
 
     dates = []
     actuals = []
     q_forecasts = {tau: [] for tau in QUANTILES}
     mean_forecasts = []
 
-    for t in tqdm(range(HIST_WINDOW, n), desc=f"  HistVol h={horizon_label}", leave=True):
+    for t in tqdm(range(WINDOW + h, n), desc=f"  HistVol h={horizon_label}", leave=True):
         y_actual = valid.iloc[t][target_col]
         if np.isnan(y_actual):
             continue
 
-        # Past 252 days of daily volatility
-        past_vol = valid.iloc[t - HIST_WINDOW : t]["sigma_yz"].values
+        # Past HIST_WINDOW values of the h-day average (ends at t-1)
+        past_avg = avg_h.iloc[t - HIST_WINDOW : t].values
 
-        # Mean forecast = mean of past volatilities
-        mean_forecasts.append(past_vol.mean())
+        # Mean forecast = mean of past h-day averages
+        mean_forecasts.append(past_avg.mean())
 
-        # Quantile forecasts = empirical quantiles
+        # Quantile forecasts = empirical quantiles of past h-day averages
         for tau in QUANTILES:
-            q_forecasts[tau].append(np.quantile(past_vol, tau))
+            q_forecasts[tau].append(np.quantile(past_avg, tau))
 
         dates.append(valid.iloc[t]["Date"])
         actuals.append(y_actual)
@@ -115,93 +131,112 @@ def rolling_garch(df, horizon_key, horizon_label, reestimate_every=22):
     """
     GARCH(1,1) benchmark (Methodology Eq. 3.11-3.12).
 
-    For mean forecast: closed-form analytical multi-step variance recursion
-    For quantile forecasts: Gaussian quantiles centered on mean forecast
+    Mean forecast: closed-form multi-step variance recursion, averaged over
+    the horizon, starting from the proper one-step-ahead variance
+        sigma^2_{t+1|t} = omega + alpha * eps_t^2 + beta * sigma_t^2.
+    Between re-estimations the conditional-variance state is updated daily
+    with the realized return, so the forecast conditions on all information
+    up to the origin t even though parameters are refit only every
+    `reestimate_every` days.
 
-    Re-estimates every `reestimate_every` days to speed up.
+    Quantile forecasts: Gaussian quantiles centered on the mean forecast.
+    The uncertainty scale is the in-window std of the h-day AVERAGE of
+    sigma_yz (the target object), not of daily sigma — daily dispersion
+    would mechanically overstate the spread of an h-day average.
+
+    The loop starts at WINDOW + h so that forecast origins coincide exactly
+    with the HAR-family models. Parameters are fit on returns up to t only
+    (no target involved), so there is no look-ahead in the estimation.
+    'enso' enters the dropna only for sample alignment.
     """
     target_col = f"target_{horizon_label}"
 
     # GARCH needs returns, not volatility
-    valid = df[["Date", "log_ret", "sigma_yz", target_col]].dropna().reset_index(drop=True)
+    valid = (df[["Date", "enso", "log_ret", "sigma_yz", target_col]]
+             .dropna().reset_index(drop=True))
     n = len(valid)
+    h = horizon_key
 
-    if n < WINDOW + 100:
+    if n < WINDOW + h + 100:
         return None
+
+    # Backward h-day average of daily sigma — used as the uncertainty scale
+    # for the Gaussian quantiles (same object as the forecast target).
+    avg_h = valid["sigma_yz"].rolling(window=h, min_periods=h).mean()
 
     dates = []
     actuals = []
     mean_forecasts = []
     q_forecasts = {tau: [] for tau in QUANTILES}
 
-    # Cache GARCH parameters
-    cached_model_result = None
-    last_estimated = -reestimate_every
+    # Cached parameters (pct units) and the conditional-variance state.
+    # sigma2_state is sigma^2_{t+1|t} in pct^2 for the CURRENT loop index t,
+    # i.e. the one-step-ahead variance given information up to t.
+    cached = None          # dict: mu, omega_p, alpha, beta
+    sigma2_state = None    # pct^2
+    last_estimated = None
 
-    for t in tqdm(range(WINDOW, n), desc=f"  GARCH h={horizon_label}", leave=True):
+    for t in tqdm(range(WINDOW + h, n), desc=f"  GARCH h={horizon_label}", leave=True):
         y_actual = valid.iloc[t][target_col]
         if np.isnan(y_actual):
             continue
 
-        # Re-estimate GARCH
-        if t - last_estimated >= reestimate_every:
-            returns_train = valid.iloc[t - WINDOW : t]["log_ret"].values * 100  # scale for arch
+        if last_estimated is None or t - last_estimated >= reestimate_every:
+            # Refit on the WINDOW returns ending at t-1 (info up to t)
+            returns_train = valid.iloc[t - WINDOW : t]["log_ret"].values * 100
             try:
                 garch = arch_model(returns_train, vol="Garch", p=1, q=1,
                                    mean="Constant", dist="normal")
-                cached_model_result = garch.fit(disp="off", show_warning=False)
+                res = garch.fit(disp="off", show_warning=False)
+                mu      = float(res.params.get("mu", 0.0))
+                omega_p = float(res.params["omega"])
+                alpha   = float(res.params.get("alpha[1]", res.params.get("alpha", 0.0)))
+                beta    = float(res.params.get("beta[1]",  res.params.get("beta",  0.0)))
+                cached  = {"mu": mu, "omega_p": omega_p,
+                           "alpha": alpha, "beta": beta}
+                # One-step-ahead variance for day t (the first forecast step):
+                # omega + alpha * eps_{t-1}^2 + beta * sigma_{t-1}^2
+                eps_last = returns_train[-1] - mu
+                sig_last = float(res.conditional_volatility[-1])
+                sigma2_state = omega_p + alpha * eps_last ** 2 + beta * sig_last ** 2
                 last_estimated = t
             except Exception:
-                pass  # keep previous model
+                pass  # keep previous parameters and state
+        elif cached is not None and sigma2_state is not None:
+            # No refit: advance the variance recursion by one day using the
+            # realized return of day t-1 (known at the origin t).
+            ret_prev = valid.iloc[t - 1]["log_ret"] * 100
+            eps_prev = ret_prev - cached["mu"]
+            sigma2_state = (cached["omega_p"]
+                            + cached["alpha"] * eps_prev ** 2
+                            + cached["beta"] * sigma2_state)
 
-        if cached_model_result is None:
+        if cached is None or sigma2_state is None:
             continue
 
-        # Multi-step mean forecast (analytical closed-form)
-        # GARCH(1,1): E_t[sigma^2_{t+h}] = sigma_lr^2 + (alpha+beta)^(h-1) * (sigma^2_{t+1} - sigma_lr^2)
-        # We forecast variance at each step and average, then take sqrt.
         try:
-            params = cached_model_result.params
-            # arch was fit on returns * 100 -> omega is in pct² (variance equation
-            # constant). Rescale to fraction² to stay consistent with sigma2_t1.
-            omega = params["omega"] / 10000.0
-            alpha = params.get("alpha[1]", params.get("alpha", 0.0))
-            beta  = params.get("beta[1]",  params.get("beta",  0.0))
-            persistence = alpha + beta
+            # Rescale from pct^2 to fraction^2
+            omega = cached["omega_p"] / 10000.0
+            persistence = cached["alpha"] + cached["beta"]
             sigma_lr2 = omega / max(1.0 - persistence, 1e-8)
+            sigma2_t1 = sigma2_state / 10000.0
 
-            # One-step-ahead conditional variance (last fitted value), rescaled
-            # from pct² to fraction² to match sigma_lr2.
-            sigma2_t1 = cached_model_result.conditional_volatility[-1] ** 2 / 10000.0
-
-            # h-step variance forecasts (steps 1 … horizon_key)
+            # k-step variance forecasts (steps 1 ... h), then average
             step_vars = np.array([
                 sigma_lr2 + persistence ** (k - 1) * (sigma2_t1 - sigma_lr2)
-                for k in range(1, horizon_key + 1)
+                for k in range(1, h + 1)
             ])
             step_vars = np.maximum(step_vars, 1e-10)
 
-            # Mean forecast = sqrt of average variance over the horizon
-            mean_var = step_vars.mean()
-            mean_vol = np.sqrt(mean_var)
+            mean_vol = np.sqrt(step_vars.mean())
             mean_forecasts.append(mean_vol)
 
-            # Quantile forecasts via Gaussian assumption:
-            # avg_vol ~ N(mean_vol, se) is not exact, but a cleaner approximation
-            # is to treat each step's vol as independent Normal and propagate uncertainty.
-            # Standard approach: q_tau = sqrt(mean_var) * correction, but the
-            # simplest defensible method is: for the *average* volatility over the
-            # horizon, assume normality of the forecast error and use the
-            # unconditional std of daily vol as a proxy for forecast uncertainty.
-            # More precisely: quantile of sqrt(sigma^2_{t+h}) under Gaussian innovations.
-            # For a single-step Normal GARCH: vol_{t+h} ~ half-normal-like, but the
-            # standard closed-form quantile for the h-step *average* vol uses:
-            #   q_tau = norm.ppf(tau, loc=mean_vol, scale=sigma_vol_uncertainty)
-            # We estimate sigma_vol_uncertainty as the std of realized vols in the window.
-            sigma_uncertainty = valid.iloc[t - WINDOW : t]["sigma_yz"].std()
+            # Gaussian quantiles around the mean forecast; scale = std of the
+            # h-day average of sigma over the estimation window.
+            sigma_uncertainty = avg_h.iloc[t - WINDOW : t].std()
             for tau in QUANTILES:
                 q_forecasts[tau].append(
-                    norm.ppf(tau, loc=mean_vol, scale=sigma_uncertainty)
+                    max(norm.ppf(tau, loc=mean_vol, scale=sigma_uncertainty), 1e-10)
                 )
         except Exception:
             mean_forecasts.append(np.nan)

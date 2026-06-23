@@ -83,10 +83,13 @@ def add_dummy(df, start, end):
 
 def rolling_qr(df, horizon_key, horizon_label, feature_cols, tag):
     target_col = f"target_{horizon_label}"
-    cols       = ["Date"] + feature_cols + [target_col]
+    # 'enso' always included in the dropna (even when not a regressor) so
+    # HAR-D-QR and HAR-XD-QR are evaluated over identical forecast dates.
+    extra      = [] if "enso" in feature_cols else ["enso"]
+    cols       = ["Date"] + extra + feature_cols + [target_col]
     valid      = df[cols].dropna().reset_index(drop=True)
     n          = len(valid)
-    if n < WINDOW + 100:
+    if n < WINDOW + horizon_key + 100:
         return None
 
     dates, actuals = [], []
@@ -94,7 +97,10 @@ def rolling_qr(df, horizon_key, horizon_label, feature_cols, tag):
     cached_params  = {tau: None for tau in QUANTILES}
     last_estimated = -REESTIMATE_EVERY
 
-    for t in tqdm(range(WINDOW, n),
+    # Estimation window ends at t - h: rows s > t - h have forward targets
+    # not fully realized at the forecast origin t (avoids look-ahead bias).
+    h = horizon_key
+    for t in tqdm(range(WINDOW + h, n),
                   desc=f"  {tag} h={horizon_label}", leave=False):
         y_actual = valid.iloc[t][target_col]
         if np.isnan(y_actual):
@@ -103,7 +109,7 @@ def rolling_qr(df, horizon_key, horizon_label, feature_cols, tag):
         X_test_const = np.concatenate([[1.0], X_test])
 
         if t - last_estimated >= REESTIMATE_EVERY:
-            train   = valid.iloc[t - WINDOW : t]
+            train   = valid.iloc[t - h - WINDOW : t - h]
             X_train = sm.add_constant(train[feature_cols].values)
             y_train = train[target_col].values
             for tau in QUANTILES:

@@ -9,15 +9,18 @@
 \cmidrule(lr){3-4}\cmidrule(lr){6-7}
 Series & $N$ & Statistic & $p$-value & & Statistic & $p$-value \\
 \midrule
-Log returns & 13,087 & $-112.08$ & $<0.001$ & & $-112.09$ & $<0.001$ \\
-Yang-Zhang volatility & 13,087 & $-8.42$ & $<0.001$ & & $-90.99$ & $<0.001$ \\
-Ni\~no 3.4 anomaly & 787 & $-6.85$ & $<0.001$ & & $-6.46$ & $<0.001$ \\
+Log returns & 10,375 & $-72.06$ & $<0.001$ & & $-98.89$ & $<0.001$ \\
+Yang-Zhang volatility & 10,375 & $-6.27$ & $<0.001$ & & $-77.58$ & $<0.001$ \\
+Niño 3.4 anomaly & 787 & $-6.85$ & $<0.001$ & & $-6.46$ & $<0.001$ \\
 \bottomrule
 \end{tabular}
 \par\smallskip
-{\footnotesize\textit{Note:} ADF = Augmented Dickey--Fuller test
+{\footnotesize ADF = Augmented Dickey--Fuller test
 \parencite{dickey1979distribution}; PP = Phillips--Perron test
 \parencite{phillips1988testing}. Both tests include a constant.
 ADF lag length selected by AIC. The null hypothesis is a unit root;
-rejection indicates stationarity.}
+rejection indicates stationarity. The Ni\~no~3.4 series is tested on
+the full available NOAA history ($N = 787$ monthly observations,
+1960--2025) rather than the regression subsample (1985--2025, $N = 492$),
+as unit root tests have higher power with longer samples.}
 \end{table}

@@ -18,25 +18,29 @@ import matplotlib.pyplot as plt
 
 # ── Thesis plot style ─────────────────────────────────────────────────────────
 mpl.rcParams.update({
-    "figure.facecolor":  "white",
-    "figure.dpi":        150,
-    "axes.facecolor":    "white",
-    "axes.edgecolor":    "#333333",
-    "axes.linewidth":    0.8,
-    "axes.grid":         False,
-    "axes.spines.top":   False,
-    "axes.spines.right": False,
-    "font.family":       "serif",
-    "font.size":         9,
-    "axes.titlesize":    9,
-    "axes.labelsize":    9,
-    "xtick.labelsize":   8,
-    "ytick.labelsize":   8,
-    "legend.fontsize":   8,
-    "savefig.dpi":       300,
-    "savefig.bbox":      "tight",
-    "savefig.facecolor": "white",
-    "pdf.fonttype":      42,
+    "figure.facecolor":     "white",
+    "figure.dpi":           150,
+    "axes.facecolor":       "white",
+    "axes.edgecolor":       "#333333",
+    "axes.linewidth":       0.8,
+    "axes.grid":            False,
+    "axes.spines.top":      False,
+    "axes.spines.right":    False,
+    "font.family":          "serif",
+    "font.size":            9,
+    "axes.titlesize":       9,
+    "axes.labelsize":       9,
+    "xtick.labelsize":      8,
+    "ytick.labelsize":      8,
+    "legend.fontsize":      8,
+    "xtick.direction":      "out",
+    "ytick.direction":      "out",
+    "xtick.major.size":     3,
+    "ytick.major.size":     3,
+    "savefig.dpi":          300,
+    "savefig.bbox":         "tight",
+    "savefig.transparent":  True,
+    "pdf.fonttype":         42,
 })
 
 # ── Paths ─────────────────────────────────────────────────────────────────────
@@ -103,18 +107,23 @@ def compute_all():
 
 
 def plot(results):
-    # (metric_key, panel_label, y_label, invert_axis, scale_factor)
+    # (metric_key, panel_label, y_label, scale_factor)
+    # All three metrics share a single reading convention: lower is better.
+    # QLIKE is reported on its native (negative) scale, exactly as in the
+    # results table, where a more-negative value is a smaller loss. Plotting
+    # it without axis inversion keeps the best model at the bottom of every
+    # panel, so the figure reads consistently across the three loss functions.
     metrics = [
-        ("QLIKE", "(a) QLIKE",                "QLIKE loss",           True,  1),
-        ("MSE",   "(b) Mean Squared Error",   "MSE  ($\\times 10^5$)", False, 1e5),
-        ("MAE",   "(c) Mean Absolute Error",  "MAE",                  False, 1),
+        ("QLIKE", "(a) QLIKE",                "QLIKE loss",             1),
+        ("MSE",   "(b) Mean squared error",   "MSE  ($\\times 10^5$)",  1e5),
+        ("MAE",   "(c) Mean absolute error",  "MAE",                    1),
     ]
 
     # Vertically stacked: each panel spans the full text width so it stays
     # legible when scaled to \textwidth in LaTeX.
-    fig, axes = plt.subplots(3, 1, figsize=(6.5, 7.2), sharex=True)
+    fig, axes = plt.subplots(3, 1, figsize=(6.5, 6.2), sharex=True)
 
-    for ax, (metric, panel, ylabel, invert, scale) in zip(axes, metrics):
+    for ax, (metric, panel, ylabel, scale) in zip(axes, metrics):
         for model_name, vals in results.items():
             y = np.array(vals[metric]) * scale
             sty = STYLES[model_name]
@@ -122,18 +131,14 @@ def plot(results):
 
         ax.set_ylabel(ylabel)
 
-        # Pad y-axis so lines don't cluster at edges
+        # Pad y-axis so lines don't cluster at the frame edges.
         yvals = np.concatenate([np.array(v[metric]) * scale for v in results.values()])
         yvals = yvals[np.isfinite(yvals)]
         ymin, ymax = yvals.min(), yvals.max()
         pad = (ymax - ymin) * 0.12
-        direction = "lower is better" if not invert else "less negative is worse"
-        if invert:
-            ax.set_ylim(ymax + pad, ymin - pad)
-        else:
-            ax.set_ylim(ymin - pad, ymax + pad)
-        better = "↑ better" if invert else "↓ better"
-        ax.set_title(f"{panel}   ({better})", loc="left", fontweight="bold")
+        ax.set_ylim(ymin - pad, ymax + pad)
+        ax.set_title(panel, loc="left", fontweight="bold")
+        ax.margins(x=0.03)
 
     axes[-1].set_xticks(X)
     axes[-1].set_xticklabels(HORIZ_LABELS)
@@ -143,10 +148,10 @@ def plot(results):
     handles, labels = axes[0].get_legend_handles_labels()
     fig.legend(handles, labels,
                loc="lower center", ncol=5,
-               bbox_to_anchor=(0.5, -0.02),
+               bbox_to_anchor=(0.5, -0.01),
                frameon=False, fontsize=8)
 
-    fig.tight_layout(rect=(0, 0.03, 1, 1))
+    fig.tight_layout(rect=(0, 0.04, 1, 1))
 
     for d in [FIG_DIR, TEX_FIG]:
         for ext in ("png", "pdf"):

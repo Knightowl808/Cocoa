@@ -2,11 +2,14 @@
 \label{sec:discussion}
 
 The empirical results in Section~\ref{sec:results} establish two findings that
-require interpretation. The HAR family dominates both the non-parametric and the
-GARCH benchmarks at every horizon and across every loss criterion examined
-(RQ1), and the Ni\~no~3.4 climate index produces a numerically large
-improvement at long horizons over the full evaluation sample, but one that does
-not survive the three robustness diagnostics applied to it (RQ2). This section
+require interpretation. Direct quantile regression on the HAR structure
+delivers a statistically significant upper-tail advantage at short horizons
+but is overtaken by simpler quantile constructions --- the HAR-OLS
+pseudo-quantile at six months and the GARCH(1,1) Gaussian quantile at twelve
+months --- as the horizon extends (RQ1), and the Ni\~no~3.4 climate index
+provides no robust forecast improvement at any horizon, its modest
+twelve-month full-sample gain being concentrated entirely in the 2022--2024
+supply crisis (RQ2). This section
 explains why these patterns arise, how they relate to the existing literature
 on volatility forecasting and ENSO--commodity linkages, and what they imply for
 the calibration of distributional forecasts, the procurement perspective that
@@ -17,8 +20,8 @@ motivated the choice of cocoa, and the directions for further research.
 \label{sec:disc-rq1}
 %------------------------------------------------------------------------------
 
-The dominance of the HAR family over GARCH(1,1) and the rolling historical
-benchmark is structural rather than incidental. \textcite{corsiSimpleApproximateLongMemory2008}
+The dominance of the HAR family in mean forecasting is structural rather
+than incidental. \textcite{corsiSimpleApproximateLongMemory2008}
 shows that standard short-memory volatility models, including GARCH, fail to
 reproduce the scaling behaviour of volatility under temporal aggregation: their
 exponential memory decay erases shocks too rapidly, and multi-step forecasts
@@ -35,6 +38,29 @@ daily component, which is the direct empirical counterpart of Corsi's scaling
 argument and explains why HAR-OLS retains its lead even at twelve months while
 GARCH(1,1) flatlines.
 
+The upper-tail ranking at long horizons inverts this picture, and the
+inversion is informative about what each model actually estimates. The
+GARCH quantile forecast (Equation~\ref{eq:garch-quantile}) anchors the
+$\tau = 0.95$ boundary to the dispersion of $h$-day average volatility
+over the full estimation window, while its conditional mean is updated
+daily. At twelve months this construction is conservative but stable: it
+does not attempt to extrapolate tail dynamics from the recent past alone.
+The rolling HAR-QR quantile, by contrast, is fitted to the empirical
+upper tail of a 2,520-day window; when the 2022--2024 crisis pushed
+realized volatility far outside the support of that window, the fitted
+quantile surface had no comparable episodes to learn from, and the
+forecast boundary adjusted only with substantial delay
+(Figure~\ref{fig:upper-tail}, panel b2). The result is GARCH's 29\%
+quantile-loss advantage over HAR-QR at the twelve-month upper tail
+(Table~\ref{tab:upper-qlike-comparison}): a deliberately wide,
+slowly-moving quantile loses little in calm decades and avoids the
+catastrophic under-prediction that dominates the loss of the more
+adaptive models during the crisis. The advantage is one of point loss
+only; at twelve months GARCH, HAR-OLS, HAR-QR and HAR-X-QR all belong to
+the model confidence set (Section~\ref{sec:res-mcs}), so the ranking
+reflects the lowest average loss rather than a statistically separable
+edge.
+
 Within the HAR family, the comparison between HAR-QR and the HAR-OLS
 pseudo-quantile addresses a more subtle question: does the conditional upper
 quantile diverge sufficiently from a shift of the conditional mean to justify
@@ -44,36 +70,52 @@ from two sources: direct quantile estimation is robust to distributional
 misspecification, and the monthly volatility component exerts its strongest
 influence precisely at the conditional tails. The cocoa results match this
 mechanism. The HAR-QR advantage over the HAR-OLS pseudo-quantile is largest at
-the short to medium horizons (10\,\% at one month, 6\,\% at one day), where
-volatility dynamics are most state-dependent and the conditional quantile is
-furthest from the unconditional residual quantile, and narrows to less than
-2\,\% at twelve months once the HAR regressors themselves carry most of the
-distributional information. \textcite{lyocsaImprovingStockMarket2021} report
+the short to medium horizons (9\,\% at one week, 7\,\% at one month, 6\,\% at
+one day), where volatility dynamics are most state-dependent and the
+conditional quantile is furthest from the unconditional residual quantile.
+From six months onward the advantage reverses in point terms: HAR-OLS
+undercuts HAR-QR by 14\,\% at six months and 24\,\% at twelve months
+($0.000786$ vs.\ $0.001041$), though the two remain statistically
+indistinguishable in the MCS (Section~\ref{sec:res-mcs}). \textcite{lyocsaImprovingStockMarket2021} report
 the same horizon dependence on stock-market data: the value of explicit
 quantile estimation is concentrated at short horizons where extreme regime
 states drive the conditional distribution. Coverage at the one-day and
-one-week horizons is close to the nominal $5\,\%$ ($5.17\,\%$ and $5.30\,\%$),
-which replicates Haugom's finding that HAR-QR passes conditional-coverage
-tests at substantially higher rates than historical simulation, now extended
-from equity to agricultural commodity data.
+one-week horizons is close to the nominal $5\,\%$ ($5.17\,\%$ and $5.39\,\%$).
+Christoffersen's $LR_{uc}$ test confirms that unconditional coverage is
+indistinguishable from the nominal $5\,\%$ at one day ($p = 0.495$), consistent
+with Haugom's finding for equity markets, now extended to an agricultural
+commodity. However, the independence component $LR_{ind}$ is rejected at one
+day ($p = 0.008$), indicating that violations cluster even at the shortest
+horizon: the conditional coverage test is formally rejected ($p = 0.024$).
+At longer horizons, overlapping $h$-day targets make consecutive violation
+indicators dependent by construction, so the Christoffersen statistics are
+computed on the non-overlapping subsequence of every $h$-th forecast
+(Table~\ref{tab:christoffersen}, Appendix~\ref{app:supplementary}). On that
+basis, unconditional coverage is rejected for HAR-QR at six months, while at
+twelve months the non-overlapping subsequence (28 observations) is too short
+for an informative test and the raw violation rate of $14.63\,\%$ is the more
+telling summary.
 
 %------------------------------------------------------------------------------
 \subsection{Interpreting the ENSO Signal}
 \label{sec:disc-rq2}
 %------------------------------------------------------------------------------
 
-The ENSO result is harder to read than the HAR result, because the same data
-admit two qualitatively different interpretations. Over the full evaluation
-sample, HAR-X-QR achieves a $30.8\,\%$ reduction in upper-tail quantile loss
-at the twelve-month horizon and holds the top MCS rank from three months
-onward. Taken in isolation this is a large effect. The robustness diagnostics
-in Section~\ref{sec:res-robustness} show that it is also a fragile one: the
-cumulative gain accumulates almost entirely within the 2022--2024
-supply-crisis window, the lag structure is opposite to what an agronomic
-transmission chain would predict, and the gain does not replicate on Arabica
-coffee or raw sugar. The interpretive task is to explain how all three
-diagnostics can fail simultaneously while the full-sample out-of-sample
-gain remains so striking.
+The ENSO result requires less interpretive caution than the research design
+anticipated, because the corrected evidence points uniformly in one
+direction. Over the full evaluation sample, HAR-X-QR reduces upper-tail
+quantile loss by $3.3\,\%$ at the twelve-month horizon --- the only
+quantile--horizon combination with a gain of any substance --- while
+worsening the forecast at fifteen of the eighteen combinations examined,
+and it holds the top MCS rank at no horizon. The robustness diagnostics
+in Section~\ref{sec:res-robustness} show that even the twelve-month gain
+is fragile: the cumulative gain is negative over the entire pre-crisis
+period, materialises wholly within the 2022--2024 supply-crisis window,
+follows a lag structure opposite to what an agronomic transmission chain
+would predict, and does not replicate on Arabica coffee or raw sugar. The
+interpretive task is not to explain away a striking effect, but to
+understand why a mechanism with a plausible physical basis leaves so
+faint a statistical trace.
 
 The physical channel that motivated the inclusion of ENSO in the first place
 is plausibly real but is unlikely to be visible at the lag structure assumed
@@ -97,9 +139,10 @@ What anticipation alone cannot explain, however, is the episodic and
 non-persistent character of the cumulative gain. A stable anticipation
 channel should deliver a steady forecast improvement across decades of ENSO
 cycles, not gains that materialise in specific supply-stress episodes and
-revert to zero in the intervening years. The late-1990s El~Ni\~no episode,
-which produced a temporary median-level gain that dissipated over the
-following decade, provides a second illustration of this pattern: even a
+revert in the intervening years. The El~Ni\~no episode around the turn of
+the millennium, which produced a temporary gain at the centre of the
+distribution that dissipated over the following decade, provides a second
+illustration of this pattern: even a
 real ENSO--supply alignment does not create a structural signal that
 survives into subsequent climate cycles. The
 plausible bridge between these two observations is the rare-disaster reading
@@ -127,9 +170,9 @@ that the out-of-sample relationship typically fails to replicate, and that
 the effect is most amplified for cocoa during El~Ni\~no episodes
 specifically. The HAR-X-QR results extend this pattern: coffee and sugar
 share the same equatorial belt and the same Pacific climate exposure, yet
-the same regressor that produces a $31\,\%$ improvement for cocoa
-\emph{worsens} long-horizon coffee forecasts and produces a gain on sugar
-that is a factor of thirty-two smaller than on cocoa. A structural climate
+the same regressor that produces cocoa's crisis-concentrated twelve-month
+gain \emph{worsens} long-horizon coffee forecasts and produces only an
+economically negligible gain on sugar. A structural climate
 channel operating uniformly across tropical soft commodities is hard to
 reconcile with this asymmetry; a regime-state indicator that happens to
 align with one severe cocoa-specific episode is not.
@@ -139,16 +182,19 @@ market regimes; the ENSO coefficient, on this interpretation, is identified
 predominantly in the regime where its sign and magnitude happen to align
 with the realised volatility surprise.
 
-The data therefore support a cautious answer to RQ2. ENSO improves
-upper-tail cocoa volatility forecasts over the full evaluation sample; the
-improvement is large and statistically significant on the full sample; and
-a coherent mechanism, combining market anticipation with a rare-disaster
-amplification through inventory dynamics, can rationalise both why the
-predictive power is near-contemporaneous and why it concentrates in a single
-crisis. None of these facts establishes that the same regressor will deliver
-comparable performance in future ENSO cycles. The honest reading is that
-HAR-X-QR captures a sample-specific covariation between the ENSO state and
-the cocoa supply crisis, rather than a replicable structural climate
+The data therefore support a clear answer to RQ2: the ENSO index does not
+improve cocoa volatility forecasts in any robust sense. The full-sample
+twelve-month upper-tail gain of $3.3\,\%$ is the residual of a single
+crisis episode superimposed on decades of mild deterioration, and in the
+pre-crisis subsample the augmented model is strictly worse. A coherent
+mechanism, combining market anticipation with a rare-disaster
+amplification through inventory dynamics, can rationalise both why
+whatever predictive content ENSO carries appears near-contemporaneously
+and why it surfaces only under supply stress. But a regressor whose
+contribution is confined to one episode, identifiable only ex post, has
+no operational forecasting value. The honest reading is that HAR-X-QR
+captures a sample-specific covariation between the ENSO state and the
+cocoa supply crisis, rather than a replicable structural climate
 channel.
 
 %------------------------------------------------------------------------------
@@ -183,10 +229,10 @@ itself evidence of regime-conditional behaviour: ENSO produced a real but
 transient predictive gain when the cocoa supply system was under stress,
 and carried no incremental information in the years that followed. The
 finding that the cumulative ENSO gain at the twelve-month upper tail is
-indistinguishable from zero through the three decades preceding 2022 and
-then accumulates the entire full-sample improvement within two years is
-diagnostically clean: both partitions emerge from the data, not from the
-researcher. \textcite{poonForecastingVolatilityFinancial} warn that
+negative --- the augmentation harmful on net --- through the three decades
+preceding 2022, and that the entire full-sample improvement accumulates
+within the final two years, is diagnostically clean: both partitions
+emerge from the data, not from the researcher. \textcite{poonForecastingVolatilityFinancial} warn that
 in-sample parameter stability is no guarantee of out-of-sample stability,
 and that time variation in parameter estimates is the critical issue in
 forecast evaluation; the expanding-window construction addresses this
@@ -195,14 +241,16 @@ warning directly.
 The Model Confidence Set complements rather than contradicts this picture.
 \textcite{hansen2011model} stress that the MCS acknowledges the limitations
 of the data: informative samples yield small confidence sets, uninformative
-samples include many models. The HAR-X-QR $p=1.00$ rank from three months
-onward is therefore a full-sample statement about average predictive
-ability; it cannot, by construction, separate a stable channel from a
-single episode that dominates the average loss. Read together, the MCS
-result and the expanding-window diagnostic are entirely consistent: the
-former says that, averaged over the full sample, HAR-X-QR is statistically
-indistinguishable from the best model; the latter says that the average is
-shaped by one specific subperiod.
+samples include many models. The wide long-horizon confidence sets --- all
+models except historical volatility share $\mathcal{M}^*$ from three months
+onward --- are therefore a statement about the limits of the data: averaged
+over the full sample, the loss differentials at long horizons are small
+relative to their sampling variation, and the MCS cannot, by construction,
+separate a stable channel from a single episode that dominates the average
+loss. Read together, the MCS result and the expanding-window diagnostic are
+entirely consistent: the former says the full-sample averages barely
+discriminate among models at long horizons; the latter says that what
+little discrimination exists is shaped by one specific subperiod.
 
 %------------------------------------------------------------------------------
 \subsection{Coverage, Calibration, and the Discrimination Tradeoff}
@@ -211,16 +259,23 @@ shaped by one specific subperiod.
 
 Two coverage results in Section~\ref{sec:res-har-qr} appear, on a first
 reading, to be in tension with the quantile-loss rankings. The HAR-QR
-violation rate at the twelve-month upper quantile rises to $10.36\,\%$
+violation rate at the twelve-month upper quantile rises to $14.63\,\%$
 against a nominal $5\,\%$, and the HAR-X-QR violation rate rises further to
-$12.66\,\%$, yet HAR-X-QR achieves a substantially lower quantile loss than
-HAR-QR. \textcite{christoffersen1998evaluating} provides the relevant
+$15.89\,\%$, yet at that horizon HAR-X-QR achieves a modestly lower quantile
+loss than HAR-QR. \textcite{christoffersen1998evaluating} provides the relevant
 distinction: unconditional coverage and conditional coverage are separate
 properties, and a forecast can satisfy the former while violating the
-latter through clustered exceedances. The cocoa violations at long horizons
-are almost certainly clustered in the 2022--2024 episode, so the failure of
-unconditional coverage is, if anything, a conservative summary of the
-calibration problem at the upper tail.
+latter through clustered exceedances. On the non-overlapping subsequences
+used for testing, the $LR_{uc}$ test rejects unconditional coverage at six
+months for both models, and for HAR-X-QR additionally at one and three
+months (Table~\ref{tab:christoffersen}); at twelve months the subsequence
+is too short for a powerful test, so the 14--16\,\% empirical violation
+rates are the more informative summary. The concentration of violations in
+the 2022--2024 episode is directly visible in
+Figure~\ref{fig:upper-tail} (panel b2), where realized volatility remains
+above the $\tau = 0.95$ boundary for an extended stretch before the
+forecast distribution adjusts, so the test statistics understate the true
+calibration problem.
 
 The apparent contradiction between higher violations and lower quantile loss
 is resolved by recognising that the two metrics measure orthogonal
@@ -235,11 +290,16 @@ episodes, which reduces the magnitude of large exceedances when realised
 volatility spikes, and lowers it during La~Ni\~na, which produces more
 small exceedances in otherwise calm periods. The asymmetric check function
 penalises a small number of large under-predictions more heavily than a
-larger number of small ones, so the model that re-allocates its boundary
-toward the conditions that produce the most damaging exceedances wins on
-quantile loss while losing on average violation rate. HAR-X-QR is, in this
-specific sense, better calibrated where it matters most for distributional
-ranking and less well calibrated overall.
+larger number of small ones, so a model that re-allocates its boundary
+toward the conditions that produce the most damaging exceedances can win on
+quantile loss while losing on average violation rate. At the twelve-month
+horizon this is exactly what happens: HAR-X-QR raises the boundary during
+the crisis enough to reduce the largest exceedances, gaining $3.3\,\%$ in
+quantile loss at the cost of a higher violation rate. The qualification
+matters, however: at the one- to six-month horizons ENSO augmentation
+worsens loss and coverage \emph{simultaneously}, so the
+discrimination--calibration tradeoff rationalises the twelve-month result
+only, not the augmentation in general.
 
 \textcite{pattonVolatilityForecastComparison} provides a complementary
 argument for prioritising the score over the hit rate in this setting.
@@ -311,15 +371,19 @@ define the natural research agenda that follows from the findings reported
 in Section~\ref{sec:results}.
 
 The overall picture is consistent. HAR-based quantile regression provides a
-substantial and statistically significant improvement over the standard
-volatility-forecasting benchmarks for cocoa at every horizon examined, with
-the upper-tail advantage strongest at the longest horizons that lie far
-beyond the prior literature limit. The ENSO augmentation produces a
-numerically striking long-horizon gain that, on close examination,
-reflects a single severe episode rather than a replicable climate channel.
-The combination of strong RQ1 evidence and a carefully delimited RQ2 result
-positions the thesis as a methodological contribution to the
-volatility-forecasting literature on agricultural commodities, while
-flagging precisely where the limits of what daily-frequency data and a
-single decade of evaluation can reveal about a slow-moving climate signal
+statistically significant improvement over the standard
+volatility-forecasting benchmarks for cocoa at the daily-to-monthly
+horizons, where it holds the top rank in an upper-tail Model Confidence
+Set from which all three benchmarks are excluded. At the six- and
+twelve-month horizons that motivated the
+procurement perspective, simpler quantile constructions anchored to the
+unconditional distribution prove more robust, and no model achieves
+acceptable upper-tail calibration through the crisis. The ENSO augmentation
+produces no robust gain at any horizon: its modest full-sample twelve-month
+improvement reflects a single severe episode rather than a replicable
+climate channel. The combination of a clearly delimited RQ1 result and a
+negative RQ2 result positions the thesis as a methodological contribution
+to the volatility-forecasting literature on agricultural commodities, while
+flagging precisely where the limits of what daily-frequency data and three
+decades of evaluation can reveal about a slow-moving climate signal
 in fact lie.

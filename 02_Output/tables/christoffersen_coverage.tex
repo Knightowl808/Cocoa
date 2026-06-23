@@ -1,0 +1,31 @@
+\begin{table}[htbp]
+\centering
+\small
+\caption{Christoffersen (1998) conditional coverage tests, $\tau = 0.95$}
+\label{tab:christoffersen}
+\begin{tabular}{llrrrccc}
+\toprule
+Horizon & Model & $N$ & $N_{no}$ & VR\,(\%) & $LR_{uc}$ & $LR_{ind}$ & $LR_{cc}$ \\
+\midrule
+1 day & HAR-QR & 7737 & 7737 & 5.17 & $0.466$ & $7.032^{***}$ & $7.498^{**}$ \\
+1 day & HAR-X-QR & 7737 & 7737 & 5.14 & $0.335$ & $6.256^{**}$ & $6.592^{**}$ \\
+\addlinespace
+1 week & HAR-QR & 7733 & 1547 & 5.39 & $0.586$ & $0.045$ & $0.631$ \\
+1 week & HAR-X-QR & 7733 & 1547 & 5.41 & $0.179$ & $0.448$ & $0.626$ \\
+\addlinespace
+1 month & HAR-QR & 7716 & 351 & 6.35 & $1.103$ & $1.682$ & $2.785$ \\
+1 month & HAR-X-QR & 7716 & 351 & 7.14 & $5.591^{**}$ & $3.149^{*}$ & $8.741^{**}$ \\
+\addlinespace
+3 months & HAR-QR & 7672 & 117 & 8.15 & $0.75$ & $2.88^{*}$ & $3.63$ \\
+3 months & HAR-X-QR & 7672 & 117 & 9.68 & $5.29^{**}$ & $5.479^{**}$ & $10.769^{***}$ \\
+\addlinespace
+6 months & HAR-QR & 7570 & 58 & 11.45 & $6.523^{**}$ & $0.81$ & $7.333^{**}$ \\
+6 months & HAR-X-QR & 7570 & 58 & 14.15 & $11.514^{***}$ & $3.586^{*}$ & $15.1^{***}$ \\
+\addlinespace
+12 months & HAR-QR & 7306 & 28 & 14.63 & $1.471$ & --- & --- \\
+12 months & HAR-X-QR & 7306 & 28 & 15.89 & $3.461^{*}$ & $0.754$ & $4.216$ \\
+\bottomrule
+\end{tabular}
+\par\smallskip
+{\footnotesize $LR_{uc}$: unconditional coverage test ($\chi^2_1$); $LR_{ind}$: independence of violations ($\chi^2_1$); $LR_{cc}$: conditional coverage ($\chi^2_2$). VR: empirical violation rate ($\%$) over all $N$ daily forecasts; nominal target $= 5\%$. Because daily forecasts at $h>1$ target overlapping $h$-day windows, consecutive violations are dependent by construction; the LR tests are therefore computed on the non-overlapping subsequence of every $h$-th forecast ($N_{no}$ observations). Cells marked --- are not computable (no violations or too few observations in the non-overlapping subsequence). $^{*}p<0.10$; $^{**}p<0.05$; $^{***}p<0.01$.}
+\end{table}

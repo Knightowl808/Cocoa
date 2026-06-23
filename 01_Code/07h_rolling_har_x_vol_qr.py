@@ -105,10 +105,14 @@ def rolling_har_x_vol_qr(df, horizon_key, horizon_label, enso_vol_col):
     target_col   = f"target_{horizon_label}"
     feature_cols = ["sigma_d", "sigma_w", "sigma_m", enso_vol_col]
 
-    valid = df[["Date"] + feature_cols + [target_col]].dropna().reset_index(drop=True)
+    # Also require 'enso' to be non-missing so the evaluation sample is
+    # identical to HAR-QR / HAR-X-QR (enso_vol columns have the same monthly
+    # source but dropna alignment keeps this explicit and robust).
+    valid = (df[["Date", "enso"] + feature_cols + [target_col]]
+             .dropna().reset_index(drop=True))
     n = len(valid)
 
-    if n < WINDOW + 100:
+    if n < WINDOW + horizon_key + 100:
         print(f"  WARNING: Only {n} valid obs for h={horizon_key} with {enso_vol_col}")
         return None
 
@@ -118,7 +122,10 @@ def rolling_har_x_vol_qr(df, horizon_key, horizon_label, enso_vol_col):
     cached_params = {tau: None for tau in QUANTILES}
     last_estimated = -REESTIMATE_EVERY
 
-    for t in tqdm(range(WINDOW, n),
+    # Estimation window ends at t - h: rows s > t - h have forward targets
+    # not fully realized at the forecast origin t (avoids look-ahead bias).
+    h = horizon_key
+    for t in tqdm(range(WINDOW + h, n),
                   desc=f"  HAR-X-vol-QR [{enso_vol_col}] h={horizon_label}",
                   leave=True):
         y_actual = valid.iloc[t][target_col]
@@ -129,7 +136,7 @@ def rolling_har_x_vol_qr(df, horizon_key, horizon_label, enso_vol_col):
         X_test_const = np.concatenate([[1.0], X_test])
 
         if t - last_estimated >= REESTIMATE_EVERY:
-            train   = valid.iloc[t - WINDOW : t]
+            train   = valid.iloc[t - h - WINDOW : t - h]
             X_train = sm.add_constant(train[feature_cols].values)
             y_train = train[target_col].values
 

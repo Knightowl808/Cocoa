@@ -7,8 +7,11 @@ Extends 07e_precrisis_evaluation.py to also cover:
   - HAR-X-vol-12m  (12-month rolling stdev of Nino 3.4)
   - HAR-X-vol-36m  (36-month rolling stdev of Nino 3.4)
 
-Same logic as 07e: NO new estimation. Loads existing forecast CSVs,
-filters to Date < 2022-01-01, recomputes quantile losses.
+Same logic as 07e: NO new estimation. Loads existing forecast CSVs and
+recomputes quantile losses on the pre-crisis subsample. As in 07e, a
+forecast counts as pre-crisis only if its ENTIRE h-day target window ends
+before the 2024-02-08 break date (filtering on the origin date alone would
+leave long-horizon targets reaching into the crisis).
 
 Key diagnostic: does the gain at 12m, tau=0.95 survive pre-crisis for
 the vol specs, the same way it vanishes for the ENSO level?
@@ -27,8 +30,20 @@ TBL_DIR   = os.path.join(BASE_DIR, "02_Output", "tables")
 os.makedirs(TBL_DIR, exist_ok=True)
 
 HORIZONS    = ["1d", "1w", "1m", "3m", "6m", "12m"]
+H_DAYS      = {"1d": 1, "1w": 5, "1m": 22, "3m": 66, "6m": 132, "12m": 264}
 QUANTILES   = [0.05, 0.25, 0.50, 0.75, 0.95]
 CRISIS_DATE = pd.Timestamp("2024-02-08")  # onset of extreme-volatility phase, supply crisis
+
+
+def precrisis_origin_cutoffs():
+    """Latest origin date per horizon whose entire target window
+    (t+1 ... t+h trading days) ends strictly before CRISIS_DATE."""
+    cal = pd.read_csv(
+        os.path.join(PROC_DIR, "daily_with_volatility.csv"),
+        usecols=["Date"], parse_dates=["Date"],
+    )["Date"].sort_values().reset_index(drop=True)
+    i_c = int(cal.searchsorted(CRISIS_DATE))
+    return {hl: cal.iloc[i_c - 1 - h] for hl, h in H_DAYS.items()}
 
 HORIZON_ORDER = pd.CategoricalDtype(
     categories=["1d", "1w", "1m", "3m", "6m", "12m"], ordered=True
@@ -48,6 +63,7 @@ def quantile_loss(actual, forecast, tau):
 
 
 def compute_losses():
+    cutoffs = precrisis_origin_cutoffs()
     rows = []
     for model_key, fname_tpl in MODELS.items():
         for h in HORIZONS:
@@ -58,7 +74,7 @@ def compute_losses():
 
             df = pd.read_csv(path)
             df["Date"] = pd.to_datetime(df["Date"])
-            df_pre = df[df["Date"] < CRISIS_DATE].copy()
+            df_pre = df[df["Date"] <= cutoffs[h]].copy()
 
             n_full = len(df)
             n_pre  = len(df_pre)
@@ -111,7 +127,8 @@ def build_delta_table(loss_df):
 if __name__ == "__main__":
     print("=" * 65)
     print("Pre-Crisis Evaluation — ENSO Vol Specs (07e2)")
-    print(f"Crisis period excluded: Date >= {CRISIS_DATE.date()}")
+    print(f"Break date: {CRISIS_DATE.date()} — forecasts kept only if the")
+    print("entire h-day target window ends before this date")
     print("=" * 65)
 
     loss_df = compute_losses()

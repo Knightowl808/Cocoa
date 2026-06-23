@@ -22,7 +22,7 @@ Feature & Hist.\ Vol. & GARCH(1,1) & HAR-OLS & HAR-QR & HAR-X-QR \\
 Model class         & Non-param.     & ARCH-type    & Linear reg.    & Quantile reg.  & Quantile reg.  \\
 HAR lags ($d/w/m$)  & No             & No           & Yes            & Yes            & Yes            \\
 ENSO regressor      & No             & No           & No             & No             & Yes            \\
-Quantile output     & Empirical      & Simulation   & None           & Direct         & Direct         \\
+Quantile output     & Empirical      & Closed-form  & None           & Direct         & Direct         \\
 Estimation          & ---            & MLE          & OLS            & Check fn.      & Check fn.      \\
 Multi-period design & Rolling window & Recursive    & Direct         & Direct         & Direct         \\
 Thesis role         & Naive BM       & Param.\ BM   & HAR benchmark  & Main (RQ1)     & Main (RQ2)     \\
@@ -176,8 +176,7 @@ This asymmetric loss function penalizes under-prediction more heavily when
 $\tau$ is large and over-prediction more heavily when $\tau$ is small,
 ensuring that the estimated quantile achieves the target coverage rate. The
 minimization is a linear programming problem solved efficiently using the
-simplex algorithm \parencite{koenker1987algorithm}. Standard errors are
-computed using the bootstrap.
+simplex algorithm \parencite{koenker1987algorithm}.
 
 %------------------------------------------------------------------------------
 \subsection{Benchmark Models}
@@ -318,6 +317,23 @@ rates above $1 - \tau$ signal that the model underestimates the quantile
 measures average forecast accuracy but does not directly reveal whether
 the nominal coverage level is achieved.
 
+Calibration is tested formally with the likelihood-ratio framework of
+\textcite{christoffersen1998evaluating}. The unconditional coverage test
+($LR_{uc}$, $\chi^2_1$) tests whether the violation frequency equals the
+nominal rate $1 - \tau$; the independence test ($LR_{ind}$, $\chi^2_1$)
+tests whether violations arrive independently rather than in clusters,
+using a first-order Markov alternative; and the conditional coverage test
+($LR_{cc} = LR_{uc} + LR_{ind}$, $\chi^2_2$) combines both properties.
+One complication arises from the daily rolling design: at horizons
+$h > 1$, consecutive forecasts target overlapping $h$-day windows, so
+consecutive violation indicators are dependent by construction and the
+independence test would reject mechanically. We therefore compute the
+test statistics on the non-overlapping subsequence of every $h$-th
+forecast, while reporting the empirical violation rate over all
+forecasts. At the longest horizons this leaves few non-overlapping
+observations (28 at twelve months), so the tests lose power and the raw
+violation rate becomes the more informative diagnostic.
+
 To determine whether differences in forecast accuracy are statistically
 significant, we use the Model Confidence Set (MCS) of
 \textcite{hansen2011model}. The MCS identifies the set of models
@@ -332,8 +348,11 @@ the 90\% confidence level are considered statistically equivalent.
 The forecast evaluation is conducted out-of-sample using a rolling estimation
 window of 2,520 trading
 days (approximately 10 years). At each forecast origin $t$, we estimate
-parameters using observations from $t - 2519$ to $t$, generate forecasts,
-and roll forward by one day. The window rolls \emph{daily} to maximize the number of
+parameters on the 2,520 most recent observations whose $h$-day target
+windows are fully realized by $t$ --- feature dates
+$s \in \{t-h-2519, \ldots, t-h\}$, so that no training target extends
+beyond the forecast origin --- generate forecasts, and roll forward by one
+day. The window rolls \emph{daily} to maximize the number of
 forecast--realization pairs for statistical evaluation. With approximately
 30 years of out-of-sample data, this yields thousands of pairs for
 statistical testing.
@@ -369,7 +388,7 @@ $\Delta\text{QL}(T) = \text{QL}_{\text{HAR-X-QR}}(\{t \leq T\}) -
 forecast--realisation pairs up to and including~$T$. A structural ENSO--volatility channel should produce a
 steadily accumulating gain throughout the evaluation period, not a gain
 concentrated in a single episode. Second, a \emph{lag-structure}
-check re-estimates HAR-X-QR with the Ni\~no~3.4 index lagged 0, 1, 3, and~6
+check re-estimates HAR-X-QR with the Ni\~no~3.4 index lagged 0, 1, 3, 6, and~12
 months. Under the agronomic-transmission hypothesis the predictive content should
 strengthen at lags of 6--12 months, matching the window over which
 ENSO-driven rainfall anomalies are hypothesised to affect harvests. This

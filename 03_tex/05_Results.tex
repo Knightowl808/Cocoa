@@ -9,12 +9,13 @@ outperforms the benchmarks across horizons (RQ1). Section~\ref{sec:res-har-x-qr}
 assesses whether the Ni\~no~3.4 climate index adds forecast value at long
 horizons (RQ2). Section~\ref{sec:res-mcs} tests the statistical significance
 of the observed differences using Model Confidence Sets.
-Section~\ref{sec:res-robustness} subjects the ENSO gain to three diagnostics
+Section~\ref{sec:res-robustness} subjects the ENSO result to three diagnostics
 addressing temporal stability, lag structure, and cross-commodity replication.
 Section~\ref{sec:res-summary} synthesizes the findings. All
 results use a rolling estimation window of 2,520 trading days with daily
-re-estimation, yielding approximately 7,800 out-of-sample
-forecast--realization pairs at each horizon.
+re-estimation. All models are evaluated on a common sample at each horizon,
+yielding between 7,306 (twelve months) and 7,737 (one day) out-of-sample
+forecast--realization pairs.
 
 %------------------------------------------------------------------------------
 \subsection{Mean Forecast Comparison}
@@ -35,9 +36,9 @@ volatility uniformly last.
 \toprule
 Model & 1d & 1w & 1m & 3m & 6m & 12m \\
 \midrule
-Historical Vol    & $-7.156$ & $-7.367$ & $-7.420^{*}$ & $-7.405$ & $-7.380$ & $-7.353$ \\
-GARCH(1,1)        & $-7.239$ & $-7.379$ & $-7.401^{*}$ & $-7.375$ & $-7.348$ & $-7.336$ \\
-HAR-OLS           & $\mathbf{-7.291}$ & $\mathbf{-7.460}$ & $\mathbf{-7.493}^{*}$ & $\mathbf{-7.474}$ & $\mathbf{-7.438}$ & $\mathbf{-7.423}$ \\
+Historical Vol    & $-7.156$ & $-7.362$ & $-7.399^{*}$ & $-7.353$ & $-7.313$ & $-7.266$ \\
+GARCH(1,1)        & $-7.262$ & $-7.383$ & $-7.402^{*}$ & $-7.374$ & $-7.341$ & $-7.323$ \\
+HAR-OLS           & $\mathbf{-7.291}$ & $\mathbf{-7.458}$ & $\mathbf{-7.486}^{*}$ & $\mathbf{-7.456}$ & $\mathbf{-7.405}$ & $\mathbf{-7.360}$ \\
 \bottomrule
 \end{tabular}
 \par\smallskip
@@ -45,39 +46,41 @@ HAR-OLS           & $\mathbf{-7.291}$ & $\mathbf{-7.460}$ & $\mathbf{-7.493}^{*}
 \end{table}
 
 The gap between HAR-OLS and GARCH is largest at the one-month horizon
-(0.092 QLIKE units) and narrowest at one day (0.052 units). The monthly
+(0.084 QLIKE units) and narrowest at one day (0.029 units). The monthly
 HAR component ($\sigma^{(m)}_t$) maintains a correlation of 0.66 with the
 twelve-month volatility target, compared to 0.37 for the daily component,
 an empirical fact that points to the source of HAR-OLS's long-horizon
 advantage.
 
-The relative performance of the two benchmarks reverses across horizons:
-at one day, GARCH outperforms historical volatility ($-7.239$ vs.\ $-7.156$),
-but from one month onward historical volatility is the stronger benchmark,
-eventually surpassing GARCH by 0.017 QLIKE units at twelve months. All
-three models share a common horizon pattern: loss improves from the one-day
-to the one-month horizon, reflecting the smoothing effect of averaging in
-the target $\bar{\sigma}_{t:t+h}$, before degrading at six and twelve months
-as the autoregressive signal weakens. Even HAR-OLS degrades beyond one
-month, which motivates the search for additional predictive signals in
+GARCH(1,1) outperforms historical volatility at every horizon. The margin
+is widest at one day (0.106 QLIKE units), where GARCH's daily updating
+reacts to volatility shocks that a trailing 252-day average smooths away,
+nearly vanishes at one month (0.003 units), and widens again toward twelve
+months (0.057 units). All three models share a common horizon pattern:
+loss improves from the one-day to the one-month horizon, reflecting the
+smoothing effect of averaging in the target $\bar{\sigma}_{t:t+h}$, before
+degrading at three through twelve months as the autoregressive signal
+weakens. Even HAR-OLS degrades beyond one month, which motivates the
+search for additional predictive signals in
 Section~\ref{sec:res-har-x-qr}. The mechanism behind the GARCH and HAR
 ranking is interpreted in Section~\ref{sec:disc-rq1}.
 
-The QLIKE ranking is confirmed by MSE and MAE. Figure~\ref{fig:robustness-lineplot}
-plots all three loss functions across horizons. HAR-OLS achieves the lowest
-MSE at every horizon; MAE is minimized by HAR-X-QR (median) at short horizons
-and by HAR-OLS or HAR-QR (median) beyond three months. Crucially, GARCH(1,1)
-is the worst-performing model under all three metrics at long horizons,
-with its error rising steeply relative to the HAR family as the horizon
-extends, a direct consequence of mean-reversion in its multi-step forecasts.
-The HAR family dominates regardless of how point forecast errors are penalized.
+The QLIKE ranking is broadly confirmed by MSE and MAE.
+Figure~\ref{fig:robustness-lineplot} plots all three loss functions across
+horizons. The HAR family achieves the lowest MSE and MAE at every horizon,
+and from one week onward GARCH(1,1) records the highest error under both
+metrics, a direct consequence of mean-reversion in its multi-step point
+forecasts. Under QLIKE, by contrast, GARCH ranks second throughout and
+stays ahead of historical volatility even at twelve months. The HAR
+family's lead over both benchmarks is preserved regardless of how point
+forecast errors are penalized.
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.92\textwidth]{figures/robustness_metrics_lineplot.pdf}
 \caption{Robustness check: point forecast accuracy under three loss functions}
 \label{fig:robustness-lineplot}
-{\footnotesize Each panel plots mean (or median) forecast loss across horizons. QLIKE axis is inverted (more negative = better). MSE scaled by $10^5$ for readability. The consistent separation between GARCH(1,1) and the HAR family at long horizons holds across all three metrics.}
+{\footnotesize Each panel plots mean (or median) forecast loss across horizons; in all three panels a lower line is better. QLIKE is shown on its native scale, where a more negative value is a smaller loss \parencite{pattonVolatilityForecastComparison}. MSE scaled by $10^5$ for readability. The two HAR-QR medians are included to show that the full HAR family's point-forecast behaviour coincides with HAR-OLS. The HAR family separates from both benchmarks under MSE and MAE at all horizons; under QLIKE, GARCH(1,1) ranks second behind HAR-OLS.}
 \end{figure}
 
 %------------------------------------------------------------------------------
@@ -90,9 +93,10 @@ For risk assessment, the upper tail matters: a model that accurately forecasts
 average volatility may still understate the probability of extreme outcomes.
 We now compare five models on their ability to forecast the 95th percentile
 of future volatility. Historical volatility uses the empirical quantile of
-the trailing 252-day distribution. GARCH(1,1) quantiles follow the
-closed-form Gaussian approach (Equation~\ref{eq:garch-quantile}). HAR-OLS
-produces pseudo-quantile forecasts from its in-sample residual distribution
+the trailing 252-day distribution of $h$-day average volatility. GARCH(1,1)
+quantiles follow the closed-form Gaussian approach
+(Equation~\ref{eq:garch-quantile}). HAR-OLS produces pseudo-quantile
+forecasts from its in-sample residual distribution
 (Equation~\ref{eq:har-ols-quantile}). HAR-QR estimates the quantile directly
 through quantile regression on the HAR structure, and HAR-X-QR augments
 this with the Ni\~no~3.4 index.
@@ -109,11 +113,11 @@ $\tau = 0.95$ for all five models.
 \toprule
 Model & 1d & 1w & 1m & 3m & 6m & 12m \\
 \midrule
-Historical Vol    & $0.001282$ & $0.000880$ & $0.000769^{*}$ & $0.000803$ & $0.000843$ & $0.000862$ \\
-GARCH(1,1)        & $0.001307$ & $0.000972$ & $0.000905$ & $0.000956$ & $0.000971$ & $0.000932^{*}$ \\
-HAR-OLS           & $0.001228$ & $0.000733$ & $0.000509$ & $0.000493^{*}$ & $0.000513$ & $0.000493^{*}$ \\
-HAR-QR            & $\mathbf{0.001160}$ & $\mathbf{0.000680}$ & $\mathbf{0.000470}$ & $0.000461^{*}$ & $0.000510$ & $0.000516$ \\
-HAR-X-QR          & $0.001161$ & $0.000681$ & $0.000476$ & $\mathbf{0.000442}$ & $\mathbf{0.000419}$ & $\mathbf{0.000357}^{*}$ \\
+Historical Vol    & $0.001281$ & $0.000830$ & $0.000691^{*}$ & $0.000809$ & $0.001033$ & $0.001462$ \\
+GARCH(1,1)        & $0.001283$ & $0.000828$ & $0.000609^{*}$ & $0.000629$ & $0.000668$ & $\mathbf{0.000736}$ \\
+HAR-OLS           & $0.001229$ & $0.000746$ & $0.000536^{*}$ & $0.000558$ & $\mathbf{0.000608}$ & $0.000786$ \\
+HAR-QR            & $\mathbf{0.001159}$ & $\mathbf{0.000682}$ & $\mathbf{0.000500}^{*}$ & $\mathbf{0.000557}$ & $0.000704$ & $0.001041$ \\
+HAR-X-QR          & $0.001160$ & $0.000685$ & $0.000521^{*}$ & $0.000580$ & $0.000711$ & $0.001007$ \\
 \bottomrule
 \end{tabular}
 \par\smallskip
@@ -122,49 +126,73 @@ HAR-X-QR          & $0.001161$ & $0.000681$ & $0.000476$ & $\mathbf{0.000442}$ &
 
 Four patterns emerge from this comparison.
 
-\textit{First, the HAR family dominates all benchmarks at every horizon.}
-HAR-QR, HAR-OLS, and HAR-X-QR all outperform both GARCH(1,1) and
-historical volatility at every horizon. The gap is not marginal: at twelve
-months, the best benchmark (historical volatility, $0.000862$) is 67\%
-above HAR-QR ($0.000516$) and 142\% above HAR-X-QR ($0.000357$).
+\textit{First, direct quantile estimation wins at short and medium
+horizons.} HAR-QR achieves the lowest quantile loss at one day, one week,
+one month, and (marginally) three months. The advantage over the
+benchmarks is not trivial: at one month, the best benchmark (GARCH,
+$0.000609$) is 22\% above HAR-QR ($0.000500$), and at one day historical
+volatility ($0.001281$) is 11\% above HAR-QR ($0.001159$). Against the
+HAR-OLS pseudo-quantile, HAR-QR improves by 6\% at one day and 7\% at one
+month; at three months the two are essentially tied ($0.000557$ vs
+$0.000558$).
 
-\textit{Second, direct quantile estimation outperforms the pseudo-quantile
-approach at short-to-medium horizons.} HAR-QR improves on HAR-OLS by 6\%
-at one day ($0.001160$ vs $0.001228$) and 8\% at one month ($0.000470$
-vs $0.000509$). The advantage narrows toward six months and reverses
-marginally at twelve months, where HAR-OLS holds a slight numerical edge
-($0.000493$ vs $0.000516$). Whether this reversal is statistically
-meaningful is assessed in Section~\ref{sec:res-mcs}.
+\textit{Second, the ranking reverses at long horizons.} At six months the
+HAR-OLS pseudo-quantile takes the lead at $0.000608$, which is 14\% below
+HAR-QR. At twelve months GARCH(1,1) becomes the best model outright, with
+a quantile loss ($0.000736$) that is 29\% below HAR-QR and 27\% below
+HAR-X-QR. The advantage of
+estimating the quantile directly on rolling windows is thus a
+short-horizon phenomenon; at the longest horizons, simpler quantile
+constructions anchored to the unconditional distribution prove more
+robust. Whether these long-horizon reversals are statistically meaningful
+is assessed in Section~\ref{sec:res-mcs}.
 
-\textit{Third, the GARCH quantile forecast trails the HAR family from one
-week onward.} At one day, GARCH ($0.001307$) and historical volatility
-($0.001282$) are similar, with historical volatility slightly better. From
-one week onward, GARCH produces the highest quantile loss of all five
-models; by twelve months, its quantile loss ($0.000932$) is 80\% above
-HAR-QR's ($0.000516$).
+\textit{Third, historical volatility collapses at long horizons.} Its
+empirical trailing quantile is competitive at one month ($0.000691$) but
+deteriorates rapidly beyond that, reaching $0.001462$ at twelve months ---
+40\% above HAR-QR and 99\% above GARCH. A trailing one-year window cannot
+anticipate distributional shifts over a further one-year forecast window,
+so violations cluster exactly where the upper tail matters most.
 
-\textit{Fourth, HAR-X-QR separates from HAR-QR only at long horizons.}
-At one day through one month, the two models are virtually indistinguishable
-(differences $<1\%$). The divergence begins at three months ($+4.17\%$
-improvement) and accelerates to $+17.90\%$ at six months and $+30.86\%$
-at twelve months. This horizon dependence is analyzed in detail in
+\textit{Fourth, ENSO augmentation does not separate HAR-X-QR from HAR-QR
+in this model's favor except at twelve months.} The two models are
+virtually indistinguishable at one day and one week (differences
+$<0.5\%$); ENSO \emph{worsens} the upper-tail forecast at one month
+($-4.2\%$), three months ($-4.2\%$), and six months ($-1.0\%$); and only
+at twelve months does a modest improvement of $3.3\%$ appear. This
+horizon dependence is analyzed in detail in
 Section~\ref{sec:res-har-x-qr}.
+
+Table~\ref{tab:upper-qlike-comparison} isolates the upper tail, where the
+long-horizon ranking reverses in favour of the benchmarks. The full
+five-model comparison at the median and $\tau = 0.75$, reported in
+Appendix~\ref{app:supplementary} (Table~\ref{tab:quantile-loss-all}),
+shows that this reversal is confined to the upper tail: at $\tau = 0.50$
+and $\tau = 0.75$ the HAR family (HAR-QR or HAR-OLS) records the lowest
+quantile loss at every horizon, and neither benchmark is ever competitive.
+The twelve-month advantage of GARCH is thus a tail phenomenon, not a
+general long-horizon one.
 
 Figure~\ref{fig:upper-tail} illustrates the distributional forecasts of
 the HAR-X-QR model, displaying the 50--75\% and 75--95\% quantile bands
-alongside the median forecast ($\tau = 0.50$) and Yang-Zhang volatility over
-the full out-of-sample period (1995--2025). The figure complements the
+alongside the median forecast ($\tau = 0.50$) and Yang-Zhang volatility.
+Panels (a1) and (b1) cover 1995--2022; panels (a2) and (b2) show the
+2023--2025 crisis window on its own scale. The figure complements the
 loss-function evidence by showing how the model's forecast distribution
 moves through regimes.
 
-At the one-month horizon (panel~a), the quantile bands widen and narrow
-in step with Yang-Zhang volatility, demonstrating the HAR structure's
-ability to adapt to changing variance regimes. At the twelve-month horizon
-(panel~b), the bands are smoother, reflecting the averaging inherent in
-long-run projection, but still widen noticeably ahead of the 2022--2024
-supply crisis. The Yang-Zhang series breaches the $\tau = 0.95$ boundary
-during the crisis peak at both horizons, consistent with the violation
-rates reported in Table~\ref{tab:upper-coverage}.
+At the one-month horizon (panels~a1, a2), the quantile bands widen and
+narrow in step with Yang-Zhang volatility, demonstrating the HAR
+structure's ability to adapt to changing variance regimes; during the
+2024 crisis peak the bands follow the realized spike with a short lag. At
+the twelve-month horizon (panels~b1, b2), the bands are smoother,
+reflecting the averaging inherent in long-run projection. The crisis
+panel (b2) exposes the central weakness of the long-horizon forecast:
+Yang-Zhang volatility rises above the $\tau = 0.95$ boundary for an
+extended stretch of 2023--24 before the forecast distribution adjusts,
+and the bands widen only after the spike has materialized. This delayed
+adjustment is reflected in the violation rates reported in
+Table~\ref{tab:upper-coverage}.
 
 \begin{figure}[htbp]
 \centering
@@ -172,20 +200,22 @@ rates reported in Table~\ref{tab:upper-coverage}.
 \caption{HAR-X-QR distributional forecasts: quantile bands and Yang-Zhang volatility}
 \label{fig:upper-tail}
 \par\smallskip
-{\footnotesize HAR-X-QR quantile forecasts at $\tau \in \{0.50, 0.75, 0.95\}$ plotted against Yang-Zhang volatility (solid black). Dark gray band: 50--75\% interval; light gray band: 75--95\% interval; dashed line: median ($\tau = 0.50$). Rows: one-month (a) and twelve-month (b) horizons.}
+{\footnotesize HAR-X-QR quantile forecasts at $\tau \in \{0.50, 0.75, 0.95\}$ plotted against Yang-Zhang volatility (solid black). Dark gray band: 50--75\% interval; light gray band: 75--95\% interval; dashed line: median ($\tau = 0.50$). Rows: one-month (a) and twelve-month (b) horizons. Left column: 1995--2022; right column: 2023--2025 (separate scale).}
 \end{figure}
 
 Table~\ref{tab:upper-coverage} reports violation rates for the upper
 quantile ($\tau = 0.95$) by horizon for both HAR-QR and HAR-X-QR.
 Under correct unconditional coverage, the violation rate should equal
 $1 - \tau = 5\%$. HAR-QR achieves near-target coverage at one day and
-one week (5.17\% and 5.30\%), remains acceptable through three months
-(7.05\%), and exceeds the target at six months (8.57\%) and twelve months
-(10.36\%). ENSO augmentation leaves short-horizon coverage essentially
-unchanged but widens the long-horizon gap: HAR-X-QR violation rates rise
-to 10.97\% at six months and 12.66\% at twelve months. The apparent tension
-between HAR-X-QR's lower quantile loss and its higher violation rate, and
-the mechanism that produces it, is taken up in
+one week (5.17\% and 5.39\%), then deteriorates monotonically as the
+horizon extends: 6.35\% at one month, 8.15\% at three months, 11.45\% at
+six months, and 14.63\% at twelve months. ENSO augmentation leaves
+short-horizon coverage essentially unchanged but worsens calibration at
+every horizon from one month onward: HAR-X-QR violation rates reach
+14.15\% at six months and 15.89\% at twelve months. Formal Christoffersen
+tests on non-overlapping subsequences are reported in
+Table~\ref{tab:christoffersen} (Appendix~\ref{app:supplementary}); the
+calibration--discrimination tradeoff behind these numbers is taken up in
 Section~\ref{sec:disc-coverage}. The following subsection examines
 whether augmenting HAR-QR with the ENSO climate index improves long-horizon
 upper-tail accuracy.
@@ -199,16 +229,16 @@ upper-tail accuracy.
 \toprule
 Horizon & $N$ & HAR-QR rate (\%) & HAR-X-QR rate (\%) \\
 \midrule
-1d  & 7,833 & 5.17 & 5.14 \\
-1w  & 7,829 & 5.30 & 5.35 \\
-1m  & 7,812 & 6.22 & 6.90 \\
-3m  & 7,768 & 7.05 & 7.90 \\
-6m  & 7,702 & 8.57 & 10.97 \\
-12m & 7,570 & 10.36 & 12.66 \\
+1d  & 7,737 & 5.17 & 5.14 \\
+1w  & 7,733 & 5.39 & 5.41 \\
+1m  & 7,716 & 6.35 & 7.14 \\
+3m  & 7,672 & 8.15 & 9.68 \\
+6m  & 7,570 & 11.45 & 14.15 \\
+12m & 7,306 & 14.63 & 15.89 \\
 \bottomrule
 \end{tabular}
 \par\smallskip
-{\footnotesize A violation occurs when Yang-Zhang volatility exceeds the $\tau = 0.95$ quantile forecast; the nominal target is 5\% ($= 1 - \tau$). $N$: forecast--realization pairs per horizon.}
+{\footnotesize A violation occurs when Yang-Zhang volatility exceeds the $\tau = 0.95$ quantile forecast; the nominal target is 5\% ($= 1 - \tau$). $N$: forecast--realization pairs. Both models are evaluated on the identical sample at each horizon, restricted to dates with an available Ni\~no~3.4 reading (the ENSO series ends in July 2025, five months before the daily cocoa sample).}
 \end{table}
 
 %------------------------------------------------------------------------------
@@ -231,40 +261,42 @@ vs.\ HAR-QR)}
 \toprule
 $\tau$ & 1d & 1w & 1m & 3m & 6m & 12m \\
 \midrule
-0.50 & $+0.5713$ & $+0.2694$ & $+0.4893$ & $-0.4268$ & $+0.2707$ & $+3.0358$ \\
-0.75 & $+0.4751$ & $+0.0543$ & $-0.1509$ & $-1.4625$ & $-0.6454$ & $-1.1074$ \\
-0.95 & $+0.0185$ & $-0.0277$ & $-1.0514$ & $+4.1698$ & $+17.9025$ & $+30.8611$ \\
+0.50 & $+0.00$ & $-0.32$ & $-0.62$ & $-1.54$ & $-0.99$ & $+1.62$ \\
+0.75 & $-0.02$ & $-0.31$ & $-1.34$ & $-3.34$ & $-3.53$ & $-6.72$ \\
+0.95 & $-0.09$ & $-0.43$ & $-4.20$ & $-4.24$ & $-1.03$ & $+3.29$ \\
 \bottomrule
 \end{tabular}
 \par\smallskip
 {\footnotesize Improvement (\%) $= (1 - \text{QL}_{\text{HAR-X}} / \text{QL}_{\text{HAR}}) \times 100$; positive = lower loss for HAR-X-QR.}
 \end{table}
 
-The results reveal a striking horizon- and quantile-dependent pattern.
-At short horizons (one day to one month), ENSO augmentation provides no
-benefit and occasionally worsens forecasts marginally. At such horizons,
-the Ni\~no~3.4 coefficient captures noise rather than signal, and the
-additional parameter slightly degrades out-of-sample performance.
+The dominant feature of this table is the prevalence of negative entries:
+in fifteen of the eighteen quantile--horizon combinations, adding the
+Ni\~no~3.4 index \emph{worsens} the out-of-sample forecast. At short
+horizons (one day to one week) the effect is negligible in either
+direction --- the additional coefficient neither helps nor hurts
+materially. From one month onward, the extra parameter degrades
+performance at almost every quantile level, with the deterioration most
+pronounced at $\tau = 0.75$, where it grows monotonically with the
+horizon and reaches $-6.7\%$ at twelve months.
 
-The first meaningful improvement appears at three months for the upper
-tail: $\tau = 0.95$ quantile loss decreases by 4.17\%. The effect
-strengthens substantially at six months ($+17.90\%$) and reaches its
-maximum at twelve months ($+30.86\%$). This concentration in the upper
-tail is consistent with the hypothesis that ENSO anomalies are associated
-with cocoa supply disruptions, which manifest as rightward shifts in the
-volatility distribution rather than a uniform upward shift. Whether this
-recalibration reflects a stable predictive relationship or a sample-specific
-regime effect is assessed in Section~\ref{sec:res-robustness}. The GARCH and
-historical volatility benchmarks cannot exploit this climate index, explaining
-why their twelve-month upper-tail performance in
-Table~\ref{tab:upper-qlike-comparison} falls far behind HAR-X-QR:
-historical volatility's loss ($0.000862$) is 142\% higher than
-HAR-X-QR's ($0.000357$), and GARCH's ($0.000932$) is 161\% higher.
-
-The median ($\tau = 0.50$) shows only a small gain at twelve months
-($+3.04\%$), with negligible or marginally negative effects at shorter
-horizons, confirming that the benefit of ENSO augmentation is
-predominantly distributional rather than centered on the mean.
+The only improvements appear at the twelve-month horizon: $+3.3\%$ at the
+upper tail ($\tau = 0.95$) and $+1.6\%$ at the median. This single
+favourable cell is the entire empirical case for RQ2, and three
+properties place it under suspicion before any further testing. It is
+modest in magnitude; it is isolated, surrounded by deterioration at every
+shorter horizon; and it earns HAR-X-QR no top rank in the Model
+Confidence Set at any horizon (Section~\ref{sec:res-mcs}). It must also
+be read against the benchmark comparison in
+Table~\ref{tab:upper-qlike-comparison}: even with the ENSO gain, HAR-X-QR
+($0.001007$) remains 37\% above GARCH(1,1) ($0.000736$) at the
+twelve-month upper tail. The climate index narrows the gap to the best
+model; it does not close it. The gain cannot be dismissed on magnitude
+alone, however, because it falls precisely at the twelve-month
+procurement horizon that motivates the thesis. It therefore warrants a
+direct test of whether it reflects a stable predictive relationship or a
+sample-specific regime effect --- the subject of
+Section~\ref{sec:res-robustness}.
 
 %------------------------------------------------------------------------------
 \subsection{Statistical Significance: Model Confidence Sets}
@@ -281,16 +313,14 @@ We use the MCS procedure and configuration described in
 Section~\ref{sec:meth-evaluation}.
 
 Table~\ref{tab:mcs-qlike} reports MCS results for QLIKE loss.
-HAR-OLS is the sole member of $\mathcal{M}^{*}$ at the one-day
-and one-week horizons ($p = 1.00$), confirming that its mean forecast
-superiority is statistically significant at short horizons. From one
-month onward, historical volatility, HAR-QR, and HAR-X-QR enter
-$\mathcal{M}^{*}$ alongside HAR-OLS, indicating that at medium and
-long horizons their mean forecast accuracy is statistically
-indistinguishable from HAR-OLS. GARCH(1,1) is excluded from
-$\mathcal{M}^{*}$ at horizons up to six months; at twelve months it
-enters $\mathcal{M}^{*}$ as well, reflecting the convergence of all
-models in the tails of the QLIKE distribution at the longest horizon.
+HAR-OLS is the sole member of $\mathcal{M}^{*}$ at the one-day, one-week,
+and one-month horizons ($p = 1.00$), confirming that its mean forecast
+superiority is statistically significant at short and medium horizons.
+From three months onward, all five models enter $\mathcal{M}^{*}$: at
+long horizons the loss differentials, while still favoring HAR-OLS in
+point terms, are no longer large relative to their sampling variation.
+GARCH(1,1) and historical volatility are thus excluded through one month
+and statistically indistinguishable from the best model thereafter.
 
 \begin{table}[htbp]
 \centering
@@ -303,20 +333,20 @@ models in the tails of the QLIKE distribution at the longest horizon.
 \cmidrule(lr){3-8}
 Model & & 1d & 1w & 1m & 3m & 6m & 12m \\
 \midrule
-Historical Vol    & $p$ & 0.05 & 0.08 & 0.12 & 0.18 & 0.19 & 0.22 \\
-                  & $\mathcal{M}^{*}$ &  &  & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ \\
+Historical Vol    & $p$ & 0.034 & 0.096 & 0.097 & 0.132 & 0.451 & 0.218 \\
+                  & $\mathcal{M}^{*}$ &  &  &  & $\checkmark$ & $\checkmark$ & $\checkmark$ \\
 \addlinespace
-GARCH(1,1)        & $p$ & 0.05 & 0.03 & 0.01 & 0.01 & 0.07 & 0.22 \\
-                  & $\mathcal{M}^{*}$ &  &  &  &  &  & $\checkmark$ \\
+GARCH(1,1)        & $p$ & 0.034 & 0.096 & 0.030 & 0.129 & 0.451 & 0.460 \\
+                  & $\mathcal{M}^{*}$ &  &  &  & $\checkmark$ & $\checkmark$ & $\checkmark$ \\
 \addlinespace
-HAR-OLS           & $p$ & $\mathbf{1.00}$ & $\mathbf{1.00}$ & $\mathbf{1.00}$ & $\mathbf{1.00}$ & $\mathbf{1.00}$ & $\mathbf{1.00}$ \\
+HAR-OLS           & $p$ & $\mathbf{1.000}$ & $\mathbf{1.000}$ & $\mathbf{1.000}$ & $\mathbf{1.000}$ & $\mathbf{1.000}$ & $\mathbf{1.000}$ \\
                   & $\mathcal{M}^{*}$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ \\
 \addlinespace
-HAR-QR (med.)     & $p$ & 0.05 & 0.08 & 0.12 & 0.20 & 0.23 & 0.22 \\
-                  & $\mathcal{M}^{*}$ &  &  & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ \\
+HAR-QR (med.)     & $p$ & 0.019 & 0.096 & 0.097 & 0.514 & 0.451 & 0.715 \\
+                  & $\mathcal{M}^{*}$ &  &  &  & $\checkmark$ & $\checkmark$ & $\checkmark$ \\
 \addlinespace
-HAR-X-QR (med.)   & $p$ & 0.05 & 0.08 & 0.12 & 0.20 & 0.23 & 0.22 \\
-                  & $\mathcal{M}^{*}$ &  &  & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ \\
+HAR-X-QR (med.)   & $p$ & 0.019 & 0.096 & 0.097 & 0.132 & 0.451 & 0.715 \\
+                  & $\mathcal{M}^{*}$ &  &  &  & $\checkmark$ & $\checkmark$ & $\checkmark$ \\
 \bottomrule
 \end{tabular}
 \par\smallskip
@@ -325,30 +355,26 @@ HAR-X-QR (med.)   & $p$ & 0.05 & 0.08 & 0.12 & 0.20 & 0.23 & 0.22 \\
 
 Table~\ref{tab:mcs-ql95} presents MCS results for quantile loss at
 $\tau = 0.95$, the central evaluation criterion for distributional
-forecasting. Historical volatility and GARCH(1,1) are excluded from
-$\mathcal{M}^{*}$ at every horizon, confirming that their inferior
-quantile loss is statistically significant and not a product of sampling
-variation. From one month onward, $\mathcal{M}^{*}$ contains HAR-OLS
-alongside the two direct quantile regression models, indicating that the
-pseudo-quantile approach is statistically indistinguishable from HAR-QR
-at medium and long horizons. At short horizons, HAR-OLS is excluded
-($p = 0.06$ at one day, $p = 0.07$ at one week), confirming that explicit
-quantile estimation provides a statistically significant advantage where
-volatility dynamics are most state-dependent.
+forecasting. At the one-day and one-week horizons, HAR-QR holds the top
+rank ($p = 1.00$) and $\mathcal{M}^{*}$ contains only the two direct
+quantile regression models: historical volatility, GARCH, and the HAR-OLS
+pseudo-quantile are all excluded, confirming that explicit quantile
+estimation provides a statistically significant advantage where
+volatility dynamics are most state-dependent. From one month onward the
+sample no longer discriminates sharply: at one month all five models
+enter $\mathcal{M}^{*}$, and from three months onward only historical
+volatility is excluded.
 
-Within the HAR family, a revealing pattern emerges. At the one-day
-horizon, both HAR-QR ($p = 1.00$) and HAR-X-QR ($p = 0.36$) are in
-$\mathcal{M}^{*}$, with HAR-QR ranked first. From one week onward,
-both models coexist in $\mathcal{M}^{*}$. The critical shift occurs at
-three months: HAR-X-QR takes $p = 1.00$ from HAR-QR, indicating that
-the ENSO-augmented model becomes the top-ranked specification. This
-reversal persists at six and twelve months ($p = 1.00$ for HAR-X-QR
-versus $p = 0.11$ and $p = 0.15$ for HAR-QR). Both models remain in
-$\mathcal{M}^{*}$ throughout, meaning the data do not permit a
-statistically significant ranking between them. The consistent shift of
-the top rank to HAR-X-QR from three months onward is descriptively
-suggestive, but any interpretation as evidence for a structural ENSO
-channel requires a robustness assessment.
+The migration of the top rank across horizons mirrors the point
+estimates. HAR-QR is ranked first through three months; at six months
+HAR-OLS takes $p = 1.00$; and at twelve months GARCH(1,1) is the
+top-ranked model. Because all of these models (and both QR variants)
+remain in $\mathcal{M}^{*}$ at long horizons, the data do not permit a
+statistically significant ranking among them; but the consistent shift of
+the best point performance away from direct quantile regression at six
+and twelve months marks the QR advantage as a short-horizon result. At no
+horizon does HAR-X-QR hold the top rank, so the MCS provides no
+statistical support for the ENSO augmentation either.
 
 \begin{table}[H]
 \centering
@@ -361,19 +387,19 @@ channel requires a robustness assessment.
 \cmidrule(lr){3-8}
 Model & & 1d & 1w & 1m & 3m & 6m & 12m \\
 \midrule
-Historical Vol    & $p$ & 0.06 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 \\
-                  & $\mathcal{M}^{*}$ &  &  &  &  &  &  \\
+Historical Vol    & $p$ & 0.066 & 0.053 & 0.105 & 0.091 & 0.041 & 0.012 \\
+                  & $\mathcal{M}^{*}$ &  &  & $\checkmark$ &  &  &  \\
 \addlinespace
-GARCH(1,1)        & $p$ & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 \\
-                  & $\mathcal{M}^{*}$ &  &  &  &  &  &  \\
-\addlinespace
-HAR-OLS           & $p$ & 0.06 & 0.07 & 0.47 & 0.51 & 0.30 & 0.21 \\
+GARCH(1,1)        & $p$ & 0.001 & 0.001 & 0.105 & 0.159 & 0.591 & $\mathbf{1.000}$ \\
                   & $\mathcal{M}^{*}$ &  &  & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ \\
 \addlinespace
-HAR-QR            & $p$ & $\mathbf{1.00}$ & $\mathbf{1.00}$ & $\mathbf{1.00}$ & 0.51 & 0.11 & 0.15 \\
+HAR-OLS           & $p$ & 0.066 & 0.071 & 0.678 & 0.950 & $\mathbf{1.000}$ & 0.610 \\
+                  & $\mathcal{M}^{*}$ &  &  & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ \\
+\addlinespace
+HAR-QR            & $p$ & $\mathbf{1.000}$ & $\mathbf{1.000}$ & $\mathbf{1.000}$ & $\mathbf{1.000}$ & 0.591 & 0.216 \\
                   & $\mathcal{M}^{*}$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ \\
 \addlinespace
-HAR-X-QR          & $p$ & 0.36 & 0.82 & 0.52 & $\mathbf{1.00}$ & $\mathbf{1.00}$ & $\mathbf{1.00}$ \\
+HAR-X-QR          & $p$ & 0.279 & 0.386 & 0.678 & 0.718 & 0.548 & 0.216 \\
                   & $\mathcal{M}^{*}$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ \\
 \bottomrule
 \end{tabular}
@@ -386,19 +412,29 @@ HAR-X-QR          & $p$ & 0.36 & 0.82 & 0.52 & $\mathbf{1.00}$ & $\mathbf{1.00}$
 \label{sec:res-robustness}
 %------------------------------------------------------------------------------
 
-The preceding results establish that HAR-X-QR outperforms HAR-QR over the
-full evaluation sample, particularly at the twelve-month upper tail. Before interpreting this as evidence
-of a structural ENSO--cocoa volatility channel, we apply the three robustness
-diagnostics outlined in Section~\ref{sec:methodology}: temporal stability, lag
-structure, and cross-commodity replication. Each addresses a distinct way in
-which the full-sample gain could be sample-specific rather than generalisable.
+The preceding results leave RQ2 resting on a single number: the $3.3\%$
+upper-tail improvement at the twelve-month horizon. The decisive question
+is whether this gain accumulates steadily across the three decades of
+ENSO cycles in the sample --- the signature of a structural climate
+channel --- or materialises within a single episode. The first diagnostic
+below answers this directly, and without any researcher-chosen break date;
+it is therefore the primary test, and the same construction that allows it
+to dispense with date choices is what makes its verdict robust to the
+objectivation concerns that motivate the design. The two diagnostics that
+follow --- lag structure and cross-commodity replication --- address
+distinct generalisability concerns raised at the design stage and
+corroborate the verdict from independent angles. Together the three test
+three ways in which the full-sample gain could be sample-specific rather
+than generalisable: temporal concentration in one episode, a lag structure
+inconsistent with the proposed mechanism, and failure to replicate across
+comparable commodities.
 
 \subsubsection*{Temporal stability: expanding-window diagnostic}
 
-To assess whether the ENSO gain is concentrated in the 2022--2024 supply
-crisis, we trace the \emph{cumulative} gain as the evaluation horizon
-advances through time. For each calendar month~$T$ in the out-of-sample
-period, define
+To assess whether the ENSO gain is stable through time or instead driven by
+a particular episode in the sample, we trace the \emph{cumulative} gain as
+the evaluation horizon advances through time. For each calendar month~$T$ in
+the out-of-sample period, define
 \[
 \Delta\text{QL}(T) \;=\;
   \text{QL}_{\text{HAR-X-QR}}\!\bigl(\{t \leq T\}\bigr)
@@ -421,159 +457,123 @@ ex-post partitioning.
 {\footnotesize Each panel shows $\Delta\text{QL}(T)$ over all out-of-sample pairs with evaluation date $\leq T$; negative values indicate cumulative net gain from ENSO augmentation. Rows: horizons (1, 3, 6, 12~months). Columns: $\tau \in \{0.50,\, 0.75,\, 0.95\}$.}
 \end{figure}
 
-Figure~\ref{fig:expanding-enso} reveals two distinct episodes in which
-ENSO augmentation produced a meaningful cumulative gain, separated by a
-long period of near-zero effect. The dominant episode is the 2022--2024
-supply crisis; a secondary episode occurred in the late 1990s. The two
-episodes differ in which part of the conditional distribution they affect
-and, critically, neither compounds into a persistent structural gain.
+Reading the curves requires keeping their construction in mind. Each is a
+difference of two running means --- cumulative HAR-X-QR loss minus
+cumulative HAR-QR loss, both averaged over every forecast--realisation
+pair up to~$T$ --- so it is the \emph{slope}, not the level, that carries
+the sign of ENSO's contribution in each subperiod. A downward-sloping
+stretch is one in which augmentation reduces loss relative to baseline; a
+flat stretch is one in which it has no net effect; and a near-vertical
+step marks a single episode in which the two models diverge sharply. Two
+construction artifacts must be read through. First, a running mean is most
+sensitive to individual observations early in the sample, when few pairs
+have accumulated, so the wide swings before roughly 2005 reflect the small
+evaluation sample as much as the intensity of the late-1990s ENSO cycle.
+Second, once an episode has displaced the cumulative mean, the curve drifts
+back toward zero over the following years even when ENSO contributes
+nothing further: that post-episode slope is dilution by later
+near-neutral observations, not a reversal of sign. A structural channel
+must therefore appear as a sustained downward drift across many years ---
+not as a step followed by passive decay.
 
-At the twelve-month horizon and $\tau = 0.95$, the cumulative $\Delta$QL
-remains positive (ENSO augmentation harmful on net) or close to zero
-throughout the period preceding 2022. The curve then falls sharply during
-2023 and 2024, with the entire full-sample improvement of $30.8\%$
-accumulating within those two years. At the six-month horizon the pattern
-is similar: a modest negative signal builds gradually from around 2014,
-but the dominant movement occurs in the 2023--2024 window, when the
-six-month curve falls from near zero to its full-sample endpoint of
-$\Delta\text{QL} = -0.91 \times 10^{-4}$.
+The figure is laid out as a matrix --- horizons down the rows, quantile
+levels across the columns --- precisely so that the absence of a
+structural signal can be read off directly. No panel in
+Figure~\ref{fig:expanding-enso} exhibits the sustained-drift shape a
+genuine climate channel would produce.
+In every one of the twelve quantile--horizon combinations the cumulative
+$\Delta$QL is either flat around zero or dominated by one or two abrupt
+steps tied to identifiable episodes, with long stretches of no net
+movement in between. The matrix as a whole therefore delivers the central
+robustness finding before any single cell is examined: wherever ENSO
+appears to help, the help arrives in discrete supply-stress episodes
+rather than accruing across cycles. Two features of the layout sharpen
+this reading. Moving down any column, the curves grow more step-like as
+the horizon lengthens, because longer-horizon forecasts overlap a single
+volatility episode many times and so register it as one large
+displacement; moving across any row, the $\tau = 0.95$ column shows the
+sharpest episodic steps, because the upper tail is where a volatility
+spike registers most forcefully. The one cell that ends below zero --- the
+twelve-month upper tail --- is thus also the cell in which a single
+episode can most easily overturn three decades of accumulated sign.
 
-The median ($\tau = 0.50$) and $\tau = 0.75$ columns tell a different
-story that cannot be summarised as simple oscillation. At both quantile
-levels, the 6- and 12-month panels show a large and sustained downward
-movement during the late 1990s --- a cumulative gain of approximately
-$1.0$--$1.5 \times 10^{-4}$ --- followed by a gradual recovery toward
-zero through the 2000s. The most plausible driver is the 1997--98
-El~Ni\~no, the strongest on record at that time, which coincided with
-drought in West Africa and a broad elevation of cocoa price volatility.
-In that episode, ENSO augmentation predicted a general upward shift in
-the volatility distribution rather than a tail-specific recalibration,
-and the gain is concentrated at $\tau = 0.50$ and $\tau = 0.75$ rather
-than $\tau = 0.95$.
+Read on its own, that cell makes the point concrete. At the twelve-month
+upper tail --- the only quantile--horizon combination with a material
+full-sample gain --- the cumulative $\Delta$QL is \emph{positive} (ENSO
+augmentation harmful on net) for essentially the entire evaluation period. An adverse
+episode in the early 2000s pushes the curve sharply upward, after which it
+declines only gradually as two decades of near-neutral observations dilute
+the early loss. The single large favourable movement occurs in 2023--24,
+when realised volatility spiked during the supply crisis while the ENSO
+state was strongly El~Ni\~no; this final episode pulls the cumulative
+curve just below zero, producing the full-sample endpoint of
+$\Delta\text{QL} = -0.34 \times 10^{-4}$ (the $3.3\%$ gain). The six-month
+panel tells the same story without the sign flip: its endpoint remains
+marginally positive ($+0.07 \times 10^{-4}$), because the crisis episode
+is not quite large enough to offset the accumulated deterioration.
 
-The crucial observation is that this gain subsequently dissipates. As
-neutral ENSO years accumulate in the expanding window after 2000, the
-quantile-loss advantage reverts to near zero by approximately 2010 and
-remains there until the 2022--2024 crisis. The 2022--2024 episode then
-produces a further gain at $\tau = 0.75$ for the longest horizons, but
-the dominant and quantitatively larger movement is at $\tau = 0.95$. The
-two episodes thus differ structurally: in the 1990s ENSO shifted the body
-of the distribution at long horizons; in 2022--2024 it recalibrated the
-extreme upper tail. In both cases the gain is episodic and
-regime-conditional rather than uniformly accumulating. This is consistent
-with the mechanism described in Section~\ref{sec:res-har-x-qr}: the
-positive ENSO coefficient raises the $\tau = 0.95$ boundary during
-El~Ni\~no episodes, reducing the magnitude of large upside exceedances,
-while the center of the distribution is only temporarily and
-non-persistently affected.
+The pre-crisis subsample makes the dependence explicit. Restricting the
+evaluation to forecasts whose entire $h$-day target window precedes
+February 2024 (for the twelve-month horizon, origins up to January 2023),
+ENSO augmentation \emph{raises} the twelve-month upper-tail quantile loss
+by 16\% ($\Delta\text{QL}_{\text{pre}} = +0.52 \times 10^{-4}$, on a
+pre-crisis loss level of $0.000322$). The entire full-sample gain ---
+and more --- is contributed by the 2023--24 window.
 
-This result sharpens the robustness assessment. The expanding-window
-diagnostic identifies two historical episodes in which ENSO augmentation
-produced a meaningful cumulative gain. In both cases the gain is
-concentrated in a specific supply-stress regime and does not compound
-across subsequent calm ENSO cycles. For the twelve-month upper tail
-specifically, the cumulative $\Delta$QL is indistinguishable from zero
-throughout the three decades preceding 2022 and accumulates entirely
-within the final two years of the evaluation period.
+The other quantile levels reinforce the episodic reading. At the median
+and $\tau = 0.75$, a favourable episode around the turn of the millennium
+--- plausibly connected to the 1997--98 El~Ni\~no, the strongest on record
+at that time --- produces a transient cumulative gain at the longer
+horizons that dissipates over the following decade. Notably, this same
+turn-of-the-millennium episode moves the central and upper-tail panels in
+\emph{opposite} directions: a favourable downward dip at the median and
+$\tau = 0.75$, but the sharp upward step that dominates the twelve-month
+upper-tail panel. The same ENSO alignment that improved the central
+forecast worsened the upper-tail forecast --- a sign reversal across
+quantiles consistent with the discrimination--calibration tension analysed
+in Section~\ref{sec:disc-coverage}. At $\tau = 0.75$ the
+curve then turns and remains adverse, ending at
+$+0.88 \times 10^{-4}$ at twelve months (the $-6.7\%$ entry in
+Table~\ref{tab:har-x-improvement}); at the median the endpoint is
+indistinguishable from zero. At no quantile--horizon combination does the
+diagnostic show a steadily accumulating gain across successive ENSO
+cycles: every favourable movement is confined to a specific supply-stress
+episode, and the dominant one is the 2022--2024 crisis.
 
-\subsubsection*{Lag structure}
+\subsubsection*{Two corroborating checks: lag structure and cross-commodity replication}
 
-If ENSO drives cocoa volatility through the agronomic-transmission chain
-(ENSO anomaly $\to$ West African rainfall $\to$ growing-season disruption $\to$
-harvest shortfall $\to$ supply tightening $\to$ price volatility), the
-predictive power of the Ni\~no~3.4 index should \emph{strengthen} as the lag
-approaches 6--12 months, the time over which this chain unfolds. To test this,
-Table~\ref{tab:lag-decay} reports quantile loss at $\tau = 0.95$ for HAR-X-QR
-with ENSO lagged 0, 1, 3, and 6 months.
-
-\begin{table}[htbp]
-\centering
-\small
-\caption{Lag-decay diagnostic: quantile loss ($\tau = 0.95$) by ENSO lag}
-\label{tab:lag-decay}
-\begin{tabular}{lccccc}
-\toprule
- & \multicolumn{5}{c}{ENSO lag (months)} \\
-\cmidrule(lr){2-6}
-Horizon & 0 & 1 & 3 & 6 & 12 \\
-\midrule
-1m  & $0.000478$ & $0.000478$ & $\mathbf{0.000468}$ & $0.000471$ & $0.000473$ \\
-6m  & $0.000419$ & $0.000409$ & $\mathbf{0.000408}$ & $0.000443$ & $0.000517$ \\
-12m & $0.000357$ & $\mathbf{0.000343}$ & $0.000384$ & $0.000466$ & $0.000480$ \\
-\midrule
-HAR-QR baseline & $0.000470$ & $0.000510$ & $0.000516$ & --- & --- \\
-\bottomrule
-\end{tabular}
-\par\smallskip
-{\footnotesize Lower values indicate better forecasts. Bold: best lag for each horizon. Lag $k$: Ni\~no~3.4 from $k$ calendar months prior to the forecast date; construction is fully causal.}
-\end{table}
-
-The results contradict the physical-channel prediction. At the twelve-month
-horizon, predictive power \emph{peaks at lag~1} ($0.000343$) and decays
-monotonically at lags~3 ($0.000384$), 6 ($0.000466$), and~12 ($0.000480$).
-At the six-month horizon, the best lag is~3 ($0.000408$), and performance
-deteriorates at lag~6 ($0.000443$) and lag~12 ($0.000517$). Under the
-agronomic-transmission hypothesis, lags~6 and~12 should be the most
-informative; the data show the opposite, with lag~12 yielding the worst
-forecast at both horizons. The interpretation of this lag structure is taken
-up in Section~\ref{sec:disc-rq2}.
-
-\subsubsection*{Cross-commodity validation}
-
-If ENSO operates as a genuine climate channel it should produce comparable
-predictive gains on other tropical commodities exposed to the same Pacific
-climate signal. Arabica coffee and raw sugar are natural comparators: both
-are weather-sensitive soft commodities that share downstream markets and
-exhibit volatility spillovers with cocoa
-\parencite{geVolatilityMugCup2025}. Table~\ref{tab:cross-commodity} reports
-the $\tau = 0.95$ quantile loss improvement from ENSO augmentation for
-Arabica coffee (ICE KC$=$F, USD/lb) and raw sugar (ICE SB$=$F, USD
-cents/lb), estimated using the identical HAR-X-QR specification and
-rolling-window setup.
-
-\begin{table}[htbp]
-\centering
-\small
-\caption{Cross-commodity ENSO gain ($\Delta$QL, $\tau = 0.95$) at 6- and
-12-month horizons}
-\label{tab:cross-commodity}
-\begin{tabular}{lrrr}
-\toprule
-Horizon & Cocoa & Coffee & Sugar \\
-\midrule
-6m  & $\mathbf{-0.000091}$ & $+0.000014$ & $-0.000014$ \\
-12m & $\mathbf{-0.000159}$ & $+0.000031$ & $-0.000005$ \\
-\bottomrule
-\end{tabular}
-\par\smallskip
-{\footnotesize $\Delta\text{QL} = \text{QL}_{\text{HAR-X-QR}} - \text{QL}_{\text{HAR-QR}}$; negative values indicate improvement from ENSO augmentation. Coffee: ICE KC$=$F, $N \approx 3{,}870$ pairs. Sugar: ICE SB$=$F, $N \approx 3{,}832$ pairs.}
-\end{table}
-
-ENSO augmentation does not replicate on either comparator. For coffee, ENSO
-\emph{worsens} long-horizon upper-tail forecasts at both horizons, with a
-$+0.000031$ deterioration at twelve months. For sugar, the gain is
-$-0.000005$ at twelve months, a factor of 32 smaller than cocoa's
-$-0.000159$.
+Two further checks, requested at the design stage when the apparent gain
+was several times larger, confirm the temporal verdict from independent
+angles; both are now reported compactly, with full tables in
+Appendix~\ref{app:supplementary}. \emph{Lag structure:} if ENSO acted
+through the agronomic-transmission chain (sea-surface anomaly $\to$ West
+African rainfall $\to$ harvest shortfall $\to$ supply tightening $\to$
+price volatility), predictive power should strengthen as the lag
+approaches the 6--12 months over which that chain unfolds. The opposite
+holds (Table~\ref{tab:lag-decay}): where ENSO helps at the twelve-month
+upper tail it does so only contemporaneously (lag~0) or at lag~1, while
+the agronomically motivated lags of three and six months are
+\emph{worse} than the HAR-QR baseline with no ENSO term. \emph{Cross-commodity
+replication:} a genuine Pacific climate channel should lift forecasts for
+other tropical soft commodities with the same exposure. It does not
+(Table~\ref{tab:cross-commodity}): on the identical HAR-X-QR specification,
+ENSO \emph{worsens} twelve-month upper-tail forecasts for Arabica coffee
+and produces only an economically negligible gain for raw sugar
+($1.6\%$). The one commodity that shows any gain is the one whose sample
+contains an idiosyncratic supply crisis.
 
 \subsubsection*{Summary assessment of RQ2 robustness}
 
-The three diagnostics yield consistent empirical findings. The cumulative
-ENSO gain at the twelve-month upper tail is indistinguishable from zero
-throughout the three decades preceding the 2022--2024 supply crisis, and
-the entire $30.8\%$ full-sample improvement accumulates within the
-2023--2024 window. The expanding-window matrix reveals a secondary episode
-in the late 1990s --- plausibly attributable to the 1997--98 El~Ni\~no
---- in which ENSO augmentation produced a temporary gain at $\tau = 0.50$
-and $\tau = 0.75$ for long horizons; this gain subsequently dissipated
-over the 2000s and has not reappeared at those quantile levels outside
-the crisis window. The gain that survives into the full-sample endpoint
-is concentrated at $\tau = 0.95$ and at horizons of six months and beyond.
-The lag-decay diagnostic shows predictive power peaking at contemporaneous
-and lag-1 specifications and decaying at longer lags.
-Cross-commodity application on Arabica coffee
-and raw sugar does not reproduce the cocoa result. The interpretation of
-this combined pattern, and what it implies for the answer to RQ2, is taken
-up in Section~\ref{sec:disc-rq2}.
+The diagnostics yield a consistent verdict, and the primary one settles it:
+the full-sample twelve-month upper-tail gain of $3.3\%$ is the residual of
+a cumulative deterioration spanning most of the evaluation period and a
+single favourable episode in 2023--24, and in the pre-crisis subsample
+ENSO augmentation makes the same forecast 16\% worse. The two corroborating
+checks point the same way --- predictive power, where present, sits at
+contemporaneous rather than agronomic lags, and the result does not
+reproduce on coffee or sugar. The interpretation of this combined pattern,
+and what it implies for the answer to RQ2, is taken up in
+Section~\ref{sec:disc-rq2}.
 
 %------------------------------------------------------------------------------
 \subsection{Summary of Findings}
@@ -588,57 +588,62 @@ across the horizon spectrum. Three conclusions emerge.
 \small
 \caption{Consolidated model comparison across horizons}
 \label{tab:model-summary}
+\setlength{\tabcolsep}{4.5pt}
 \begin{tabular}{llccccc}
 \toprule
  & & \multicolumn{5}{c}{Horizon} \\
 \cmidrule(lr){3-7}
 Metric & Model & 1d & 1m & 3m & 6m & 12m \\
 \midrule
-QLIKE & Historical Vol & $-7.156$ & $-7.420^{*}$ & $-7.405$ & $-7.380$ & $-7.353$ \\
-      & GARCH(1,1)     & $-7.239$ & $-7.401^{*}$ & $-7.375$ & $-7.348$ & $-7.336$ \\
-      & HAR-OLS        & $\mathbf{-7.291}$ & $\mathbf{-7.493}^{*}$ & $\mathbf{-7.474}$ & $\mathbf{-7.438}$ & $\mathbf{-7.423}$ \\
+QLIKE & Historical Vol & $-7.156$ & $-7.399^{*}$ & $-7.353$ & $-7.313$ & $-7.266$ \\
+      & GARCH(1,1)     & $-7.262$ & $-7.402^{*}$ & $-7.374$ & $-7.341$ & $-7.323$ \\
+      & HAR-OLS        & $\mathbf{-7.291}$ & $\mathbf{-7.486}^{*}$ & $\mathbf{-7.456}$ & $\mathbf{-7.405}$ & $\mathbf{-7.360}$ \\
 \addlinespace
-QL ($\tau\!=\!0.95$) & Historical Vol & $0.001282$ & $0.000769^{*}$ & $0.000803$ & $0.000843$ & $0.000862$ \\
-      & GARCH(1,1)     & $0.001307$ & $0.000905$ & $0.000956$ & $0.000971$ & $0.000932^{*}$ \\
-      & HAR-OLS        & $0.001228$ & $0.000509$ & $0.000493^{*}$ & $0.000513$ & $0.000493^{*}$ \\
-      & HAR-QR         & $\mathbf{0.001160}$ & $\mathbf{0.000470}$ & $0.000461^{*}$ & $0.000510$ & $0.000516$ \\
-      & HAR-X-QR       & $0.001161$ & $0.000476$ & $\mathbf{0.000442}$ & $\mathbf{0.000419}$ & $\mathbf{0.000357}^{*}$ \\
+QL ($\tau\!=\!0.95$) & Historical Vol & $0.001281$ & $0.000691^{*}$ & $0.000809$ & $0.001033$ & $0.001462$ \\
+      & GARCH(1,1)     & $0.001283$ & $0.000609^{*}$ & $0.000629$ & $0.000668$ & $\mathbf{0.000736}$ \\
+      & HAR-OLS        & $0.001229$ & $0.000536^{*}$ & $0.000558$ & $\mathbf{0.000608}$ & $0.000786$ \\
+      & HAR-QR         & $\mathbf{0.001159}$ & $\mathbf{0.000500}^{*}$ & $\mathbf{0.000557}$ & $0.000704$ & $0.001041$ \\
+      & HAR-X-QR       & $0.001160$ & $0.000521^{*}$ & $0.000580$ & $0.000711$ & $0.001007$ \\
 \bottomrule
 \end{tabular}
 \par\smallskip
 {\footnotesize Bold: best model at each horizon. $^{*}$Best horizon for each model. QLIKE: more negative is better; QL: lower is better. 1w horizon omitted for compactness.}
 \end{table}
 
-\textit{First}, RQ1 is answered affirmatively. HAR-based quantile regression
-outperforms both naive benchmarks at every horizon: historical volatility
-and GARCH(1,1) are excluded from $\mathcal{M}^{*}$ at every horizon under
-the upper-tail quantile loss criterion (Table~\ref{tab:mcs-ql95}),
-confirming that their inferior performance is not a product of sampling
-variation. Against the HAR-OLS pseudo-quantile, direct quantile estimation
-wins clearly at short horizons (HAR-QR holds $p = 1.00$ through one
-month) and the two are statistically indistinguishable at medium and long
-horizons, where both remain in $\mathcal{M}^{*}$. The slight numerical
-edge of HAR-OLS at twelve months therefore does not constitute a
-statistically significant defeat. From three months onward, HAR-X-QR
-takes the top MCS rank, providing the cleaner answer to RQ1 at long
-horizons. The QLIKE ranking is robust: HAR-OLS dominates mean forecasts
-at all horizons, and the HAR family consistently separates from GARCH
-under MSE and MAE as well (Figure~\ref{fig:robustness-lineplot}).
+\textit{First}, RQ1 receives a horizon-dependent answer. At short-to-medium
+horizons the evidence for direct quantile regression is strong: HAR-QR
+achieves the lowest upper-tail quantile loss from one day through three
+months, and at one day and one week it is the top-ranked model in a Model
+Confidence Set from which all three benchmarks are excluded
+(Table~\ref{tab:mcs-ql95}). At long horizons the advantage disappears:
+HAR-OLS overtakes HAR-QR at six months and GARCH(1,1) is the best
+upper-tail forecaster at twelve months, 29\% below HAR-QR in quantile
+loss. The long-horizon differences are not statistically significant ---
+all models except historical volatility share $\mathcal{M}^{*}$ from three
+months onward --- but the migration of the top MCS rank from HAR-QR (one
+day to three months) to HAR-OLS (six months) to GARCH (twelve months)
+consistently locates the value of explicit quantile estimation at the
+short end. For mean forecasts, HAR-OLS dominates at every horizon and the
+HAR family separates cleanly from GARCH under MSE and MAE
+(Figure~\ref{fig:robustness-lineplot}).
 
-\textit{Second}, regarding RQ2, the Ni\~no~3.4 index produces a substantial
-improvement at long horizons over the full evaluation sample: the
-$\tau = 0.95$ quantile loss falls by 30.86\% at twelve months
-(Table~\ref{tab:har-x-improvement}), and HAR-X-QR holds the top MCS rank
-from three months onward (Table~\ref{tab:mcs-ql95}). Robustness testing in
-Section~\ref{sec:res-robustness} shows that the cumulative gain is
-concentrated in the 2023--2024 portion of the evaluation period, follows a
-lag structure inconsistent with the agronomic-transmission hypothesis, and
-does not reproduce on comparable tropical commodities. The interpretation
-of this combined pattern is developed in Section~\ref{sec:disc-rq2}.
+\textit{Second}, RQ2 is answered in the negative. ENSO augmentation
+worsens the upper-tail forecast at every horizon from one month to six
+months and delivers only a modest $3.3\%$ improvement at twelve months
+(Table~\ref{tab:har-x-improvement}). The robustness diagnostics in
+Section~\ref{sec:res-robustness} show that this residual gain is
+concentrated entirely in the 2023--2024 crisis window (pre-crisis, ENSO
+makes the twelve-month forecast 16\% worse), follows a lag structure
+inconsistent with the agronomic-transmission hypothesis, and does not
+reproduce on comparable tropical commodities. The interpretation of this
+combined pattern is developed in Section~\ref{sec:disc-rq2}.
 
 \textit{Third}, coverage analysis reveals a systematic challenge at long
-horizons. All models produce violation rates above the nominal 5\% at six
-and twelve months. ENSO augmentation introduces a recalibration effect at
-the upper tail, raising the violation rate further while lowering quantile
-loss. The implications of this calibration pattern are discussed in
-Section~\ref{sec:disc-coverage}.
+horizons. Both direct quantile regression models produce violation rates
+far above the nominal 5\% at six months (11.45\% and 14.15\%) and twelve
+months (14.63\% and 15.89\%), with the deterioration concentrated in the
+crisis episode, during which realized volatility remained above the
+$\tau = 0.95$ boundary for an extended period
+(Figure~\ref{fig:upper-tail}, panel b2). ENSO augmentation worsens
+calibration at every horizon from one month onward. The implications of
+this calibration pattern are discussed in Section~\ref{sec:disc-coverage}.

@@ -4,7 +4,7 @@
 Pre-crisis subsample evaluation of HAR-QR vs HAR-X-QR.
 
 NO new model estimation — loads existing forecast CSVs and recomputes
-quantile losses on the pre-crisis period only (Date < 2022-01-01).
+quantile losses on the pre-crisis period only.
 
 Key diagnostic: does the ENSO gain at 12m, tau=0.95 survive when the
 2022-2024 cocoa price crisis is excluded from evaluation?
@@ -12,9 +12,13 @@ Key diagnostic: does the ENSO gain at 12m, tau=0.95 survive when the
   Delta_full < 0 and Delta_pre ≈ 0  → gain was crisis-driven
   Delta_full ≈ Delta_pre < 0        → ENSO gain is genuine, pre-dates crisis
 
-Filter: forecast Date < 2024-02-08
-  (onset of the extreme-volatility phase of the 2022--2024 supply crisis;
-   a fully real-time criterion — no crisis information was visible at t)
+Filter: the ENTIRE target window must lie before the crisis onset.
+  The crisis onset is 2024-02-08 (sup-Wald break date). A forecast made at
+  origin t targets the average volatility over t+1 ... t+h, so filtering on
+  the origin date alone would leave long-horizon forecasts whose targets
+  reach into the crisis. We therefore keep only forecasts with origin
+  index t such that t + h (in trading days) falls strictly before the
+  first trading day on/after the break date.
 
 Output:
   precrisis_ql_comparison.csv  — long-form (model x horizon x quantile x period)
@@ -34,8 +38,28 @@ TBL_DIR  = os.path.join(BASE_DIR, "02_Output", "tables")
 os.makedirs(TBL_DIR, exist_ok=True)
 
 HORIZONS  = ["1d", "1w", "1m", "3m", "6m", "12m"]
+H_DAYS    = {"1d": 1, "1w": 5, "1m": 22, "3m": 66, "6m": 132, "12m": 264}
 QUANTILES = [0.05, 0.25, 0.50, 0.75, 0.95]
 CRISIS_DATE = pd.Timestamp("2024-02-08")  # onset of extreme-volatility phase, supply crisis
+
+
+def precrisis_origin_cutoffs():
+    """
+    For each horizon, the latest forecast ORIGIN date whose entire target
+    window (t+1 ... t+h trading days) lies strictly before CRISIS_DATE.
+    Uses the actual trading calendar from the processed daily data.
+    """
+    cal = pd.read_csv(
+        os.path.join(PROC_DIR, "daily_with_volatility.csv"),
+        usecols=["Date"], parse_dates=["Date"],
+    )["Date"].sort_values().reset_index(drop=True)
+
+    i_c = int(cal.searchsorted(CRISIS_DATE))  # first index with date >= break
+    cutoffs = {}
+    for h_label, h in H_DAYS.items():
+        j = i_c - 1 - h  # origin index t with t + h <= i_c - 1
+        cutoffs[h_label] = cal.iloc[j]
+    return cutoffs
 
 MODELS = {
     "HAR-QR":   "har_qr_forecasts_{h}.csv",
@@ -75,6 +99,11 @@ def load_forecasts(model_key, horizon):
 # 3. Compute losses for full and pre-crisis subsets
 # ===================================================================
 def compute_precrisis_losses():
+    cutoffs = precrisis_origin_cutoffs()
+    print("  Origin cutoffs (target window fully pre-crisis):")
+    for h in HORIZONS:
+        print(f"    {h:>3s}: origin <= {cutoffs[h].date()}")
+
     rows = []
     for model_key in MODELS:
         for h in HORIZONS:
@@ -84,7 +113,7 @@ def compute_precrisis_losses():
                 print(f"  SKIP: {e}")
                 continue
 
-            df_pre = df_full[df_full["Date"] < CRISIS_DATE].copy()
+            df_pre = df_full[df_full["Date"] <= cutoffs[h]].copy()
 
             n_full = len(df_full)
             n_pre  = len(df_pre)
@@ -152,7 +181,8 @@ def build_delta_table(loss_df):
 if __name__ == "__main__":
     print("=" * 60)
     print("Pre-Crisis Subsample Evaluation")
-    print(f"Crisis period excluded: Date >= {CRISIS_DATE.date()}")
+    print(f"Break date: {CRISIS_DATE.date()} — forecasts kept only if the")
+    print("entire h-day target window ends before this date")
     print("=" * 60)
 
     print("\nComputing quantile losses (full sample and pre-crisis)...")

@@ -9,9 +9,15 @@ This appendix collects reference material and detailed estimates that support
 the main text but are not essential to the line of argument: the data
 description (Table~\ref{tab:data-summary}), the unit root tests
 (Table~\ref{tab:stationarity}), the Mincer-Zarnowitz validation of the Yang-Zhang proxy against
-intraday realized volatility (Table~\ref{tab:proxy-validation}), and the full
+intraday realized volatility (Table~\ref{tab:proxy-validation}), the full
+five-model quantile-loss comparison across quantile levels
+(Table~\ref{tab:quantile-loss-all}), the full
 coefficient estimates of the HAR-QR and HAR-X-QR models
-(Table~\ref{tab:har-qr-coefficients}).
+(Table~\ref{tab:har-qr-coefficients}), the Christoffersen (1998)
+conditional coverage test results (Table~\ref{tab:christoffersen}), and
+the two corroborating RQ2 robustness diagnostics --- the ENSO lag-decay
+table (Table~\ref{tab:lag-decay}) and the cross-commodity comparison
+(Table~\ref{tab:cross-commodity}).
 
 \begin{table}[htbp]
 \centering
@@ -41,4 +47,46 @@ Variables (5-minute) & Open, High, Low, Close, Volume, Bid, Ask \\
 
 \input{tables/proxy_validation}
 
+\input{tables/quantile_loss_all}
+
 \input{tables/har_qr_coefficients}
+
+\input{tables/christoffersen_coverage}
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Lag-decay diagnostic: quantile loss ($\tau = 0.95$) by ENSO lag}
+\label{tab:lag-decay}
+\begin{tabular}{lcccccc}
+\toprule
+ & \multicolumn{5}{c}{ENSO lag (months)} & \\
+\cmidrule(lr){2-6}
+Horizon & 0 & 1 & 3 & 6 & 12 & HAR-QR (no ENSO) \\
+\midrule
+1m  & $0.000521$ & $0.000521$ & $0.000507$ & $\mathbf{0.000505}$ & $0.000507$ & $0.000500$ \\
+6m  & $0.000712$ & $\mathbf{0.000691}$ & $0.000705$ & $0.000713$ & $0.000787$ & $0.000704$ \\
+12m & $0.001007$ & $\mathbf{0.001004}$ & $0.001091$ & $0.001140$ & $0.001046$ & $0.001041$ \\
+\bottomrule
+\end{tabular}
+\par\smallskip
+{\footnotesize Lower values indicate better forecasts. Bold: best lag for each horizon. Lag $k$: Ni\~no~3.4 from $k$ calendar months prior to the forecast date; construction is fully causal. Final column: HAR-QR baseline on the identical sample. Where ENSO helps at the twelve-month upper tail it does so only at lag~0 or lag~1; the agronomically motivated lags of three and six months are worse than the no-ENSO baseline.}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Cross-commodity ENSO gain ($\Delta$QL, $\tau = 0.95$) at 6- and
+12-month horizons}
+\label{tab:cross-commodity}
+\begin{tabular}{lrrr}
+\toprule
+Horizon & Cocoa & Coffee & Sugar \\
+\midrule
+6m  & $+0.000007$ & $+0.000015$ & $-0.000010$ \\
+12m & $-0.000034$ & $+0.000079$ & $-0.000007$ \\
+\bottomrule
+\end{tabular}
+\par\smallskip
+{\footnotesize $\Delta\text{QL} = \text{QL}_{\text{HAR-X-QR}} - \text{QL}_{\text{HAR-QR}}$; negative values indicate improvement from ENSO augmentation. Coffee: ICE KC$=$F, $N = 3{,}538$ pairs at 12m. Sugar: ICE SB$=$F, $N = 3{,}500$ pairs at 12m. Cocoa: $N = 7{,}306$. No commodity shows a material gain; coffee worsens at both horizons, sugar's gain is negligible.}
+\end{table}

@@ -90,12 +90,16 @@ def rolling_har_ols(df, horizon_key, horizon_label):
     target_col = f"target_{horizon_label}"
     feature_cols = ["sigma_d", "sigma_w", "sigma_m"]
 
-    # Drop rows where features or target are NaN
-    valid = df[["Date"] + feature_cols + [target_col]].dropna().reset_index(drop=True)
+    # Drop rows where features or target are NaN. 'enso' is NOT a regressor
+    # here; it is included in the dropna only to align the evaluation sample
+    # with the ENSO-augmented models (07b/07d/07h), so that loss tables are
+    # computed over identical forecast dates across all models.
+    valid = (df[["Date", "enso"] + feature_cols + [target_col]]
+             .dropna().reset_index(drop=True))
     n = len(valid)
 
-    if n < WINDOW + 100:
-        print(f"  WARNING: Only {n} valid obs for h={horizon_key}, need {WINDOW}+")
+    if n < WINDOW + horizon_key + 100:
+        print(f"  WARNING: Only {n} valid obs for h={horizon_key}, need {WINDOW + horizon_key}+")
         return None
 
     # Storage for out-of-sample forecasts
@@ -104,10 +108,14 @@ def rolling_har_ols(df, horizon_key, horizon_label):
     forecasts = []
     q_forecasts = {tau: [] for tau in QUANTILES}
 
-    # Rolling loop
-    for t in tqdm(range(WINDOW, n), desc=f"  HAR-OLS h={horizon_label}", leave=True):
-        # Estimation window: [t - WINDOW, t)
-        train = valid.iloc[t - WINDOW : t]
+    # Rolling loop. The estimation window ends at t - h, not t: the target of
+    # row s covers sigma over s+1 ... s+h, so rows s > t - h have targets that
+    # are not fully realized at the forecast origin t. Ending the window at
+    # t - h ensures only information available at t enters the estimation.
+    h = horizon_key
+    for t in tqdm(range(WINDOW + h, n), desc=f"  HAR-OLS h={horizon_label}", leave=True):
+        # Estimation window: [t - h - WINDOW, t - h)
+        train = valid.iloc[t - h - WINDOW : t - h]
         X_train = train[feature_cols].values
         y_train = train[target_col].values
 
